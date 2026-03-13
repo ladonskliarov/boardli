@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/style/app_text_styles.dart';
 
 class AuthorizationScreen extends StatelessWidget {
   const AuthorizationScreen({super.key});
@@ -7,7 +10,7 @@ class AuthorizationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Hello empat!'),
+        child: Text('hello'.tr(), style: AppTextStyles.medium20),
       ),
     );
   }
