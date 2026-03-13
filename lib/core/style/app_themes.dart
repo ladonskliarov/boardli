@@ -4,6 +4,7 @@ import 'app_colors.dart';
 
 abstract class AppThemes {
   static ThemeData lightTheme = ThemeData(
+    fontFamily: 'e-Ukraine',
     scaffoldBackgroundColor: AppColors.softLinen,
     colorScheme: ColorScheme(
       brightness: Brightness.light,
@@ -19,6 +20,7 @@ abstract class AppThemes {
   );
 
   static ThemeData darkTheme = ThemeData(
+    fontFamily: 'e-Ukraine',
     scaffoldBackgroundColor: AppColors.gunMetal,
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
