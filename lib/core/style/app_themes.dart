@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract class AppThemes {
+  static const fontFamily = 'e-Ukraine';
+  
   static ThemeData lightTheme = ThemeData(
-    fontFamily: 'e-Ukraine',
+    fontFamily: fontFamily,
     scaffoldBackgroundColor: AppColors.softLinen,
     colorScheme: ColorScheme(
       brightness: Brightness.light,
@@ -12,7 +14,7 @@ abstract class AppThemes {
       surface: AppColors.softLinen,
       onSurface: AppColors.gunMetal,
       onPrimary: AppColors.gunMetal,
-      secondary: AppColors.sandyBrown,
+      secondary: AppColors.gunMetal,
       onSecondary: AppColors.white,
       error: AppColors.softLinen,
       onError: AppColors.tiger,
@@ -20,7 +22,7 @@ abstract class AppThemes {
   );
 
   static ThemeData darkTheme = ThemeData(
-    fontFamily: 'e-Ukraine',
+    fontFamily: fontFamily,
     scaffoldBackgroundColor: AppColors.gunMetal,
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
@@ -28,7 +30,7 @@ abstract class AppThemes {
       surface: AppColors.gunMetal,
       onSurface: AppColors.white,
       onPrimary: AppColors.white,
-      secondary: AppColors.sandyBrown,
+      secondary: AppColors.grey,
       onSecondary: AppColors.white,
       error: AppColors.gunMetal,
       onError: AppColors.tiger,

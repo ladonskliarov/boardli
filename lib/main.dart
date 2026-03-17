@@ -6,25 +6,19 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'core/di/injection_container.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/router.dart';
-import 'core/storage/interfaces/local_storage_service.dart';
+import 'core/style/app_themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await initDI();
 
-  final LocalStorageService localStorageService = di<LocalStorageService>();
-  final darkTheme = await localStorageService.getDarkTheme();
-
-  await EasyLocalization.ensureInitialized();
-
-  runApp(
+  runApp(   
     EasyLocalization(
       supportedLocales: [Locale('uk'), Locale('en')],
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
       child: ChangeNotifierProvider(
-        create: (_) => ThemeProvider(darkTheme: darkTheme),
+        create: (_) => sl<ThemeProvider>(),
         child: MainApp(),
       ),
     ),
@@ -34,12 +28,17 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  ThemeData _getTheme(BuildContext context) {
+    return context.watch<ThemeProvider>().darkTheme ? AppThemes.darkTheme : AppThemes.lightTheme;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
+          theme: _getTheme(context),
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,

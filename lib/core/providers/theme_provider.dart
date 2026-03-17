@@ -7,7 +7,7 @@ class ThemeProvider extends ChangeNotifier {
   bool darkTheme;
   ThemeProvider({required this.darkTheme});
 
-  final LocalStorageService localStorageService = di<LocalStorageService>();
+  final LocalStorageService localStorageService = sl<LocalStorageService>();
 
   void switchDarkTheme() {
     localStorageService.setDarkTheme(!darkTheme).then((_) {

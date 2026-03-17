@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTextStyles {
   static const TextStyle title = TextStyle(
     fontSize: 34,
+    fontWeight: .w500,
   );
 
   static const TextStyle subtitle = TextStyle(
@@ -12,6 +13,16 @@ class AppTextStyles {
   static const TextStyle medium20 = TextStyle(
     fontSize: 20,
     fontWeight: .w500,
+  );
+
+  static const TextStyle regular18 = TextStyle(
+    fontSize: 18,
+    fontWeight: .w400,
+  );
+
+  static const TextStyle regular22 = TextStyle(
+    fontSize: 22,
+    fontWeight: .w400,
   );
 
   static const TextStyle light20 = TextStyle(

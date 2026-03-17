@@ -1,0 +1,101 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
+
+import '../../../../../core/error/failures.dart';
+import '/features/authorization/data/models/employee.dart';
+import 'employee_remote_datasource.dart';
+
+class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
+  final Dio _dio;
+  const EmployeeRemoteDatasourceImpl(this._dio);
+
+  static const String baseUrl = 'https://empat-final-project-backend-production.up.railway.app';
+
+  @override
+  Future<Employee> login({required String email, required String password}) async {
+    const String url = '$baseUrl/api/v1/auth/employee/login';
+
+    final Map<String, dynamic> requestData = {
+      "email": email,
+      "password": password,
+    };
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: requestData,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      return Employee.fromJson(response.data);
+
+    } on DioException catch (e) {
+      log('Request error: ${e.response?.statusCode}');
+      log('Message: ${e.response?.data}');
+
+      final String errorMessage = e.response?.data?['message'] 
+          ?? 'Server error. Code: ${e.response?.statusCode}';
+
+      throw ServerFailure(errorMessage);
+
+    } catch (e) {
+      log('Unexpected error: $e');
+      throw ServerFailure('Unexpected error: $e');
+    }
+  }
+  
+
+  @override
+  Future<Employee> register({
+    required String inviteKey,
+    required String password,
+    required String gender,
+    required String hobbies,
+    required String favoriteAnimals,
+  }) async {
+    const String url = '$baseUrl/api/v1/auth/employee/register';
+
+    final Map<String, dynamic> requestData = {
+      "inviteKey": inviteKey,
+      "password": password,
+      "gender": gender,
+      "hobbies": hobbies,
+      "favoriteAnimal": favoriteAnimals,
+    };
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: requestData,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $inviteKey',
+          },
+        ),
+      );
+
+      return Employee.fromJson(response.data);
+
+    } on DioException catch (e) {
+      log('Request error: ${e.response?.statusCode}');
+      log('Message: ${e.response?.data}');
+
+      final String errorMessage = e.response?.data?['message'] 
+          ?? 'Server error. Code: ${e.response?.statusCode}';
+
+      throw ServerFailure(errorMessage);
+
+    } catch (e) {
+      log('Unexpected error: $e');
+      throw ServerFailure('Unexpected error: $e');
+    }
+  }
+}

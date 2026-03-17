@@ -1,0 +1,108 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../core/style/app_colors.dart';
+import '../../../../core/style/app_dimensions.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../../../core/util/extensions.dart';
+
+enum HeaderType { convexIn, convexOut }
+
+class HeaderWidget extends StatelessWidget {
+  final String? subtitle, additionalText;
+  final HeaderType headerType;
+  final Color color;
+  final TextStyle? subtitleStyle;
+  final bool isShadow;
+  const HeaderWidget({
+    this.subtitle,
+    this.subtitleStyle,
+    this.additionalText,
+    this.headerType = HeaderType.convexIn,
+    this.color = AppColors.tiger,
+    this.isShadow = false,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 230.ph,
+      child: Stack(
+        alignment: .center,
+        children: [
+          CustomPaint(
+            size: Size(double.infinity, 230.ph),
+            painter: HeaderPainter(
+              headerType: headerType,
+              color: color,
+              isShadow: isShadow,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: .start,
+            crossAxisAlignment: .center,
+            children: [
+              AppBar(
+                surfaceTintColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                title: Text('Boardli', style: AppTextStyles.title),
+              ),
+              if (subtitle != null)
+              Text(subtitle!.tr(), style: subtitleStyle ?? AppTextStyles.subtitle),
+              if (additionalText != null)
+              Padding(
+                padding: Paddings.paddingOnlyTopXS,
+                child: Text(additionalText!.tr()),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HeaderPainter extends CustomPainter {
+  final HeaderType headerType;
+  final Color color;
+  final bool isShadow;
+
+  HeaderPainter({required this.headerType, required this.color, required this.isShadow});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final orangePath = Path();
+
+    late final double startY;
+    late final double controlY;
+    if (headerType == HeaderType.convexIn) {
+      startY = 220.ph;
+      controlY = 100.ph;
+    } else {
+      startY = 130.ph;
+      controlY = 260.ph;
+    }
+
+    orangePath.lineTo(0, startY);
+    orangePath.quadraticBezierTo(size.width / 2, controlY, size.width, startY);
+    orangePath.lineTo(size.width, 0);
+    orangePath.close();
+
+    if (isShadow) {
+      final shadowPaint = Paint()
+      ..color = AppColors.black.withValues(alpha: 0.35)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+
+      canvas.drawPath(orangePath.shift(const Offset(0, 4)), shadowPaint);
+    }
+
+    final orangePaint = Paint()..color = color;
+    canvas.drawPath(orangePath, orangePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
