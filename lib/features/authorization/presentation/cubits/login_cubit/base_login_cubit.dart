@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../../core/error/failures.dart';
 import '../../../../../core/util/enums.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../auth_cubit/auth_cubit.dart';
 
 part 'base_login_state.dart';
 
-abstract class BaseLoginCubit extends Cubit<BaseLoginState> {
+abstract class BaseLoginCubit<T extends UserEntity> extends Cubit<BaseLoginState> {
   final AuthCubit authCubit;
   final UserType userType;
   BaseLoginCubit({required this.authCubit, required this.userType}) : super(BaseLoginInitial());
@@ -14,16 +17,18 @@ abstract class BaseLoginCubit extends Cubit<BaseLoginState> {
   Future<void> login({required String email, required String password}) async {
     try {
       emit(BaseLoginLoading());
-      await performLogin(email: email, password: password);
-      if (userType == UserType.employee) {
-        authCubit.authenticateAsEmployee();
-      } else {
-        authCubit.authenticateAsCompany();
-      }
-      emit(BaseLoginSuccess());
+      final result = await performLogin(email: email, password: password);
+      result.fold(
+        (failure) => emit(BaseLoginFailure(message: failure.message),),
+        (user) {
+          onLoginSuccess(user);
+          emit(BaseLoginSuccess());
+        }
+      );
     } catch (e) {
-      emit(BaseLoginError(message: e.toString()));
+      emit(BaseLoginFailure(message: e.toString()));
     }
   }
-  Future<void> performLogin({required String email, required String password});
+  Future<Either<Failure, T>> performLogin({required String email, required String password});
+  void onLoginSuccess(T user);
 }

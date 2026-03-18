@@ -57,8 +57,8 @@ void _registerRepositories() {
 
 void _registerCubits() {
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit());
-  sl.registerFactory<EmployeeLoginCubit>(() => EmployeeLoginCubit(authCubit: sl(), userType: UserType.employee));
-  sl.registerFactory<CompanyLoginCubit>(() => CompanyLoginCubit(authCubit: sl(), userType: UserType.company));
+  sl.registerFactory<EmployeeLoginCubit>(() => EmployeeLoginCubit(employeeRepository: sl(), authCubit: sl(), userType: UserType.employee));
+  sl.registerFactory<CompanyLoginCubit>(() => CompanyLoginCubit(companyRepository: sl(), authCubit: sl(), userType: UserType.company));
   sl.registerFactory<CompanyRegisterCubit>(() => CompanyRegisterCubit(authCubit: sl(), companyRepository: sl()));
   sl.registerFactory<EmployeeRegisterCubit>(() => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()));
 }

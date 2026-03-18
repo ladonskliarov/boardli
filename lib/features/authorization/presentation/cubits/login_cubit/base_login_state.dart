@@ -6,7 +6,7 @@ sealed class BaseLoginState {}
 final class BaseLoginInitial extends BaseLoginState {}
 final class BaseLoginLoading extends BaseLoginState {}
 final class BaseLoginSuccess extends BaseLoginState {}
-final class BaseLoginError extends BaseLoginState {
+final class BaseLoginFailure extends BaseLoginState {
   final String message;
-  BaseLoginError({required this.message});
+  BaseLoginFailure({required this.message});
 }

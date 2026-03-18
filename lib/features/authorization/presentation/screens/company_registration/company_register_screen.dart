@@ -132,7 +132,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                   CustomTextField(
                                     title: 'Password',
                                     hintText: 'Min. 8 charactercs',
-                                    validator: Validator.validateRegisterPassword,
+                                    validator:
+                                        Validator.validateRegisterPassword,
                                     controller: _passwordController,
                                   ),
                                   gapH20,
@@ -157,9 +158,11 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                             context,
                                           ).register(
                                             name: _companyNameController.text,
-                                            industry: _industry.value.toString(),
+                                            industry: _industry.value
+                                                .toString(),
                                             size: _companySize.value.value,
-                                            contactName: _fullNameController.text,
+                                            contactName:
+                                                _fullNameController.text,
                                             email: _emailController.text,
                                             password: _passwordController.text,
                                           );
@@ -185,10 +188,9 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 ],
               ),
             );
-          }
+          },
         ),
       ),
     );
   }
 }
-

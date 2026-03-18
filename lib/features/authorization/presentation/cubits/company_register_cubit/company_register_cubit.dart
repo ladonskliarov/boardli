@@ -14,21 +14,6 @@ class CompanyRegisterCubit extends Cubit<CompanyRegisterState> {
   CompanyRegisterCubit({required this.authCubit, required this.companyRepository})
     : super(CompanyRegisterInitial());
 
-  // Future<void> login({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   emit(CompanyRegisterLoading());
-  //   final result = await companyRepository.login(
-  //     email: email,
-  //     password: password,
-  //   );
-  //   result.fold(
-  //     (failure) => emit(CompanyRegisterFailure(message: failure.message)),
-  //     (company) => emit(CompanyRegisterSuccess(company: company)),
-  //   );
-  // }
-
   Future<void> register({
     required String name,
     required String industry,

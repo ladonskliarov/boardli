@@ -1,15 +1,16 @@
 import '../../presentation/constants/enums.dart';
+import 'user_entity.dart';
 
-class CompanyEntity {
-  final String name, contactName, email;
+class CompanyEntity extends UserEntity {
+  final String contactName;
   final IndustryType industry;
   final CompanySize size;
 
   CompanyEntity({
-    required this.name,
     required this.industry,
     required this.size,
     required this.contactName,
-    required this.email,
+    required super.name,
+    required super.email,
   });
 }

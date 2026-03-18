@@ -14,21 +14,6 @@ class EmployeeRegisterCubit extends Cubit<EmployeeRegisterState> {
   EmployeeRegisterCubit({required this.authCubit, required this.employeeRepository})
     : super(EmployeeRegisterInitial());
 
-  // Future<void> login({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   emit(EmployeeRegisterLoading());
-  //   final result = await employeeRepository.login(
-  //     email: email,
-  //     password: password,
-  //   );
-  //   result.fold(
-  //     (failure) => emit(EmployeeRegisterFailure(message: failure.message)),
-  //     (employee) => emit(EmployeeRegisterSuccess(employee: employee)),
-  //   );
-  // }
-
   Future<void> register({
     required String inviteKey,
     required String password,

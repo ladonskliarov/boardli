@@ -62,7 +62,7 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
     const String url = '$baseUrl/api/v1/auth/employee/register';
 
     final Map<String, dynamic> requestData = {
-      "inviteKey": inviteKey,
+      "inviteKey": inviteKey, 
       "password": password,
       "gender": gender,
       "hobbies": hobbies,
