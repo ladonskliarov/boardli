@@ -4,28 +4,30 @@ import 'package:meta/meta.dart';
 
 import '../../../domain/entities/company_entity.dart';
 import '../../../domain/repositories/company_repository.dart';
+import '../auth_cubit/auth_cubit.dart';
 
 part 'company_register_state.dart';
 
 class CompanyRegisterCubit extends Cubit<CompanyRegisterState> {
+  final AuthCubit authCubit;
   final CompanyRepository companyRepository;
-  CompanyRegisterCubit({required this.companyRepository})
+  CompanyRegisterCubit({required this.authCubit, required this.companyRepository})
     : super(CompanyRegisterInitial());
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
-    emit(CompanyRegisterLoading());
-    final result = await companyRepository.login(
-      email: email,
-      password: password,
-    );
-    result.fold(
-      (failure) => emit(CompanyRegisterFailure(message: failure.message)),
-      (company) => emit(CompanyRegisterSuccess(company: company)),
-    );
-  }
+  // Future<void> login({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   emit(CompanyRegisterLoading());
+  //   final result = await companyRepository.login(
+  //     email: email,
+  //     password: password,
+  //   );
+  //   result.fold(
+  //     (failure) => emit(CompanyRegisterFailure(message: failure.message)),
+  //     (company) => emit(CompanyRegisterSuccess(company: company)),
+  //   );
+  // }
 
   Future<void> register({
     required String name,
@@ -46,7 +48,9 @@ class CompanyRegisterCubit extends Cubit<CompanyRegisterState> {
     );
     result.fold(
       (failure) => emit(CompanyRegisterFailure(message: failure.message)),
-      (company) => emit(CompanyRegisterSuccess(company: company)),
+      (company) {
+        authCubit.authenticateAsCompany();
+        emit(CompanyRegisterSuccess(company: company));}
     );
   }
 }

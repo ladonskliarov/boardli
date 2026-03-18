@@ -5,14 +5,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'core/di/injection_container.dart';
 import 'core/providers/theme_provider.dart';
-import 'core/router.dart';
+import 'core/router/router.dart';
 import 'core/style/app_themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDI();
 
-  runApp(   
+  runApp(
     EasyLocalization(
       supportedLocales: [Locale('uk'), Locale('en')],
       path: 'assets/translations',
@@ -29,7 +29,9 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   ThemeData _getTheme(BuildContext context) {
-    return context.watch<ThemeProvider>().darkTheme ? AppThemes.darkTheme : AppThemes.lightTheme;
+    return context.watch<ThemeProvider>().darkTheme
+        ? AppThemes.darkTheme
+        : AppThemes.lightTheme;
   }
 
   @override

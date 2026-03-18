@@ -21,16 +21,21 @@ import '../../features/authorization/presentation/cubits/login_cubit/employee_lo
 import '../providers/theme_provider.dart';
 import '../storage/implementations/shared_prefs_storage.dart';
 import '../storage/interfaces/local_storage_service.dart';
+import '../util/enums.dart';
 
 final GetIt sl = GetIt.instance;
 
 Future<void> initDI() async {
+  _initServices();
   _registerLocalStorages();
-  _registerBlocs();
+  _registerCubits();
   _registerDAO();
   _registerRepositories();
   await _registerProviders();
   await EasyLocalization.ensureInitialized();
+}
+
+void _initServices() {
   sl.registerLazySingleton<Dio>(() => Dio());
   sl.registerLazySingleton<FlutterSecureStorage>(() => FlutterSecureStorage());
 }
@@ -50,12 +55,12 @@ void _registerRepositories() {
   sl.registerLazySingleton<EmployeeRepository>(() => EmployeeRepositoryImpl(sl()));
 }
 
-void _registerBlocs() {
-  sl.registerFactory<EmployeeLoginCubit>(() => EmployeeLoginCubit());
-  sl.registerFactory<CompanyLoginCubit>(() => CompanyLoginCubit());
-  sl.registerFactory<CompanyRegisterCubit>(() => CompanyRegisterCubit(companyRepository: sl()));
-  sl.registerFactory<EmployeeRegisterCubit>(() => EmployeeRegisterCubit(employeeRepository: sl()));
-  sl.registerFactory<AuthCubit>(() => AuthCubit());
+void _registerCubits() {
+  sl.registerLazySingleton<AuthCubit>(() => AuthCubit());
+  sl.registerFactory<EmployeeLoginCubit>(() => EmployeeLoginCubit(authCubit: sl(), userType: UserType.employee));
+  sl.registerFactory<CompanyLoginCubit>(() => CompanyLoginCubit(authCubit: sl(), userType: UserType.company));
+  sl.registerFactory<CompanyRegisterCubit>(() => CompanyRegisterCubit(authCubit: sl(), companyRepository: sl()));
+  sl.registerFactory<EmployeeRegisterCubit>(() => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()));
 }
 
 Future<void> _registerProviders() async {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../core/di/injection_container.dart';
-import '../../../../../core/router.dart';
 import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
+import '../../../../../core/util/enums.dart';
 import '../../../../../core/util/extensions.dart';
 import '../../../../../core/util/validator.dart';
 import '../../cubits/login_cubit/base_login_cubit.dart';
@@ -16,7 +15,7 @@ import '../../widgets/custom_text_field.dart';
 import '../../widgets/header.dart';
 
 class LoginScreen extends StatefulWidget {
-  final String userType;
+  final UserType userType;
   const LoginScreen({required this.userType, super.key});
 
   @override
@@ -28,76 +27,93 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  BaseLoginCubit _getLoginCubit() {
+    if (widget.userType == UserType.employee) {
+      return sl<EmployeeLoginCubit>();
+    } else {
+      return sl<CompanyLoginCubit>();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BaseLoginCubit, BaseLoginState>(
-      bloc: widget.userType == 'employee'
-          ? sl<EmployeeLoginCubit>()
-          : sl<CompanyLoginCubit>(),
-      listener: (context, state) {
-        if (state is BaseLoginSuccess) {
-          //TODO continue
-          context.goNamed(AppPage.employeeDashboard.name);
-        }
-      },
-      child: Scaffold(
-          backgroundColor: AppColors.gunMetal,
-          body: Stack(
-            children: [
-              Center(
-                child: Container(
-                  constraints: BoxConstraints(
-                    minHeight: 280.ph,
-                    maxHeight: double.infinity,
-                  ),
-                  margin: Paddings.paddingHorizontalL,
-                  decoration: BoxDecoration(
-                    color: AppColors.grey,
-                    borderRadius: .circular(30.0),
-                  ),
-                  child: Padding(
-                    padding: Paddings.paddingAllM,
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: .min,
-                        mainAxisAlignment: .spaceBetween,
-                        crossAxisAlignment: .start,
-                        children: [
-                          CustomTextField(
-                            title: 'Email',
-                            titleColor: AppColors.white,
-                            errorColor: AppColors.white,
-                            validator: Validator.validateEmail,
-                            controller: _emailController,
-                          ),
-                          gapH10,
-                          CustomTextField(
-                            title: 'Password',
-                            titleColor: AppColors.white,
-                            errorColor: AppColors.white,
-                            validator: Validator.validateRegisterPassword,
-                            controller: _passwordController,
-                          ),
-                          gapH20,
-                          Align(
-                            alignment: .centerRight,
-                            child: CustomButton(
-                              text: 'Sign in',
-                              elevation: 4,
-                              onPressed: () {},
+    return BlocProvider(
+      create: (context) => _getLoginCubit(),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: AppColors.gunMetal,
+            body: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: 280.ph,
+                      maxHeight: double.infinity,
+                    ),
+                    margin: Paddings.paddingHorizontalL,
+                    decoration: BoxDecoration(
+                      color: AppColors.grey,
+                      borderRadius: .circular(30.0),
+                    ),
+                    child: Padding(
+                      padding: Paddings.paddingAllM,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: .min,
+                          mainAxisAlignment: .spaceBetween,
+                          crossAxisAlignment: .start,
+                          children: [
+                            CustomTextField(
+                              title: 'Email',
+                              titleColor: AppColors.white,
+                              errorColor: AppColors.white,
+                              validator: Validator.validateEmail,
+                              controller: _emailController,
                             ),
-                          ),
-                        ],
+                            gapH10,
+                            CustomTextField(
+                              title: 'Password',
+                              titleColor: AppColors.white,
+                              errorColor: AppColors.white,
+                              validator: Validator.validateRegisterPassword,
+                              controller: _passwordController,
+                            ),
+                            gapH20,
+                            Align(
+                              alignment: .centerRight,
+                              child: CustomButton(
+                                text: 'Sign in',
+                                elevation: 4,
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    BlocProvider.of<BaseLoginCubit>(
+                                      context,
+                                    ).login(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              HeaderWidget(subtitle: 'Welcome back!', headerType: .convexOut, color: AppColors.tiger),
-            ],
-          ),
-        ),
+                HeaderWidget(
+                  subtitle: 'Welcome back!',
+                  headerType: .convexOut,
+                  color: AppColors.tiger,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

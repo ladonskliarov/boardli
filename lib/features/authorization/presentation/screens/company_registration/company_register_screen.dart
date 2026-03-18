@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '/features/authorization/presentation/widgets/loading_dialog.dart';
 import '../../../../../core/di/injection_container.dart';
-import '../../../../../core/router.dart';
 import '../../cubits/company_register_cubit/company_register_cubit.dart';
 import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
@@ -62,7 +61,6 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
         listener: (context, state) {
           if (state is CompanyRegisterSuccess) {
             context.pop();
-            context.goNamed(AppPage.companyDashboard.name);
           } else if (state is CompanyRegisterFailure) {
             context.pop();
             ScaffoldMessenger.of(
@@ -70,8 +68,6 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is CompanyRegisterLoading) {
             showLoadingDialog(context);
-          } else if (state is CompanyRegisterFailure) {
-            context.pop();
           }
         },
         child: Builder(
