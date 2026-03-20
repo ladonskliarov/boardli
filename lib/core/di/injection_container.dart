@@ -10,8 +10,9 @@ import '../../features/authorization/domain/repositories/employee_repository.dar
 import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../features/authorization/presentation/cubits/company_register_cubit/company_register_cubit.dart';
 import '../../features/authorization/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
-import '../storage/implementations/secure_local_storage_impl.dart';
-import '../storage/interfaces/secure_local_storage.dart';
+import '../interceptors/token_interceptor.dart';
+import '../storage/implementations/token_repository_impl.dart';
+import '../storage/interfaces/token_repository.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource_impl.dart';
 import '../../features/authorization/data/repository/company_repositorty_impl.dart';
@@ -27,6 +28,7 @@ final GetIt sl = GetIt.instance;
 
 Future<void> initDI() async {
   _initServices();
+  _registerDio();
   _registerLocalStorages();
   _registerCubits();
   _registerDAO();
@@ -36,35 +38,82 @@ Future<void> initDI() async {
 }
 
 void _initServices() {
-  sl.registerLazySingleton<Dio>(() => Dio());
   sl.registerLazySingleton<FlutterSecureStorage>(() => FlutterSecureStorage());
+}
+
+void _registerDio() {
+  sl.registerLazySingleton<Dio>(() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl:
+            'https://empat-final-project-backend-production.up.railway.app',
+      ),
+    );
+
+    dio.interceptors.add(TokenInterceptor(tokenRepository: sl()));
+    return dio;
+  });
 }
 
 void _registerLocalStorages() {
   sl.registerLazySingleton<LocalStorageService>(() => SharedPrefsStorage());
-  sl.registerLazySingleton<SecureLocalStorage>(() => SecureLocalStorageImpl(secureStorage: sl()));
 }
 
 void _registerDAO() {
-  sl.registerLazySingleton<CompanyRemoteDatasource>(() => CompanyRemoteDatasourceImpl(sl()));
-  sl.registerLazySingleton<EmployeeRemoteDatasource>(() => EmployeeRemoteDatasourceImpl(sl()));
+  sl.registerLazySingleton<CompanyRemoteDatasource>(
+    () => CompanyRemoteDatasourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<EmployeeRemoteDatasource>(
+    () => EmployeeRemoteDatasourceImpl(dio: sl()),
+  );
 }
 
 void _registerRepositories() {
-  sl.registerLazySingleton<CompanyRepository>(() => CompanyRepositoryImpl(sl()));
-  sl.registerLazySingleton<EmployeeRepository>(() => EmployeeRepositoryImpl(sl()));
+  sl.registerLazySingleton<TokenRepository>(
+    () => TokenRepositoryImpl(secureStorage: sl()),
+  );
+  sl.registerLazySingleton<CompanyRepository>(
+    () => CompanyRepositoryImpl(remoteDataSource: sl(), tokenRepository: sl()),
+  );
+  sl.registerLazySingleton<EmployeeRepository>(
+    () => EmployeeRepositoryImpl(remoteDataSource: sl(), tokenRepository: sl()),
+  );
 }
 
 void _registerCubits() {
-  sl.registerLazySingleton<AuthCubit>(() => AuthCubit());
-  sl.registerFactory<EmployeeLoginCubit>(() => EmployeeLoginCubit(employeeRepository: sl(), authCubit: sl(), userType: UserType.employee));
-  sl.registerFactory<CompanyLoginCubit>(() => CompanyLoginCubit(companyRepository: sl(), authCubit: sl(), userType: UserType.company));
-  sl.registerFactory<CompanyRegisterCubit>(() => CompanyRegisterCubit(authCubit: sl(), companyRepository: sl()));
-  sl.registerFactory<EmployeeRegisterCubit>(() => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()));
+  sl.registerLazySingleton<AuthCubit>(
+    () => AuthCubit(
+      tokenRepository: sl(),
+      companyRepository: sl(),
+      employeeRepository: sl(),
+    ),
+  );
+  sl.registerFactory<EmployeeLoginCubit>(
+    () => EmployeeLoginCubit(
+      employeeRepository: sl(),
+      authCubit: sl(),
+      userType: UserType.employee,
+    ),
+  );
+  sl.registerFactory<CompanyLoginCubit>(
+    () => CompanyLoginCubit(
+      companyRepository: sl(),
+      authCubit: sl(),
+      userType: UserType.company,
+    ),
+  );
+  sl.registerFactory<CompanyRegisterCubit>(
+    () => CompanyRegisterCubit(authCubit: sl(), companyRepository: sl()),
+  );
+  sl.registerFactory<EmployeeRegisterCubit>(
+    () => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()),
+  );
 }
 
 Future<void> _registerProviders() async {
   final LocalStorageService localStorageService = sl();
   final darkTheme = await localStorageService.getDarkTheme();
-  sl.registerLazySingleton<ThemeProvider>(() => ThemeProvider(darkTheme: darkTheme));
+  sl.registerLazySingleton<ThemeProvider>(
+    () => ThemeProvider(darkTheme: darkTheme),
+  );
 }

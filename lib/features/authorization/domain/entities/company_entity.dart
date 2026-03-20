@@ -10,6 +10,7 @@ class CompanyEntity extends UserEntity {
     required this.industry,
     required this.size,
     required this.contactName,
+    required super.id,
     required super.name,
     required super.email,
   });

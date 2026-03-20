@@ -47,9 +47,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
       create: (_) => sl<EmployeeRegisterCubit>(),
       child: BlocListener<EmployeeRegisterCubit, EmployeeRegisterState>(
         listener: (context, state) {
-          if (state is EmployeeRegisterSuccess) {
-            context.pop();
-          } else if (state is EmployeeRegisterFailure) {
+          if (state is EmployeeRegisterFailure) {
             context.pop();
             ScaffoldMessenger.of(
               context,

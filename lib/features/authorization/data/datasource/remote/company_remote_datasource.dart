@@ -1,8 +1,11 @@
 import '../../models/company.dart';
 
 abstract class CompanyRemoteDatasource {
-  Future<Company> login({required String email, required String password});
-  Future<Company> register({
+  Future<({Company company, String token})> login({
+    required String email,
+    required String password,
+  });
+  Future<({Company company, String token})> register({
     required String name,
     required String industry,
     required String size,
@@ -10,4 +13,5 @@ abstract class CompanyRemoteDatasource {
     required String email,
     required String password,
   });
+  Future<Company> getMe();
 }

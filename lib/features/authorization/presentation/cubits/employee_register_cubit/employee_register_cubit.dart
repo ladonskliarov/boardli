@@ -32,7 +32,7 @@ class EmployeeRegisterCubit extends Cubit<EmployeeRegisterState> {
     result.fold(
       (failure) => emit(EmployeeRegisterFailure(message: failure.message)),
       (employee) {
-        authCubit.authenticateAsEmployee();
+        authCubit.authenticateAsEmployee(employee);
         emit(EmployeeRegisterSuccess(employee: employee));}
     );
   }

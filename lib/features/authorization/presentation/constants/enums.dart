@@ -1,5 +1,6 @@
 abstract interface class EnumValue {
   String get value;
+  String get key;
 }
 
 enum CompanySize implements EnumValue {
@@ -9,6 +10,9 @@ enum CompanySize implements EnumValue {
 
   @override
   final String value;
+
+  @override
+  String get key => name;
   const CompanySize(this.value);
 }
 
@@ -19,6 +23,9 @@ enum IndustryType implements EnumValue {
 
   @override
   final String value;
+
+  @override
+  String get key => name;
   const IndustryType(this.value);
 }
 
@@ -33,6 +40,9 @@ enum EmployeeRole implements EnumValue {
 
   @override
   final String value;
+
+  @override
+  String get key => name;
   const EmployeeRole(this.value);
 }
 
@@ -44,5 +54,8 @@ enum Gender implements EnumValue {
 
   @override
   final String value;
+
+  @override
+  String get key => name;
   const Gender(this.value);
 }

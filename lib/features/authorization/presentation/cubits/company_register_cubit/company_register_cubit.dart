@@ -34,7 +34,7 @@ class CompanyRegisterCubit extends Cubit<CompanyRegisterState> {
     result.fold(
       (failure) => emit(CompanyRegisterFailure(message: failure.message)),
       (company) {
-        authCubit.authenticateAsCompany();
+        authCubit.authenticateAsCompany(company);
         emit(CompanyRegisterSuccess(company: company));}
     );
   }

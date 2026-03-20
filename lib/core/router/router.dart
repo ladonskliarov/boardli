@@ -1,13 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
-import '../../features/employee_dashboard/presentation/screens/company_dashboard_screen.dart';
+import '../../features/chat_assistant/presentation/chat_assitant_screen.dart';
+import '../../features/company_management/screen/company_management_screen.dart';
+import '../../features/dashboard/presentation/screens/employee_dashboard_screen.dart';
 import '../../features/authorization/presentation/screens/auth_screen.dart';
 import '../../features/authorization/presentation/screens/company_registration/company_register_screen.dart';
 import '../../features/authorization/presentation/screens/company_registration/company_tariffs_screen.dart';
 import '../../features/authorization/presentation/screens/employee_registration/employee_register_screen.dart';
 import '../../features/authorization/presentation/screens/login/login_screen.dart';
-import '../../features/company_dashboard/presentation/screens/company_dashboard_screen.dart';
+import '../../features/dashboard/presentation/screens/company_dashboard_screen.dart';
 import '../di/injection_container.dart';
 import '../util/enums.dart';
 import 'go_router_refresh_stream.dart';
@@ -17,36 +20,50 @@ enum AppPage {
   login('login'),
   registerCompany('company-tariff/register'),
   companyTariff('company-tariff'),
-  registerEmployee('/register-employee'),
+  registerEmployee('register-employee'),
 
-  companyDashboard('/company-dashboard'),
-  employeeDashboard('/employee-dashboard');
+  employeeAccount('/employee/account'),
+  employeeChatAssistant('/employee/chat-assistant'),
+  employeeKnowledgeBase('/employee/knowledge-base'),
+  companyAccount('/company/account'),
+  companyManageOrg('/company/organization'),
+  companyKnowledgeBase('/company/knowledge-base');
 
   const AppPage(this.path);
   final String path;
 }
+
+final _employeeAccountNavigatorKey = GlobalKey<NavigatorState>();
+final _employeeChatAssistantKey = GlobalKey<NavigatorState>();
+final _employeeKnowledgeBaseNavigatorKey = GlobalKey<NavigatorState>();
+
+final _companyAccountNavigatorKey = GlobalKey<NavigatorState>();
+final _companyManageOrgKey = GlobalKey<NavigatorState>();
+final _companyKnowledgeBaseNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: AppPage.authorization.path,
     refreshListenable: GoRouterRefreshStream(sl<AuthCubit>().stream),
     redirect: (context, state) {
-        final authStatus = sl<AuthCubit>().state.status;
+        final authState = sl<AuthCubit>().state;
         final currentPath = state.uri.path;
 
-        final bool isAuthRoute = currentPath == AppPage.authorization.path || 
-                                 currentPath.startsWith(AppPage.login.path);
+        final bool isAuthRoute = currentPath == AppPage.authorization.path ||
+                           currentPath.startsWith('/${AppPage.login.path}') ||
+                           currentPath.startsWith('/${AppPage.registerEmployee.path}') ||
+                           currentPath.startsWith('/${AppPage.companyTariff.path}');
 
-        if (authStatus == AuthStatus.unauthenticated && !isAuthRoute) {
+        if ((authState is AuthUnknown || authState is AuthUnauthenticated) && !isAuthRoute)  {
           return AppPage.authorization.path;
         }
 
-        if (authStatus == AuthStatus.authenticatedCompany && isAuthRoute) {
-          return AppPage.companyDashboard.path;
+        if (authState is AuthCompanyAuthenticated) {
+          return AppPage.companyAccount.path;
         }
 
-        if (authStatus == AuthStatus.authenticatedEmployee && isAuthRoute) {
-          return AppPage.employeeDashboard.path;
+        if (authState is AuthEmployeeAuthenticated) {
+          return AppPage.employeeAccount.path;
         }
 
         return null; 
@@ -93,19 +110,79 @@ class AppRouter {
           ),
         ],
       ),
-      GoRoute(
-        path: AppPage.employeeDashboard.path,
-        name: AppPage.employeeDashboard.name,
-        builder: (context, state) {
-          return EmployeeDashboardScreen();          
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return EmployeeDashboardScreen();
         },
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: _employeeAccountNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppPage.employeeAccount.path,
+                name: AppPage.employeeAccount.name,
+                builder: (context, state) => Scaffold(),
+              ),
+            ]
+          ),
+          StatefulShellBranch(
+            navigatorKey: _employeeChatAssistantKey,
+            routes: [
+              GoRoute(
+                path: AppPage.employeeChatAssistant.path,
+                name: AppPage.employeeChatAssistant.name,
+                builder: (context, state) => EmployeeChatAssistantScreen(),
+              ),
+            ]
+          ),
+          StatefulShellBranch(
+            navigatorKey: _employeeKnowledgeBaseNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppPage.employeeKnowledgeBase.path,
+                name: AppPage.employeeKnowledgeBase.name,
+                builder: (context, state) => Scaffold(),
+              ),
+            ]
+          ),
+        ],
       ),
-      GoRoute(
-        path: AppPage.companyDashboard.path,
-        name: AppPage.companyDashboard.name,
-        builder: (context, state) {
-          return CompanyDashboardScreen();          
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return CompanyDashboardScreen();
         },
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: _companyAccountNavigatorKey,
+            routes: [
+             GoRoute(
+                path: AppPage.companyAccount.path,
+                name: AppPage.companyAccount.name,
+                builder: (context, state) => Scaffold(),
+              ),
+            ]
+          ),
+          StatefulShellBranch(
+            navigatorKey: _companyManageOrgKey,
+            routes: [
+              GoRoute(
+                path: AppPage.companyManageOrg.path,
+                name: AppPage.companyManageOrg.name,
+                builder: (context, state) => CompanyManagementScreen(),
+              ),
+            ]
+          ),
+          StatefulShellBranch(
+            navigatorKey: _companyKnowledgeBaseNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppPage.companyKnowledgeBase.path,
+                name: AppPage.companyKnowledgeBase.name,
+                builder: (context, state) => Scaffold(),
+              ),
+            ]
+          ),
+        ],
       ),
     ],
   );

@@ -7,10 +7,12 @@ import 'core/di/injection_container.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/router/router.dart';
 import 'core/style/app_themes.dart';
+import 'features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDI();
+  await sl<AuthCubit>().checkAuth();
 
   runApp(
     EasyLocalization(

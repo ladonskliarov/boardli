@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/storage/interfaces/token_repository.dart';
+import '../../../../core/util/enums.dart';
 import '/features/authorization/domain/entities/company_entity.dart';
 import '/features/authorization/domain/mappers/mappers.dart';
 import '../../../../core/error/failures.dart';
@@ -8,23 +10,42 @@ import '../datasource/remote/company_remote_datasource.dart';
 
 class CompanyRepositoryImpl implements CompanyRepository {
   final CompanyRemoteDatasource remoteDataSource;
-
-  CompanyRepositoryImpl(this.remoteDataSource);
+  final TokenRepository tokenRepository;
+  CompanyRepositoryImpl({
+    required this.remoteDataSource,
+    required this.tokenRepository,
+  });
 
   @override
-  Future<Either<Failure, CompanyEntity>> login({required String email, required String password}) async {
+  Future<Either<Failure, CompanyEntity>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final model = await remoteDataSource.login(email: email, password: password);
-      return Right(model.toEntity());
+      final response = await remoteDataSource.login(
+        email: email,
+        password: password,
+      );
+
+      await tokenRepository.saveToken(token: response.token, userType: UserType.company);
+
+      return Right(response.company.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
   }
-  
+
   @override
-  Future<Either<Failure, CompanyEntity>> register({required String name, required String industry, required String size, required String contactName, required String email, required String password}) async {
+  Future<Either<Failure, CompanyEntity>> register({
+    required String name,
+    required String industry,
+    required String size,
+    required String contactName,
+    required String email,
+    required String password,
+  }) async {
     try {
-      final model = await remoteDataSource.register(
+      final response = await remoteDataSource.register(
         name: name,
         industry: industry,
         size: size,
@@ -32,6 +53,19 @@ class CompanyRepositoryImpl implements CompanyRepository {
         email: email,
         password: password,
       );
+
+      await tokenRepository.saveToken(token: response.token, userType: UserType.company);
+
+      return Right(response.company.toEntity());
+    } catch (e) {
+      return Left(ServerFailure('Internal server error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CompanyEntity>> getMe() async {
+    try {
+      final model = await remoteDataSource.getMe();
       return Right(model.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));

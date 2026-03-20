@@ -12,6 +12,7 @@ class EmployeeEntity extends UserEntity {
     required this.gender,
     required this.hobbies,
     required this.password,
+    required super.id,
     required super.name,
     required super.email,
   });

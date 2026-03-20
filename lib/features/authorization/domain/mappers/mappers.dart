@@ -6,6 +6,7 @@ import '../entities/employee_entity.dart';
 extension CompanyMapper on Company {
   CompanyEntity toEntity() {
     return CompanyEntity(
+      id: id,
       name: name,
       email: email,
       industry: industry,
@@ -18,6 +19,7 @@ extension CompanyMapper on Company {
 extension EmployeeMapper on Employee {
   EmployeeEntity toEntity() {
     return EmployeeEntity(
+      id: id,
       name: name,
       email: email,
       departments: departments,

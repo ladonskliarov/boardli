@@ -16,4 +16,6 @@ abstract class EmployeeRepository {
     required String hobbies,
     required String favoriteAnimals,
   });
+
+  Future<Either<Failure, EmployeeEntity>> getMe();
 }

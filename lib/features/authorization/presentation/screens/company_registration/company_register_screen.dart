@@ -59,9 +59,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
       create: (_) => sl<CompanyRegisterCubit>(),
       child: BlocListener<CompanyRegisterCubit, CompanyRegisterState>(
         listener: (context, state) {
-          if (state is CompanyRegisterSuccess) {
-            context.pop();
-          } else if (state is CompanyRegisterFailure) {
+          if (state is CompanyRegisterFailure) {
             context.pop();
             ScaffoldMessenger.of(
               context,
@@ -158,8 +156,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                             context,
                                           ).register(
                                             name: _companyNameController.text,
-                                            industry: _industry.value
-                                                .toString(),
+                                            industry: _industry.value.key,
                                             size: _companySize.value.value,
                                             contactName:
                                                 _fullNameController.text,

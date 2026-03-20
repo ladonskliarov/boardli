@@ -1,4 +1,4 @@
 abstract class UserEntity {
-  final String name, email;
-  const UserEntity({required this.name, required this.email});
+  final String id, name, email;
+  const UserEntity({required this.id, required this.name, required this.email});
 }

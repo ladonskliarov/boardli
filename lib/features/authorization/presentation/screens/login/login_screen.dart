@@ -45,9 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) {
           return BlocListener<BaseLoginCubit, BaseLoginState>(
             listener: (context, state) {
-              if (state is BaseLoginSuccess) {
-                context.pop();
-              } else if (state is BaseLoginLoading) {
+              if (state is BaseLoginLoading) {
                 showLoadingDialog(context);
               } else if (state is BaseLoginFailure) {
                 context.pop();

@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/storage/interfaces/token_repository.dart';
+import '../../../../core/util/enums.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/mappers/mappers.dart';
 import '../../domain/repositories/employee_repository.dart';
@@ -8,8 +10,12 @@ import '../datasource/remote/employee_remote_datasource.dart';
 
 class EmployeeRepositoryImpl implements EmployeeRepository {
   final EmployeeRemoteDatasource remoteDataSource;
+  final TokenRepository tokenRepository;
 
-  EmployeeRepositoryImpl(this.remoteDataSource);
+  EmployeeRepositoryImpl({
+    required this.remoteDataSource,
+    required this.tokenRepository,
+  });
 
   @override
   Future<Either<Failure, EmployeeEntity>> login({
@@ -17,11 +23,14 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     required String password,
   }) async {
     try {
-      final model = await remoteDataSource.login(
+      final response = await remoteDataSource.login(
         email: email,
         password: password,
       );
-      return Right(model.toEntity());
+
+      await tokenRepository.saveToken(token: response.token,userType: UserType.employee);
+
+      return Right(response.employee.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
@@ -36,13 +45,26 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     required String favoriteAnimals,
   }) async {
     try {
-      final model = await remoteDataSource.register(
+      final response = await remoteDataSource.register(
         inviteKey: inviteKey,
         password: password,
         gender: gender,
         hobbies: hobbies,
         favoriteAnimals: favoriteAnimals,
       );
+
+      await tokenRepository.saveToken(token: response.token, userType: UserType.employee);
+
+      return Right(response.employee.toEntity());
+    } catch (e) {
+      return Left(ServerFailure('Internal server error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, EmployeeEntity>> getMe() async {
+    try {
+      final model = await remoteDataSource.getMe();
       return Right(model.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));

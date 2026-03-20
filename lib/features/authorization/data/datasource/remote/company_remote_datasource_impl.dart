@@ -7,14 +7,12 @@ import '/features/authorization/data/models/company.dart';
 import 'company_remote_datasource.dart';
 
 class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
-  final Dio _dio;
-  CompanyRemoteDatasourceImpl(this._dio);
-
-  static const String baseUrl = 'https://empat-final-project-backend-production.up.railway.app';
+  final Dio dio;
+  CompanyRemoteDatasourceImpl({required this.dio});
 
   @override
-  Future<Company> login({required String email, required String password}) async {
-    const String url = '$baseUrl/api/v1/auth/company/login';
+  Future<({Company company, String token})> login({required String email, required String password}) async {
+    const String url = '/api/v1/auth/company/login';
 
     final Map<String, dynamic> requestData = {
       "email": email,
@@ -22,7 +20,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
     };
 
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         url,
         data: requestData,
         options: Options(
@@ -36,7 +34,10 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
       log('Login status code: ${response.statusCode}');
       log('Response data: ${response.data}');
 
-      return Company.fromJson(response.data);
+      return (
+        company: Company.fromJson(response.data['user']),
+        token: response.data['accessToken'] as String,
+      );
 
     } on DioException catch (e) {
       log('Login error: ${e.response?.statusCode}');
@@ -54,7 +55,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
   }
 
   @override
-  Future<Company> register({
+  Future<({Company company, String token})> register({
     required String name,
     required String industry,
     required String size,
@@ -62,7 +63,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
     required String email,
     required String password,
   }) async {
-    const String url = '$baseUrl/api/v1/auth/company/register';
+    const String url = '/api/v1/auth/company/register';
 
     final Map<String, dynamic> requestData = {
       "name": name,
@@ -74,7 +75,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
     };
 
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         url,
         data: requestData,
         options: Options(
@@ -88,7 +89,10 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
       log('Registration status code: ${response.statusCode}');
       log('Response data: ${response.data}');
 
-      return Company.fromJson(response.data);
+      return (
+        company: Company.fromJson(response.data['user']),
+        token: response.data['accessToken'] as String,
+      );
 
     } on DioException catch (e) {
       log('Registration error: ${e.response?.statusCode}');
@@ -103,5 +107,11 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
       log('Critical registration error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
+  }
+  
+  @override
+  Future<Company> getMe() async {
+    final response = await dio.get('/api/v1/auth/me');
+    return Company.fromJson(response.data);
   }
 }

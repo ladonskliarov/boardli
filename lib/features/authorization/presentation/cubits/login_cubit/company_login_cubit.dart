@@ -16,6 +16,6 @@ class CompanyLoginCubit extends BaseLoginCubit<CompanyEntity> {
 
   @override
   void onLoginSuccess(CompanyEntity company) {
-    authCubit.authenticateAsCompany();
+    authCubit.authenticateAsCompany(company);
   }
 }

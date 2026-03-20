@@ -15,7 +15,7 @@ class EmployeeLoginCubit extends BaseLoginCubit<EmployeeEntity> {
   }
 
   @override
-  void onLoginSuccess(EmployeeEntity user) {
-    authCubit.authenticateAsEmployee();
+  void onLoginSuccess(EmployeeEntity employee) {
+    authCubit.authenticateAsEmployee(employee);
   }
 }
