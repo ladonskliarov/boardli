@@ -71,9 +71,19 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
         child: Builder(
           builder: (context) {
             return Scaffold(
-              backgroundColor: AppColors.tiger,
+              backgroundColor: AppColors.platinum,
               body: Stack(
                 children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(color: AppColors.tiger),
+                      ),
+                      Expanded(
+                        child: Container(color: AppColors.platinum),
+                      ),
+                    ],
+                  ),
                   Column(
                     children: [
                       gapH214,

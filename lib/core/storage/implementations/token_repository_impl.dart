@@ -34,10 +34,6 @@ class TokenRepositoryImpl implements TokenRepository {
 
     await secureStorage.write(key: 'jwt_token', value: token);
     await secureStorage.write(key: 'user_type', value: userType.name);
-    // final result = _cachedToken = await secureStorage.read(key: 'jwt_token');
-    // log('Cached token: $_cachedToken');
-    // log('Cached user type: $_cachedUserType');
-    // log('System token: $result');
   }
 
   @override

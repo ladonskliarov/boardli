@@ -38,6 +38,7 @@ class CustomTextField extends StatelessWidget {
           validator: validator,
           autovalidateMode: .onUnfocus,
           style: const TextStyle(color: AppColors.gunMetal),
+          cursorColor: AppColors.gunMetal,
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.white,

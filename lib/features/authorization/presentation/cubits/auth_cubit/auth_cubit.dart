@@ -28,7 +28,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthEmployeeAuthenticated(employee));
   }
 
-  void logout() {
+  Future<void> logout() async {
+    await tokenRepository.deleteToken();
     emit(AuthUnauthenticated());
   }
 

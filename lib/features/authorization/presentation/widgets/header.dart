@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
-import '../../../../core/util/extensions.dart';
 
 enum HeaderType { convexIn, convexOut }
 
@@ -27,12 +26,12 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 230.ph,
+      height: 230,
       child: Stack(
         alignment: .center,
         children: [
           CustomPaint(
-            size: Size(double.infinity, 230.ph),
+            size: Size(double.infinity, 230),
             painter: HeaderPainter(
               headerType: headerType,
               color: color,
@@ -44,17 +43,21 @@ class HeaderWidget extends StatelessWidget {
             crossAxisAlignment: .center,
             children: [
               AppBar(
+                centerTitle: true,
                 surfaceTintColor: Colors.transparent,
                 backgroundColor: Colors.transparent,
                 title: Text('Boardli', style: AppTextStyles.title),
               ),
               if (subtitle != null)
-              Text(subtitle!.tr(), style: subtitleStyle ?? AppTextStyles.subtitle),
+                Text(
+                  subtitle!.tr(),
+                  style: subtitleStyle ?? AppTextStyles.subtitle,
+                ),
               if (additionalText != null)
-              Padding(
-                padding: Paddings.paddingOnlyTopXS,
-                child: Text(additionalText!.tr()),
-              ),
+                Padding(
+                  padding: Paddings.paddingOnlyTopXS,
+                  child: Text(additionalText!.tr()),
+                ),
             ],
           ),
         ],
@@ -68,7 +71,11 @@ class HeaderPainter extends CustomPainter {
   final Color color;
   final bool isShadow;
 
-  HeaderPainter({required this.headerType, required this.color, required this.isShadow});
+  HeaderPainter({
+    required this.headerType,
+    required this.color,
+    required this.isShadow,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -76,12 +83,13 @@ class HeaderPainter extends CustomPainter {
 
     late final double startY;
     late final double controlY;
+
     if (headerType == HeaderType.convexIn) {
-      startY = 220.ph;
-      controlY = 100.ph;
+      startY = 230;
+      controlY = 90;
     } else {
-      startY = 130.ph;
-      controlY = 260.ph;
+      startY = 130;
+      controlY = 260;
     }
 
     orangePath.lineTo(0, startY);
@@ -91,8 +99,8 @@ class HeaderPainter extends CustomPainter {
 
     if (isShadow) {
       final shadowPaint = Paint()
-      ..color = AppColors.black.withValues(alpha: 0.35)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+        ..color = AppColors.black.withValues(alpha: 0.35)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
 
       canvas.drawPath(orangePath.shift(const Offset(0, 4)), shadowPaint);
     }
