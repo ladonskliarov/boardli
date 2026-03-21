@@ -23,22 +23,12 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
     };
 
     try {
-      final response = await dio.post(
-        url,
-        data: requestData,
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        ),
-      );
+      final response = await dio.post(url, data: requestData);
 
       return (
         employee: Employee.fromJson(response.data['user']),
         token: response.data['acessToken'] as String,
       );
-
     } on DioException catch (e) {
       log('Request error: ${e.response?.statusCode}');
       log('Message: ${e.response?.data}');
@@ -76,20 +66,13 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
       final response = await dio.post(
         url,
         data: requestData,
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $inviteKey',
-          },
-        ),
+        options: Options(headers: {'Authorization': 'Bearer $inviteKey'}),
       );
 
       return (
         employee: Employee.fromJson(response.data['user']),
         token: response.data['acessToken'] as String,
       );
-
     } on DioException catch (e) {
       log('Request error: ${e.response?.statusCode}');
       log('Message: ${e.response?.data}');

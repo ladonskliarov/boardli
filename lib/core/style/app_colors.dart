@@ -6,6 +6,7 @@ abstract class AppColors {
   static const softLinen = Color(0xFFE0DFD5);
   static const grey = Color(0xFF555A5C);
   static const gunMetal = Color(0xFF313638);
+  static const metal = Color(0xFF3E4344);
   static const black = Color(0xFF000000);
   static const sandyBrown = Color(0xFFF09D51);
   static const tiger = Color(0xFFF46036);

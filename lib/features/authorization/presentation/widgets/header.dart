@@ -55,7 +55,7 @@ class HeaderWidget extends StatelessWidget {
                 ),
               if (additionalText != null)
                 Padding(
-                  padding: Paddings.paddingOnlyTopXS,
+                  padding: Paddings.paddingOnlyTop4,
                   child: Text(additionalText!.tr()),
                 ),
             ],

@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injection_container.dart';
-import '../../../../core/providers/theme_provider.dart';
-import '../../../authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
+import '../../../../core/style/app_colors.dart';
+import '../../../../core/style/app_icons.dart';
+import '../widgets/custom_bottom_bar.dart';
+import '../widgets/custom_bottom_bar_item.dart';
 
 class CompanyDashboardScreen extends StatelessWidget {
-  const CompanyDashboardScreen({super.key});
+  final StatefulNavigationShell navigationShell;
+  const CompanyDashboardScreen({required this.navigationShell, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Column(
-        mainAxisAlignment: .center,
-        children: [
-          Text(sl<AuthCubit>().currentCompany.contactName),
-          ElevatedButton(onPressed: context.read<ThemeProvider>().switchDarkTheme, child: Text('Change theme'),),
-          ElevatedButton(onPressed: sl<AuthCubit>().logout, child: Text('Logout'),
-          )
-        ],
-      )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Tab 1'),
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Tab 2'),
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Tab 3'),
+      extendBody: true,
+      backgroundColor: AppColors.softLinen,
+      body: navigationShell,
+      bottomNavigationBar: CustomBottomBar(
+        bottomBarItems: [
+          CustomBottomBarItem(
+            iconPath: AppIcons.company,
+            isSelected: navigationShell.currentIndex == 0,
+            onTap: () => navigationShell.goBranch(0),
+          ),
+          CustomBottomBarItem(
+            iconPath: AppIcons.organization,
+            isSelected: navigationShell.currentIndex == 1,
+            onTap: () => navigationShell.goBranch(1),
+          ),
+          CustomBottomBarItem(
+            iconPath: AppIcons.upload,
+            isSelected: navigationShell.currentIndex == 2,
+            onTap: () => navigationShell.goBranch(2),
+          ),
         ],
       ),
     );

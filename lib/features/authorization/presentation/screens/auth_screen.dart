@@ -29,7 +29,7 @@ class AuthScreen extends StatelessWidget {
                 ),
                 gapH54,
                 Padding(
-                  padding: Paddings.paddingHorizontalL,
+                  padding: Paddings.paddingHorizontal20,
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [

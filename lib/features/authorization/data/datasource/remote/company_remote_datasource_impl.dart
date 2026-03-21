@@ -11,7 +11,10 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
   CompanyRemoteDatasourceImpl({required this.dio});
 
   @override
-  Future<({Company company, String token})> login({required String email, required String password}) async {
+  Future<({Company company, String token})> login({
+    required String email,
+    required String password,
+  }) async {
     const String url = '/api/v1/auth/company/login';
 
     final Map<String, dynamic> requestData = {
@@ -20,16 +23,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
     };
 
     try {
-      final response = await dio.post(
-        url,
-        data: requestData,
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        ),
-      );
+      final response = await dio.post(url, data: requestData);
 
       log('Login status code: ${response.statusCode}');
       log('Response data: ${response.data}');
@@ -38,16 +32,15 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
         company: Company.fromJson(response.data['user']),
         token: response.data['accessToken'] as String,
       );
-
     } on DioException catch (e) {
       log('Login error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
 
-      final String errorMessage = e.response?.data?['message'] 
-          ?? 'Login failed. Code: ${e.response?.statusCode}';
+      final String errorMessage =
+          e.response?.data?['message'] ??
+          'Login failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
-
     } catch (e) {
       log('Critical login error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
@@ -75,16 +68,7 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
     };
 
     try {
-      final response = await dio.post(
-        url,
-        data: requestData,
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        ),
-      );
+      final response = await dio.post(url, data: requestData);
 
       log('Registration status code: ${response.statusCode}');
       log('Response data: ${response.data}');
@@ -93,22 +77,21 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
         company: Company.fromJson(response.data['user']),
         token: response.data['accessToken'] as String,
       );
-
     } on DioException catch (e) {
       log('Registration error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
 
-      final String errorMessage = e.response?.data?['message'] 
-          ?? 'Registration failed. Code: ${e.response?.statusCode}';
+      final String errorMessage =
+          e.response?.data?['message'] ??
+          'Registration failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
-
     } catch (e) {
       log('Critical registration error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
   }
-  
+
   @override
   Future<Company> getMe() async {
     final response = await dio.get('/api/v1/auth/me');

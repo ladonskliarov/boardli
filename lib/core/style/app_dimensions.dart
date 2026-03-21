@@ -118,16 +118,26 @@ const gapH206 = SizedBox(height: Sizes.p206);
 const gapH214 = SizedBox(height: Sizes.p214);
 
 class Paddings {
-  static const EdgeInsets paddingAllXS = EdgeInsets.all(Sizes.p4);
-  static const EdgeInsets paddingAllS = EdgeInsets.all(Sizes.p12);
-  static const EdgeInsets paddingAllM = EdgeInsets.all(Sizes.p16);
-  static const EdgeInsets paddingOnlyRightM = EdgeInsets.only(right: Sizes.p16);
-  static const EdgeInsets paddingOnlyTopXS = EdgeInsets.only(top: Sizes.p4);
+  static const EdgeInsets paddingAll4 = EdgeInsets.all(Sizes.p4);
+  static const EdgeInsets paddingAll12 = EdgeInsets.all(Sizes.p12);
+  static const EdgeInsets paddingAll16 = EdgeInsets.all(Sizes.p16);
+  static const EdgeInsets paddingOnlyRight16 = EdgeInsets.only(right: Sizes.p16);
 
-  static const EdgeInsets paddingHorizontalM = EdgeInsets.symmetric(
+  static const EdgeInsets paddingOnlyTop4 = EdgeInsets.only(top: Sizes.p4);
+  
+  static const EdgeInsets paddingHorizontal4 = EdgeInsets.symmetric(
+    horizontal: Sizes.p4,
+  );
+  static const EdgeInsets paddingHorizontal6 = EdgeInsets.symmetric(
+    horizontal: Sizes.p6,
+  );
+  static const EdgeInsets paddingHorizontal8 = EdgeInsets.symmetric(
+    horizontal: Sizes.p8,
+  );
+  static const EdgeInsets paddingHorizontal16 = EdgeInsets.symmetric(
     horizontal: Sizes.p16,
   );
-  static const EdgeInsets paddingHorizontalL = EdgeInsets.symmetric(
+  static const EdgeInsets paddingHorizontal20 = EdgeInsets.symmetric(
     horizontal: Sizes.p20,
   );
 }

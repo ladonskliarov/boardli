@@ -1,3 +1,4 @@
+import 'package:boardli/features/company_management/domain/repositories/company_management_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -5,17 +6,20 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource_impl.dart';
-import '../../features/authorization/data/repository/employee_repository_impl.dart';
+import '../../features/authorization/data/repositories/employee_repository_impl.dart';
 import '../../features/authorization/domain/repositories/employee_repository.dart';
 import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../features/authorization/presentation/cubits/company_register_cubit/company_register_cubit.dart';
 import '../../features/authorization/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
+import '../../features/company_management/data/datasource/company_management_datasource.dart';
+import '../../features/company_management/data/repositories/company_management_repository_impl.dart';
+import '../../features/company_management/presentation/cubit/company_management_cubit.dart';
 import '../interceptors/token_interceptor.dart';
 import '../storage/implementations/token_repository_impl.dart';
 import '../storage/interfaces/token_repository.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource_impl.dart';
-import '../../features/authorization/data/repository/company_repositorty_impl.dart';
+import '../../features/authorization/data/repositories/company_repositorty_impl.dart';
 import '../../features/authorization/domain/repositories/company_repository.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/company_login_cubit.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/employee_login_cubit.dart';
@@ -47,7 +51,10 @@ void _registerDio() {
       BaseOptions(
         baseUrl:
             'https://empat-final-project-backend-production.up.railway.app',
-      ),
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json',
+        }),
     );
 
     dio.interceptors.add(TokenInterceptor(tokenRepository: sl()));
@@ -60,6 +67,9 @@ void _registerLocalStorages() {
 }
 
 void _registerDAO() {
+  sl.registerLazySingleton<CompanyManagementDatasource>(
+    () => CompanyManagementDatasource(dio: sl()),
+  );
   sl.registerLazySingleton<CompanyRemoteDatasource>(
     () => CompanyRemoteDatasourceImpl(dio: sl()),
   );
@@ -77,6 +87,9 @@ void _registerRepositories() {
   );
   sl.registerLazySingleton<EmployeeRepository>(
     () => EmployeeRepositoryImpl(remoteDataSource: sl(), tokenRepository: sl()),
+  );
+  sl.registerLazySingleton<CompanyManagementRepository>(
+    () => CompanyManagementRepositoryImpl(companyManagementDatasource: sl()),
   );
 }
 
@@ -108,6 +121,7 @@ void _registerCubits() {
   sl.registerFactory<EmployeeRegisterCubit>(
     () => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()),
   );
+  sl.registerFactory<CompanyManagementCubit>(() => CompanyManagementCubit(companyManagementRepository: sl()));
 }
 
 Future<void> _registerProviders() async {

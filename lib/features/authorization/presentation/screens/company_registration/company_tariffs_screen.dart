@@ -81,7 +81,7 @@ class TariffCard extends StatelessWidget {
           onTap: () => _onTap(context),
           child: Ink(
             child: Padding(
-              padding: Paddings.paddingAllM,
+              padding: Paddings.paddingAll16,
               child: Column(
                 mainAxisAlignment: .spaceBetween,
                 crossAxisAlignment: .start,

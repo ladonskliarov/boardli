@@ -34,7 +34,7 @@ class CustomDropdownButton extends StatelessWidget {
         ValueListenableBuilder<EnumValue>(
           valueListenable: valueNotifier,
           builder: (context, state, child) => Container(
-            padding: Paddings.paddingHorizontalL,
+            padding: Paddings.paddingHorizontal20,
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: .circular(20),

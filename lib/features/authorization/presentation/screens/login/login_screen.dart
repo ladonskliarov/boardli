@@ -69,13 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             minHeight: 280.ph,
                             maxHeight: double.infinity,
                           ),
-                          margin: Paddings.paddingHorizontalL,
+                          margin: Paddings.paddingHorizontal20,
                           decoration: BoxDecoration(
                             color: AppColors.grey,
                             borderRadius: .circular(30.0),
                           ),
                           child: Padding(
-                            padding: Paddings.paddingAllM,
+                            padding: Paddings.paddingAll16,
                             child: Form(
                               key: _formKey,
                               child: Column(
