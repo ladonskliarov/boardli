@@ -103,12 +103,14 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
                                 CustomTextField(
                                   title: 'Create password',
                                   hintText: 'Min. 8 characters',
+                                  obscureText: true,
                                   validator: Validator.validateRegisterPassword,
                                   controller: _passwordController,
                                 ),
                                 gapH20,
                                 CustomTextField(
                                   title: 'Confirm password',
+                                  obscureText: true,
                                   validator: (value) =>
                                       Validator.validateConfirmPassword(value, _passwordController.text),
                                   controller: _confirmPasswordController,

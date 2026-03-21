@@ -93,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   gapH10,
                                   CustomTextField(
                                     title: 'Password',
+                                    obscureText: true,
                                     titleColor: AppColors.white,
                                     errorColor: AppColors.white,
                                     validator: Validator.validateRegisterPassword,

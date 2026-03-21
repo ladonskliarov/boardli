@@ -141,6 +141,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                   CustomTextField(
                                     title: 'Password',
                                     hintText: 'Min. 8 charactercs',
+                                    obscureText: true,
                                     validator:
                                         Validator.validateRegisterPassword,
                                     controller: _passwordController,
@@ -148,6 +149,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                   gapH20,
                                   CustomTextField(
                                     title: 'Confirm password',
+                                    obscureText: true,
                                     validator: (value) =>
                                         Validator.validateConfirmPassword(
                                           value,
