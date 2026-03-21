@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             child: Scaffold(
               backgroundColor: AppColors.gunMetal,
+              resizeToAvoidBottomInset: true,
               body: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
                 child: SizedBox(

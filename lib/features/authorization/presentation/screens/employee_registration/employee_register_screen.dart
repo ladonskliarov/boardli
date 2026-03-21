@@ -60,6 +60,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
         builder: (context) {
           return Scaffold(
             backgroundColor: AppColors.platinum,
+            resizeToAvoidBottomInset: true,
             body: Stack(
               children: [
                 Column(

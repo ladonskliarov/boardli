@@ -72,6 +72,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
           builder: (context) {
             return Scaffold(
               backgroundColor: AppColors.platinum,
+              resizeToAvoidBottomInset: true,
               body: Stack(
                 children: [
                   Column(
