@@ -11,8 +11,8 @@ import '../../../../../core/util/validator.dart';
 import '../../cubits/login_cubit/base_login_cubit.dart';
 import '../../cubits/login_cubit/company_login_cubit.dart';
 import '../../cubits/login_cubit/employee_login_cubit.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../../../../core/style/widgets/custom_button.dart';
+import '../../../../../core/style/widgets/custom_text_field.dart';
 import '../../widgets/header.dart';
 import '../../widgets/loading_dialog.dart';
 

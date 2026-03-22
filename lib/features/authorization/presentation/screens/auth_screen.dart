@@ -5,7 +5,7 @@ import '../../../../core/router/router.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/util/enums.dart';
-import '../widgets/custom_button.dart';
+import '../../../../core/style/widgets/custom_button.dart';
 import '../widgets/header.dart';
 
 class AuthScreen extends StatelessWidget {

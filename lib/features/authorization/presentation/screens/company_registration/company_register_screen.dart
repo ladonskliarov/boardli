@@ -9,9 +9,9 @@ import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
 import '../../../../../core/util/validator.dart';
 import '../../constants/enums.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_dropdown_button.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../../../../core/style/widgets/custom_button.dart';
+import '../../../../../core/style/widgets/custom_dropdown_button.dart';
+import '../../../../../core/style/widgets/custom_text_field.dart';
 import '../../widgets/header.dart';
 
 class CompanyRegisterScreen extends StatefulWidget {

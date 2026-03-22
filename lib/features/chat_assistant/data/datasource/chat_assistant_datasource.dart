@@ -24,4 +24,12 @@ class ChatAssistantDatasource {
     final response = await dio.get(url);
     return ChatMessage.fromJson(response.data);
   }
+
+  Future<List<ChatMessage>> getChatHistory() async {
+    const String url = '/api/v1/ai/history';
+
+    final response = await dio.get(url);
+    final data = response.data;
+    return data.map((item) => ChatMessage.fromJson(item)).toList();
+  }
 }

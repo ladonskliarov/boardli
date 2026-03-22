@@ -141,6 +141,10 @@ class Paddings {
     horizontal: Sizes.p20,
   );
 
+  static const EdgeInsets paddingVertical12 = EdgeInsets.symmetric(
+    vertical: Sizes.p12,
+  );
+
   static const EdgeInsets paddingVertical20 = EdgeInsets.symmetric(
     vertical: Sizes.p20,
   );

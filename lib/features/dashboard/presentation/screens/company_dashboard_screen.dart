@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/di/injection_container.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_icons.dart';
+import '../../../company_management/presentation/cubit/company_management_cubit.dart';
 import '../widgets/custom_bottom_bar.dart';
 import '../widgets/custom_bottom_bar_item.dart';
 
@@ -12,12 +15,16 @@ class CompanyDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: AppColors.softLinen,
-      body: navigationShell,
-      bottomNavigationBar: CustomBottomBar(
-        bottomBarItems: [
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<CompanyManagementCubit>()),
+      ],
+      child: Scaffold(
+        extendBody: true,
+        backgroundColor: AppColors.softLinen,
+        body: navigationShell,
+        bottomNavigationBar: CustomBottomBar(
+          bottomBarItems: [
           CustomBottomBarItem(
             iconPath: AppIcons.company,
             isSelected: navigationShell.currentIndex == 0,
@@ -34,6 +41,7 @@ class CompanyDashboardScreen extends StatelessWidget {
             onTap: () => navigationShell.goBranch(2),
           ),
         ],
+        ),
       ),
     );
   }

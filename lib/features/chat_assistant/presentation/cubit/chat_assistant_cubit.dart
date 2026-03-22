@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/chat_message.dart';
-import '../../domain/repository/chat_assistant_repository.dart';
+import '../../domain/repositories/chat_assistant_repository.dart';
 
 part 'chat_assistant_state.dart';
 
@@ -10,6 +10,16 @@ class ChatAssistantCubit extends Cubit<ChatState> {
   final ChatAssistantRepository repository;
 
   ChatAssistantCubit({required this.repository}) : super(const ChatState());
+
+  Future<void> loadChatHistory() async {
+    //TODO
+    // final result = await repository.getChatHistory();
+
+    // result.fold(
+    //   (failure) => emit(ChatState(messages: [])),
+    //   (messages) => emit(ChatState(messages: messages)),
+    // );
+  }
 
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
@@ -43,11 +53,11 @@ class ChatAssistantCubit extends Cubit<ChatState> {
   }
 
   void _updateBotMessage(String id, String newText, bool isLoading, List<String> sources) {
-    final updatedMessages = state.messages.map((msg) {
-      if (msg.id == id) {
-        return msg.copyWith(text: newText, isLoading: isLoading, sources: sources);
+    final updatedMessages = state.messages.map((message) {
+      if (message.id == id) {
+        return message.copyWith(text: newText, isLoading: isLoading, sources: sources);
       }
-      return msg;
+      return message;
     }).toList();
 
     emit(ChatState(messages: updatedMessages));

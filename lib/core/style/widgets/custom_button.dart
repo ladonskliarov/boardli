@@ -6,26 +6,42 @@ import '../../util/extensions.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Color? textColor;
+  final Size? minimumSize;
+  final Color? textColor, backgroundColor;
   final VoidCallback onPressed;
   final double? elevation;
-  const CustomButton({required this.text, required this.onPressed, this.textColor, this.elevation, super.key});
+  const CustomButton({
+    required this.text,
+    required this.onPressed,
+    this.textColor,
+    this.minimumSize,
+    this.backgroundColor,
+    this.elevation,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(Sizes.p160.pw, Sizes.p60.ph),
-        padding: EdgeInsets.symmetric(vertical: Sizes.p12.ph),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        minimumSize: minimumSize ?? Size(Sizes.p160.pw, Sizes.p60.ph),
+        padding: EdgeInsets.symmetric(
+          vertical: Sizes.p12.ph,
+          horizontal: Sizes.p12.ph,
+        ),
+        backgroundColor:
+            backgroundColor ?? Theme.of(context).colorScheme.secondary,
         side: BorderSide(color: Theme.of(context).colorScheme.onSurface),
         elevation: elevation,
-        shape: RoundedRectangleBorder(
-          borderRadius: .circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: .circular(20)),
       ),
       onPressed: onPressed,
-      child: Text(text, style: AppTextStyles.medium20.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface)),
+      child: Text(
+        text,
+        style: AppTextStyles.medium20.copyWith(
+          color: textColor ?? Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
     );
   }
 }

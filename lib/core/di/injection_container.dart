@@ -1,4 +1,5 @@
 import 'package:boardli/features/company_management/domain/repositories/company_management_repository.dart';
+import 'package:boardli/features/knowledge_base/data/datasource/knowledge_base_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -6,24 +7,26 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource_impl.dart';
-import '../../features/authorization/data/repository/employee_repository_impl.dart';
+import '../../features/authorization/data/repositories/employee_repository_impl.dart';
 import '../../features/authorization/domain/repositories/employee_repository.dart';
 import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../features/authorization/presentation/cubits/company_register_cubit/company_register_cubit.dart';
 import '../../features/authorization/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
 import '../../features/chat_assistant/data/datasource/chat_assistant_datasource.dart';
 import '../../features/chat_assistant/data/repository/chat_assistant_repository_impl.dart';
-import '../../features/chat_assistant/domain/repository/chat_assistant_repository.dart';
+import '../../features/chat_assistant/domain/repositories/chat_assistant_repository.dart';
 import '../../features/chat_assistant/presentation/cubit/chat_assistant_cubit.dart';
 import '../../features/company_management/data/datasource/company_management_datasource.dart';
 import '../../features/company_management/data/repositories/company_management_repository_impl.dart';
 import '../../features/company_management/presentation/cubit/company_management_cubit.dart';
+import '../../features/knowledge_base/domain/repositories/knowledge_base_repository.dart';
+import '../../features/knowledge_base/presentation/cubit/knowledge_base_cubit.dart';
 import '../interceptors/token_interceptor.dart';
 import '../storage/implementations/token_repository_impl.dart';
 import '../storage/interfaces/token_repository.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource_impl.dart';
-import '../../features/authorization/data/repository/company_repositorty_impl.dart';
+import '../../features/authorization/data/repositories/company_repositorty_impl.dart';
 import '../../features/authorization/domain/repositories/company_repository.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/company_login_cubit.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/employee_login_cubit.dart';
@@ -72,6 +75,9 @@ void _registerLocalStorages() {
 }
 
 void _registerDAO() {
+  sl.registerLazySingleton<KnowledgeBaseDatasource>(
+    () => KnowledgeBaseDatasource(dio: sl()),
+  );
   sl.registerLazySingleton<ChatAssistantDatasource>(
     () => ChatAssistantDatasource(dio: sl()),
   );
@@ -87,6 +93,9 @@ void _registerDAO() {
 }
 
 void _registerRepositories() {
+  sl.registerLazySingleton<KnowledgeBaseRepository>(
+    () => KnowledgeBaseRepository(datasource: sl()),
+  );
   sl.registerLazySingleton<TokenRepository>(
     () => TokenRepositoryImpl(secureStorage: sl()),
   );
@@ -137,6 +146,9 @@ void _registerCubits() {
   );
   sl.registerFactory<ChatAssistantCubit>(
     () => ChatAssistantCubit(repository: sl()),
+  );
+  sl.registerFactory<KnowledgeBaseCubit>(
+    () => KnowledgeBaseCubit(repository: sl()),
   );
 }
 
