@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
-import '../../../authorization/presentation/widgets/custom_button.dart';
+import '../../../../core/style/widgets/custom_button.dart';
 
 class CompanyAccountScreen extends StatelessWidget {
   const CompanyAccountScreen({super.key});
@@ -11,6 +11,11 @@ class CompanyAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        surfaceTintColor: Colors.transparent,
+        title: Text('Company Account', style: Theme.of(context).textTheme.headlineMedium),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: .min,

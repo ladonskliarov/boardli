@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/style/app_colors.dart';
-import '../../../../core/style/app_dimensions.dart';
-import '../../../../core/style/app_text_styles.dart';
+import '../app_colors.dart';
+import '../app_dimensions.dart';
+import '../app_text_styles.dart';
 
 class CustomTextField extends StatefulWidget {
   final String title;

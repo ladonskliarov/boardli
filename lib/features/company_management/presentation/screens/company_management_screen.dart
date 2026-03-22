@@ -9,9 +9,9 @@ import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/util/validator.dart';
 import '../../../authorization/domain/entities/employee_entity.dart';
 import '../../../authorization/presentation/constants/enums.dart';
-import '../../../authorization/presentation/widgets/custom_button.dart';
-import '../../../authorization/presentation/widgets/custom_dropdown_button.dart';
-import '../../../authorization/presentation/widgets/custom_text_field.dart';
+import '../../../../core/style/widgets/custom_button.dart';
+import '../../../../core/style/widgets/custom_dropdown_button.dart';
+import '../../../../core/style/widgets/custom_text_field.dart';
 import '../cubit/company_management_cubit.dart';
 
 class CompanyManagementScreen extends StatefulWidget {

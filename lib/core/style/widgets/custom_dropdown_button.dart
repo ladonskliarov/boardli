@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../core/style/app_colors.dart';
-import '../../../../core/style/app_dimensions.dart';
-import '../../../../core/style/app_icons.dart';
-import '../../../../core/style/app_text_styles.dart';
-import '../../../../core/style/app_themes.dart';
-import '../constants/enums.dart';
+import '../app_colors.dart';
+import '../app_dimensions.dart';
+import '../app_icons.dart';
+import '../app_text_styles.dart';
+import '../app_themes.dart';
+import '../../../features/authorization/presentation/constants/enums.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
   final String title;

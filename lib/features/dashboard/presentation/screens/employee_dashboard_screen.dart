@@ -13,8 +13,8 @@ class EmployeeDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      backgroundColor: AppColors.softLinen,
+      extendBody: navigationShell.currentIndex != 1,
+      backgroundColor: AppColors.gunMetal,
       body: navigationShell,
       bottomNavigationBar: CustomBottomBar(
         bottomBarItems: [

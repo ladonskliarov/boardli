@@ -6,11 +6,15 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/employee_remote_datasource_impl.dart';
-import '../../features/authorization/data/repositories/employee_repository_impl.dart';
+import '../../features/authorization/data/repository/employee_repository_impl.dart';
 import '../../features/authorization/domain/repositories/employee_repository.dart';
 import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../features/authorization/presentation/cubits/company_register_cubit/company_register_cubit.dart';
 import '../../features/authorization/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
+import '../../features/chat_assistant/data/datasource/chat_assistant_datasource.dart';
+import '../../features/chat_assistant/data/repository/chat_assistant_repository_impl.dart';
+import '../../features/chat_assistant/domain/repository/chat_assistant_repository.dart';
+import '../../features/chat_assistant/presentation/cubit/chat_assistant_cubit.dart';
 import '../../features/company_management/data/datasource/company_management_datasource.dart';
 import '../../features/company_management/data/repositories/company_management_repository_impl.dart';
 import '../../features/company_management/presentation/cubit/company_management_cubit.dart';
@@ -19,7 +23,7 @@ import '../storage/implementations/token_repository_impl.dart';
 import '../storage/interfaces/token_repository.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource.dart';
 import '../../features/authorization/data/datasource/remote/company_remote_datasource_impl.dart';
-import '../../features/authorization/data/repositories/company_repositorty_impl.dart';
+import '../../features/authorization/data/repository/company_repositorty_impl.dart';
 import '../../features/authorization/domain/repositories/company_repository.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/company_login_cubit.dart';
 import '../../features/authorization/presentation/cubits/login_cubit/employee_login_cubit.dart';
@@ -52,9 +56,10 @@ void _registerDio() {
         baseUrl:
             'https://empat-final-project-backend-production.up.railway.app',
         headers: {
-          'Accept' : 'application/json',
-          'Content-Type' : 'application/json',
-        }),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
     );
 
     dio.interceptors.add(TokenInterceptor(tokenRepository: sl()));
@@ -67,6 +72,9 @@ void _registerLocalStorages() {
 }
 
 void _registerDAO() {
+  sl.registerLazySingleton<ChatAssistantDatasource>(
+    () => ChatAssistantDatasource(dio: sl()),
+  );
   sl.registerLazySingleton<CompanyManagementDatasource>(
     () => CompanyManagementDatasource(dio: sl()),
   );
@@ -90,6 +98,9 @@ void _registerRepositories() {
   );
   sl.registerLazySingleton<CompanyManagementRepository>(
     () => CompanyManagementRepositoryImpl(companyManagementDatasource: sl()),
+  );
+  sl.registerLazySingleton<ChatAssistantRepository>(
+    () => ChatAssistantRepositoryImpl(datasource: sl()),
   );
 }
 
@@ -121,7 +132,12 @@ void _registerCubits() {
   sl.registerFactory<EmployeeRegisterCubit>(
     () => EmployeeRegisterCubit(authCubit: sl(), employeeRepository: sl()),
   );
-  sl.registerFactory<CompanyManagementCubit>(() => CompanyManagementCubit(companyManagementRepository: sl()));
+  sl.registerFactory<CompanyManagementCubit>(
+    () => CompanyManagementCubit(companyManagementRepository: sl()),
+  );
+  sl.registerFactory<ChatAssistantCubit>(
+    () => ChatAssistantCubit(repository: sl()),
+  );
 }
 
 Future<void> _registerProviders() async {
