@@ -58,11 +58,11 @@ abstract class Validator {
   static String? validateHobby(String? value) {
     if (value == null || value.isEmpty) return 'Please enter your hobbie';
 
-    final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
+    // final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
 
-    if (!hobbyRegExp.hasMatch(value)) {
-      return 'Use only spaces or commas as separators';
-    }
+    // if (!hobbyRegExp.hasMatch(value)) {
+    //   return 'Use only spaces or commas as separators';
+    // }
     return null;
   }
 
@@ -71,11 +71,11 @@ abstract class Validator {
       return 'Please enter your favorite animal';
     }
 
-    final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
+    // final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
 
-    if (!hobbyRegExp.hasMatch(value)) {
-      return 'Use only spaces or commas as separators';
-    }
+    // if (!hobbyRegExp.hasMatch(value)) {
+    //   return 'Use only spaces or commas as separators';
+    // }
     return null;
   }
 
@@ -86,6 +86,15 @@ abstract class Validator {
 
     if (!hobbyRegExp.hasMatch(value)) {
       return 'Enter a valid key';
+    }
+    return null;
+  }
+
+  static String? validateDepartmentName(String? value) {
+    if (value == null || value.isEmpty) return 'Please enter department name';
+    final departmentRegExp = RegExp(r'^[\p{L}\p{N}\s]+$');
+    if (!departmentRegExp.hasMatch(value)) {
+      return 'Use only letters, numbers and spaces';
     }
     return null;
   }

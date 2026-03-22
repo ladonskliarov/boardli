@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection_container.dart';
@@ -7,7 +8,10 @@ import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/util/validator.dart';
 import '../../../authorization/domain/entities/employee_entity.dart';
+import '../../../authorization/presentation/constants/enums.dart';
 import '../../../authorization/presentation/widgets/custom_button.dart';
+import '../../../authorization/presentation/widgets/custom_dropdown_button.dart';
+import '../../../authorization/presentation/widgets/custom_text_field.dart';
 import '../cubit/company_management_cubit.dart';
 
 class CompanyManagementScreen extends StatefulWidget {
@@ -43,58 +47,64 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
           centerTitle: false,
           title: Text('Manage Company', style: AppTextStyles.regular28),
         ),
-        body: BlocBuilder<CompanyManagementCubit, CompanyManagementState>(
-          builder: (context, state) {
-            if (state is CompanyManagementLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is CompanyManagementFailure) {
-              return Center(child: Text(state.message));
-            } else if (state is CompanyManagementLoaded) {
-              return Padding(
-                padding: Paddings.paddingHorizontal20,
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    gapH10,
-                    Container(
-                      padding: Paddings.paddingHorizontal20,
-                      decoration: BoxDecoration(
-                        color: AppColors.metal,
-                        borderRadius: .circular(40),
-                      ),
-                      height: 44,
-                      child: TabBar(
-                        indicatorColor: AppColors.sandyBrown,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        controller: _tabController,
-                        unselectedLabelColor: Colors.grey,
-                        labelColor: AppColors.sandyBrown,
-                        dividerColor: AppColors.metal,
-                        tabs: [
-                          Tab(child: Text('Employees')),
-                          Tab(child: Text('Departments')),
-                        ],
-                      ),
-                    ),
-                    gapH20,
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          EmployeesTab(
-                            employees: state.employees,
-                            departments: state.departments,
+        body: Builder(
+          builder: (context) {
+            return BlocBuilder<CompanyManagementCubit, CompanyManagementState>(
+              bloc: context.watch<CompanyManagementCubit>(),
+              builder: (context, state) {
+                if (state is CompanyManagementLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is CompanyManagementFailure) {
+                  return Center(child: Text(state.message));
+                } else if (state is CompanyManagementLoaded) {
+                  return Padding(
+                    padding: Paddings.paddingHorizontal20,
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      children: [
+                        gapH10,
+                        Container(
+                          padding: Paddings.paddingHorizontal20,
+                          decoration: BoxDecoration(
+                            color: AppColors.metal,
+                            borderRadius: .circular(40),
                           ),
-                          DepartmentsTab(),
-                        ],
-                      ),
+                          height: 44,
+                          child: TabBar(
+                            indicatorColor: AppColors.sandyBrown,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            controller: _tabController,
+                            unselectedLabelColor: Colors.grey,
+                            labelColor: AppColors.sandyBrown,
+                            dividerColor: AppColors.metal,
+                            tabs: [
+                              Tab(child: Text('Employees')),
+                              Tab(child: Text('Departments')),
+                            ],
+                          ),
+                        ),
+                        gapH20,
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              EmployeesTab(
+                                employees: state.employees,
+                                departments: state.departments,
+                                inviteKey: state.inviteKey,
+                              ),
+                              DepartmentsTab(departments: state.departments),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            );
           },
         ),
       ),
@@ -103,23 +113,72 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
 }
 
 class EmployeesTab extends StatelessWidget {
-  final List<EmployeeEntity>? employees;
+  final List<BaseEmployeeEntity>? employees;
   final List<String>? departments;
+  final String? inviteKey;
   const EmployeesTab({
     required this.departments,
     required this.employees,
+    this.inviteKey,
     super.key,
   });
+
+  Future<void> _copyInviteKey(BuildContext context, String key) async {
+    await Clipboard.setData(ClipboardData(text: key));
+
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Invite key copied', style: AppTextStyles.regular16),
+        // backgroundColor: AppColors.gunMetal,
+        // behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    final companyManagementCubit = context.read<CompanyManagementCubit>();
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: Text(
+            'The invite key is shown only once. Are you sure you have saved it and are ready to delete it?',
+            style: AppTextStyles.regular18,
+          ),
+          actions: [
+            CustomButton(
+              text: 'Yes, delete',
+              onPressed: () {
+                companyManagementCubit.deleteInviteKey();
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   bool canAddEmployee(int? departmentsAmount) {
     return departmentsAmount != null && departmentsAmount > 0;
   }
 
   void _onAddEmployeePressed(BuildContext context, List<String> departments) {
+    final CompanyManagementCubit companyManagementCubit = context
+        .read<CompanyManagementCubit>();
     showDialog(
       context: context,
       builder: (context) {
-        return AddEmployeeForm(departments: departments);
+        return BlocProvider.value(
+          value: companyManagementCubit,
+          child: AddEmployeeForm(departments: departments),
+        );
       },
     );
   }
@@ -155,8 +214,48 @@ class EmployeesTab extends StatelessWidget {
             ],
           ),
         ),
+        if (inviteKey != null)
+          SliverToBoxAdapter(
+            child: Container(
+              margin: Paddings.paddingVertical20,
+              padding: Paddings.paddingAll12,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: .circular(20),
+              ),
+              child: Row(
+                mainAxisAlignment: .spaceBetween,
+                mainAxisSize: .min,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Copy invite key: $inviteKey',
+                      maxLines: 4,
+                      style: AppTextStyles.regular16.copyWith(
+                        color: AppColors.gunMetal,
+                      ),
+                      overflow: .ellipsis,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => _copyInviteKey(context, inviteKey!),
+                        icon: Icon(Icons.copy, color: AppColors.gunMetal),
+                      ),
+                      IconButton(
+                        onPressed: () => _showDeleteConfirmationDialog(context),
+                        icon: Icon(Icons.close, color: AppColors.tiger),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         if (employees != null && employees!.isNotEmpty)
           SliverList.separated(
+            itemCount: employees!.length,
             itemBuilder: (context, index) {
               return ListTile(title: Text(employees![index].name));
             },
@@ -170,23 +269,55 @@ class EmployeesTab extends StatelessWidget {
 }
 
 class DepartmentsTab extends StatelessWidget {
-  const DepartmentsTab({super.key});
+  final List<String>? departments;
+  const DepartmentsTab({required this.departments, super.key});
+
+  void _onAddDepartmentPressed(BuildContext context) {
+    final companyManagementCubit = context.read<CompanyManagementCubit>();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return BlocProvider.value(
+          value: companyManagementCubit,
+          child: AddDepartmentForm(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
-    // return CustomScrollView(
-    //   slivers: [
-    //     SliverList.separated(
-    //       itemBuilder: (context, index) {
-    //         return ListTile(title: Text(departments[index]));
-    //       },
-    //       separatorBuilder: (context, index) {
-    //         return gapH10;
-    //       },
-    //     ),
-    //   ],
-    // );
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Row(
+            mainAxisAlignment: .spaceBetween,
+            children: [
+              Text(
+                'Total: ${departments?.length ?? 0}',
+                style: AppTextStyles.regular22,
+              ),
+              CustomButton(
+                text: 'Add new',
+                onPressed: () {
+                  _onAddDepartmentPressed(context);
+                },
+              ),
+            ],
+          ),
+        ),
+        if (departments != null && departments!.isNotEmpty)
+          SliverList.separated(
+            itemCount: departments!.length,
+            itemBuilder: (context, index) {
+              return ListTile(title: Text(departments![index]));
+            },
+            separatorBuilder: (context, index) {
+              return gapH10;
+            },
+          ),
+      ],
+    );
   }
 }
 
@@ -199,38 +330,128 @@ class AddEmployeeForm extends StatefulWidget {
 }
 
 class _AddEmployeeFormState extends State<AddEmployeeForm> {
-  // final ValueNotifier<String?> _selectedDepartment = ValueNotifier<String?>(
-  //   null,
-  // );
+  final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<EmployeeRole> _role = ValueNotifier(EmployeeRole.senior);
+  late final ValueNotifier<String> _department;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _department = ValueNotifier<String>(widget.departments.first);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _role.dispose();
+    _department.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Add Employee'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            validator: Validator.validateFullName,
-            decoration: InputDecoration(labelText: 'Name'),
+      content: Form(
+        key: _formKey,
+        child: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: .min,
+            children: [
+              CustomTextField(
+                title: 'Full name',
+                titleColor: AppColors.white,
+                controller: _nameController,
+                validator: Validator.validateFullName,
+              ),
+              gapH10,
+              CustomTextField(
+                title: 'Email',
+                titleColor: AppColors.white,
+                controller: _emailController,
+                validator: Validator.validateEmail,
+              ),
+              gapH10,
+              CustomDropdownButton(
+                title: 'Department',
+                titleColor: AppColors.white,
+                valueNotifier: _department,
+                items: widget.departments,
+              ),
+              gapH10,
+              CustomDropdownButton(
+                title: 'Role',
+                titleColor: AppColors.white,
+                valueNotifier: _role,
+                items: EmployeeRole.values,
+              ),
+            ],
           ),
-          TextFormField(
-            validator: Validator.validateEmail,
-            decoration: InputDecoration(labelText: 'Email'),
-          ),
-          // CustomDropdownButton(
-          //   title: 'Department',
-          //   valueNotifier: _selectedDepartment,
-          //   items: departments,
-          // ),
-          TextFormField(decoration: InputDecoration(labelText: 'Role')),
-        ],
+        ),
       ),
       actions: [
         CustomButton(
           text: 'Complete',
           onPressed: () {
-            // Handle employee creation logic here
+            context.read<CompanyManagementCubit>().createEmployeeInvite(
+              name: _nameController.text,
+              email: _emailController.text,
+              department: _department.value,
+              role: _role.value.key,
+            );
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class AddDepartmentForm extends StatefulWidget {
+  const AddDepartmentForm({super.key});
+
+  @override
+  State<AddDepartmentForm> createState() => _AddDepartmentFormState();
+}
+
+class _AddDepartmentFormState extends State<AddDepartmentForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _departmentController = TextEditingController();
+
+  @override
+  void dispose() {
+    _departmentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomTextField(
+              title: 'Department name',
+              titleColor: AppColors.white,
+              validator: Validator.validateDepartmentName,
+              controller: _departmentController,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        CustomButton(
+          text: 'Complete',
+          onPressed: () {
+            context.read<CompanyManagementCubit>().createDepartment(
+              department: _departmentController.text,
+            );
             Navigator.of(context).pop();
           },
         ),

@@ -25,6 +25,11 @@ class AppTextStyles {
     fontWeight: .w400,
   );
 
+  static const TextStyle regular16 = TextStyle(
+    fontSize: 16,
+    fontWeight: .w400,
+  );
+
   static const TextStyle regular22 = TextStyle(
     fontSize: 22,
     fontWeight: .w400,

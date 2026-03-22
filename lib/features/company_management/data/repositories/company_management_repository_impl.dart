@@ -1,8 +1,8 @@
-import 'package:boardli/features/authorization/domain/mappers/mappers.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../authorization/domain/entities/employee_entity.dart';
+import '../../../authorization/domain/mappers/mappers.dart';
 import '../../domain/repositories/company_management_repository.dart';
 import '../datasource/company_management_datasource.dart';
 
@@ -11,7 +11,7 @@ class CompanyManagementRepositoryImpl implements CompanyManagementRepository {
   const CompanyManagementRepositoryImpl({required this.companyManagementDatasource});
 
   @override
-  Future<Either<Failure, List<EmployeeEntity>?>> getEmployees() async {
+  Future<Either<Failure, List<BaseEmployeeEntity>?>> getEmployees() async {
     try {
       final response = await companyManagementDatasource.getEmployees();
 

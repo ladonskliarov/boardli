@@ -6,9 +6,10 @@ import '../../../../core/util/extensions.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
+  final Color? textColor;
   final VoidCallback onPressed;
   final double? elevation;
-  const CustomButton({required this.text, required this.onPressed, this.elevation, super.key});
+  const CustomButton({required this.text, required this.onPressed, this.textColor, this.elevation, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class CustomButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: Text(text, style: AppTextStyles.medium20),
+      child: Text(text, style: AppTextStyles.medium20.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface)),
     );
   }
 }

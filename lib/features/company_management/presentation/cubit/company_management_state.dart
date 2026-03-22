@@ -12,12 +12,13 @@ final class CompanyManagementInitial extends CompanyManagementState {}
 final class CompanyManagementLoading extends CompanyManagementState {}
 
 final class CompanyManagementLoaded extends CompanyManagementState {
-  final List<EmployeeEntity>? employees;
+  final List<BaseEmployeeEntity>? employees;
   final List<String>? departments;
-  const CompanyManagementLoaded({required this.employees, required this.departments});
+  final String? inviteKey;
+  const CompanyManagementLoaded({required this.employees, required this.departments, this.inviteKey});
 
   @override
-  List<Object?> get props => [employees, departments];
+  List<Object?> get props => [employees, departments, inviteKey];
 }
 
 final class CompanyManagementFailure extends CompanyManagementState {

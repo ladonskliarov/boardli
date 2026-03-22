@@ -16,17 +16,41 @@ extension CompanyMapper on Company {
   }
 }
 
+extension BaseEmployeeMapper on BaseEmployee {
+  BaseEmployeeEntity toEntity() {
+    return BaseEmployeeEntity(
+      id: id,
+      name: name,
+      email: email,
+      department: department,
+      role: role,
+    );
+  }
+}
+
 extension EmployeeMapper on Employee {
   EmployeeEntity toEntity() {
     return EmployeeEntity(
       id: id,
       name: name,
       email: email,
-      departments: departments,
+      department: department,
       role: role,
       gender: gender,
       hobbies: hobbies,
-      password: password,
+      favoriteAnimals: favoriteAnimals,
+    );
+  }
+}
+
+extension InvitedEmployeeMapper on InvitedEmployee {
+  InvitedEmployeeEntity toEntity() {
+    return InvitedEmployeeEntity(
+      id: id,
+      name: name,
+      email: email,
+      department: department,
+      role: role,
     );
   }
 }

@@ -55,7 +55,7 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
     const String url = '/api/v1/auth/employee/register';
 
     final Map<String, dynamic> requestData = {
-      "inviteKey": inviteKey,
+      "token": inviteKey,
       "password": password,
       "gender": gender,
       "hobbies": hobbies,
@@ -71,7 +71,7 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
 
       return (
         employee: Employee.fromJson(response.data['user']),
-        token: response.data['acessToken'] as String,
+        token: response.data['accessToken'] as String,
       );
     } on DioException catch (e) {
       log('Request error: ${e.response?.statusCode}');

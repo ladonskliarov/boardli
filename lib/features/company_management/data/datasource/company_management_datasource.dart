@@ -9,7 +9,7 @@ class CompanyManagementDatasource {
   final Dio dio;
   CompanyManagementDatasource({required this.dio});
 
-  Future<List<Employee>?> getEmployees() async {
+  Future<List<BaseEmployee>?> getEmployees() async {
     const String url = '/api/v1/employees';
 
     try {
@@ -20,7 +20,13 @@ class CompanyManagementDatasource {
 
       final data = response.data;
 
-      return data.map<Employee>((json) => Employee.fromJson(json)).toList();
+      return data.map<BaseEmployee>((json) {
+        if (json['status'] == 'pending') {
+          return InvitedEmployee.fromJson(json);
+        } else {
+          return Employee.fromJson(json);
+        }
+      }).toList();
     } on DioException catch (e) {
       log('Get employees error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
@@ -47,7 +53,7 @@ class CompanyManagementDatasource {
       
       final data = response.data;
 
-      return data.map<String>((json) => json['name'] as String).toList();
+      return data.map<String>((json) => json as String).toList();
    
     } on DioException catch (e) {
       log('Get departments error: ${e.response?.statusCode}');
@@ -84,8 +90,10 @@ class CompanyManagementDatasource {
 
       log('Invite employee status code: ${response.statusCode}');
       log('Response data: ${response.data}');
+      final String urlString = response.data['inviteLink'];
+      final uri = Uri.parse(urlString);
 
-      return response.data['inviteLink'];
+      return uri.queryParameters['token']!;
     } on DioException catch (e) {
       log('Login error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
@@ -102,10 +110,10 @@ class CompanyManagementDatasource {
   }
 
   Future<List<String>> createDepartment({required String department}) async {
-    const String url = '/api/v1/companies/invite-employee';
+    const String url = '/api/v1/companies/me/departments';
 
     final Map<String, dynamic> requestData = {
-      "department": department,
+      "name": department,
     };
 
     try {
@@ -115,7 +123,7 @@ class CompanyManagementDatasource {
       log('Response data: ${response.data}');
 
       final data = response.data['departments'];
-      return data.map((json) => json['name'] as String).toList();
+      return data.map<String>((json) => json as String).toList();
 
     } on DioException catch (e) {
       log('Login error: ${e.response?.statusCode}');

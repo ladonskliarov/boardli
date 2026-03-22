@@ -1,19 +1,40 @@
 import '../../presentation/constants/enums.dart';
 import 'user_entity.dart';
 
-class EmployeeEntity extends UserEntity {
-  final List<String> departments;
+class BaseEmployeeEntity extends UserEntity {
   final EmployeeRole role;
-  final String? password, gender, hobbies;
+  final String department;
 
-  EmployeeEntity({
-    required this.departments,
+  BaseEmployeeEntity({
+    required this.department,
     required this.role,
-    required this.gender,
-    required this.hobbies,
-    required this.password,
     required super.id,
     required super.name,
     required super.email,
+  });
+}
+
+class EmployeeEntity extends BaseEmployeeEntity {
+  final String gender, hobbies, favoriteAnimals;
+
+  EmployeeEntity({
+    required this.gender,
+    required this.hobbies,
+    required this.favoriteAnimals,
+    required super.department,
+    required super.role,
+    required super.id,
+    required super.name,
+    required super.email,
+  });
+}
+
+class InvitedEmployeeEntity extends BaseEmployeeEntity {
+  InvitedEmployeeEntity({
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.department,
+    required super.role,
   });
 }

@@ -146,7 +146,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
                                         BlocProvider.of<EmployeeRegisterCubit>(context).register(
                                           inviteKey: _inviteKeyController.text,
                                           password: _passwordController.text,
-                                          gender: _gender.value.value,
+                                          gender: _gender.value.key,
                                           hobbies: _hobbiesController.text,
                                           favoriteAnimals: _favoriteAnimalsController.text,
                                         );

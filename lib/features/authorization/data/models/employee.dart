@@ -2,46 +2,87 @@ import 'package:equatable/equatable.dart';
 
 import '../../presentation/constants/enums.dart';
 
-class Employee extends Equatable {
-  final String id, name, email;
-  final List<String> departments;
+class BaseEmployee extends Equatable {
+  final String id, name, email, companyId, department;
   final EmployeeRole role;
-  final String? password, gender, hobbies, favoriteAnimal;
 
-  const Employee({
+  const BaseEmployee({
     required this.id,
     required this.name,
     required this.email,
-    required this.departments,
+    required this.department,
     required this.role,
-    this.password,
-    this.gender,
-    this.hobbies,
-    this.favoriteAnimal,
+    required this.companyId,
+  });
+
+  @override
+  List<Object?> get props => [name, email, department, role];
+}
+
+class Employee extends BaseEmployee {
+  final String gender, hobbies, favoriteAnimals;
+
+  const Employee({
+    required this.gender,
+    required this.hobbies,
+    required this.favoriteAnimals,
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.department,
+    required super.role,
+    required super.companyId,
   });
 
   @override
   List<Object?> get props => [
+    id,
     name,
     email,
-    departments,
+    department,
     role,
-    password,
     gender,
     hobbies,
-    favoriteAnimal,
+    favoriteAnimals,
   ];
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: json['id'],
+      id: json['_id'] ?? json['id'],
+      gender: json['gender'],
+      hobbies: json['hobbies'],
+      favoriteAnimals: json['favoriteAnimal'],
       name: json['name'],
       email: json['email'],
-      departments: List<String>.from(json['departments']),
+      department: json['department'],
       role: EmployeeRole.values.firstWhere(
         (e) => e.toString() == 'EmployeeRole.${json['role']}',
       ),
-      password: json['password'],
+      companyId: json['companyId'],
+    );
+  }
+}
+
+class InvitedEmployee extends BaseEmployee {
+  const InvitedEmployee({
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.department,
+    required super.role,
+    required super.companyId,
+  });
+
+  factory InvitedEmployee.fromJson(Map<String, dynamic> json) {
+    return InvitedEmployee(
+      id: json['_id'] ?? json['id'],
+      name: json['name'],
+      email: json['email'],
+      department: json['department'],
+      role: EmployeeRole.values.firstWhere(
+        (e) => e.toString() == 'EmployeeRole.${json['role']}',
+      ),
+      companyId: json['companyId'],
     );
   }
 }
