@@ -29,8 +29,8 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
       );
 
       await tokenRepository.saveToken(token: response.token,userType: UserType.employee);
-
-      return Right(response.employee.toEntity());
+      
+      return Right(response.employee.toEntity(''));
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
@@ -55,7 +55,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
       await tokenRepository.saveToken(token: response.token, userType: UserType.employee);
 
-      return Right(response.employee.toEntity());
+      return Right(response.employee.toEntity(''));
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
@@ -65,7 +65,8 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
   Future<Either<Failure, EmployeeEntity>> getMe() async {
     try {
       final model = await remoteDataSource.getMe();
-      return Right(model.toEntity());
+      final String avatarUrl = await remoteDataSource.getAvatar();
+      return Right(model.toEntity(avatarUrl));
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }

@@ -29,16 +29,27 @@ extension BaseEmployeeMapper on BaseEmployee {
 }
 
 extension EmployeeMapper on Employee {
-  EmployeeEntity toEntity() {
+  EmployeeEntity toEntity(String avatarUrl) {
+    getName() {
+      final parts = name.split(' ');
+      return parts.length > 1 ? parts[0] : name;
+    }
+
+    getSecondName() {
+      final parts = name.split(' ');
+      return parts.length > 1 ? parts[1] : '';
+    }
     return EmployeeEntity(
       id: id,
-      name: name,
+      name: getName(),
+      secondName: getSecondName(),
       email: email,
       department: department,
       role: role,
       gender: gender,
       hobbies: hobbies,
       favoriteAnimals: favoriteAnimals,
+      avatarUrl: 'https://$avatarUrl',
     );
   }
 }

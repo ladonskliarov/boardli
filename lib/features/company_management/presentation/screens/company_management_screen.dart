@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
@@ -74,9 +75,15 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
                             indicatorColor: AppColors.sandyBrown,
                             indicatorSize: TabBarIndicatorSize.tab,
                             controller: _tabController,
-                            unselectedLabelColor: Colors.grey,
+                            unselectedLabelColor:
+                                context.watch<ThemeProvider>().darkTheme
+                                ? AppColors.white.withValues(alpha: 0.6)
+                                : AppColors.grey,
                             labelColor: AppColors.sandyBrown,
-                            dividerColor: AppColors.metal,
+                            dividerColor:
+                                context.watch<ThemeProvider>().darkTheme
+                                ? AppColors.metal
+                                : AppColors.white,
                             tabs: [
                               Tab(child: Text('Employees')),
                               Tab(child: Text('Departments')),
@@ -131,8 +138,6 @@ class EmployeesTab extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Invite key copied', style: AppTextStyles.regular16),
-        // backgroundColor: AppColors.gunMetal,
-        // behavior: SnackBarBehavior.floating,
         duration: Duration(seconds: 2),
       ),
     );
@@ -185,84 +190,90 @@ class EmployeesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text(
-                'Total: ${employees?.length ?? 0}',
-                style: AppTextStyles.regular22,
-              ),
-              CustomButton(
-                text: 'Add new',
-                onPressed: () {
-                  if (canAddEmployee(departments?.length)) {
-                    _onAddEmployeePressed(context, departments!);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Please create a department before adding employees.',
-                        ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text(
+              'Total: ${employees?.length ?? 0}',
+              style: AppTextStyles.regular22,
+            ),
+            CustomButton(
+              text: 'Add new',
+              onPressed: () {
+                if (canAddEmployee(departments?.length)) {
+                  _onAddEmployeePressed(context, departments!);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Please create a department before adding employees.',
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              if (inviteKey != null)
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: Paddings.paddingVertical20,
+                    padding: Paddings.paddingAll12,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: .circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: .spaceBetween,
+                      mainAxisSize: .min,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Copy invite key: $inviteKey',
+                            maxLines: 4,
+                            style: AppTextStyles.regular16.copyWith(
+                              color: AppColors.gunMetal,
+                            ),
+                            overflow: .ellipsis,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () =>
+                                  _copyInviteKey(context, inviteKey!),
+                              icon: Icon(Icons.copy, color: AppColors.gunMetal),
+                            ),
+                            IconButton(
+                              onPressed: () =>
+                                  _showDeleteConfirmationDialog(context),
+                              icon: Icon(Icons.close, color: AppColors.tiger),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (employees != null && employees!.isNotEmpty)
+                SliverList.separated(
+                  itemCount: employees!.length,
+                  itemBuilder: (context, index) {
+                    return EmployeeCard(employee: employees![index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return gapH10;
+                  },
+                ),
             ],
           ),
         ),
-        if (inviteKey != null)
-          SliverToBoxAdapter(
-            child: Container(
-              margin: Paddings.paddingVertical20,
-              padding: Paddings.paddingAll12,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: .circular(20),
-              ),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                mainAxisSize: .min,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Copy invite key: $inviteKey',
-                      maxLines: 4,
-                      style: AppTextStyles.regular16.copyWith(
-                        color: AppColors.gunMetal,
-                      ),
-                      overflow: .ellipsis,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () => _copyInviteKey(context, inviteKey!),
-                        icon: Icon(Icons.copy, color: AppColors.gunMetal),
-                      ),
-                      IconButton(
-                        onPressed: () => _showDeleteConfirmationDialog(context),
-                        icon: Icon(Icons.close, color: AppColors.tiger),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        if (employees != null && employees!.isNotEmpty)
-          SliverList.separated(
-            itemCount: employees!.length,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text(employees![index].name));
-            },
-            separatorBuilder: (context, index) {
-              return gapH10;
-            },
-          ),
       ],
     );
   }
@@ -287,35 +298,39 @@ class DepartmentsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text(
-                'Total: ${departments?.length ?? 0}',
-                style: AppTextStyles.regular22,
-              ),
-              CustomButton(
-                text: 'Add new',
-                onPressed: () {
-                  _onAddDepartmentPressed(context);
-                },
-              ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text(
+              'Total: ${departments?.length ?? 0}',
+              style: AppTextStyles.regular22,
+            ),
+            CustomButton(
+              text: 'Add new',
+              onPressed: () {
+                _onAddDepartmentPressed(context);
+              },
+            ),
+          ],
+        ),
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              if (departments != null && departments!.isNotEmpty)
+                SliverList.separated(
+                  itemCount: departments!.length,
+                  itemBuilder: (context, index) {
+                    return DepartmentCard(department: departments![index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return gapH10;
+                  },
+                ),
             ],
           ),
         ),
-        if (departments != null && departments!.isNotEmpty)
-          SliverList.separated(
-            itemCount: departments!.length,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text(departments![index]));
-            },
-            separatorBuilder: (context, index) {
-              return gapH10;
-            },
-          ),
       ],
     );
   }
@@ -373,7 +388,9 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 title: 'Email',
                 titleColor: AppColors.white,
                 controller: _emailController,
-                validator: Validator.validateEmail,
+                validator: (value) {
+                  return null;
+                },
               ),
               gapH10,
               CustomDropdownButton(
@@ -456,6 +473,73 @@ class _AddDepartmentFormState extends State<AddDepartmentForm> {
           },
         ),
       ],
+    );
+  }
+}
+
+class EmployeeCard extends StatelessWidget {
+  final BaseEmployeeEntity employee;
+  const EmployeeCard({required this.employee, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              employee.name,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.regular16,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              employee.role.value,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.regular16,
+            ),
+          ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: Icon(Icons.delete, size: 16),
+          // ),
+        ],
+      ),
+    );
+  }
+}
+
+class DepartmentCard extends StatelessWidget {
+  final String department;
+  const DepartmentCard({required this.department, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              department,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.regular20,
+            ),
+          ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: Icon(Icons.delete, size: 16),
+          // ),
+        ],
+      ),
     );
   }
 }

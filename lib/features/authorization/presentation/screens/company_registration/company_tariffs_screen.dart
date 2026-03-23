@@ -50,7 +50,7 @@ class CompanyTariffsScreen extends StatelessWidget {
           ),
           HeaderWidget(
             subtitle: 'Choose your plan',
-            color: AppColors.gunMetal,
+            color: Theme.of(context).colorScheme.surfaceContainer,
             headerType: .convexOut,
           ),
         ],

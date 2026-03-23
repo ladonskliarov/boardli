@@ -4,12 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/style/widgets/custom_button.dart';
 import '../../../../core/style/widgets/custom_text_field.dart';
-import '../../../../core/util/extensions.dart';
 import '../../data/models/resource.dart';
 import '../cubit/knowledge_base_cubit.dart';
 
@@ -64,7 +64,9 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen>
                   Container(
                     padding: Paddings.paddingHorizontal20,
                     decoration: BoxDecoration(
-                      color: AppColors.metal,
+                      color: context.watch<ThemeProvider>().darkTheme
+                          ? AppColors.metal
+                          : AppColors.white,
                       borderRadius: .circular(40),
                     ),
                     height: 44,
@@ -72,9 +74,14 @@ class _KnowledgeBaseScreenState extends State<KnowledgeBaseScreen>
                       indicatorColor: AppColors.sandyBrown,
                       indicatorSize: TabBarIndicatorSize.tab,
                       controller: _tabController,
-                      unselectedLabelColor: Colors.grey,
+                      unselectedLabelColor:
+                          context.watch<ThemeProvider>().darkTheme
+                          ? AppColors.white.withValues(alpha: 0.6)
+                          : AppColors.grey,
                       labelColor: AppColors.sandyBrown,
-                      dividerColor: AppColors.metal,
+                      dividerColor: context.watch<ThemeProvider>().darkTheme
+                          ? AppColors.metal
+                          : AppColors.white,
                       tabs: [
                         Tab(child: Text('Browse')),
                         Tab(child: Text('Upload')),
@@ -109,25 +116,45 @@ class BrowseTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (resources.isEmpty) {
+      return Text(
+        'No resources uploaded yet.\nStart sharing knowledge with your team ⚡️',
+        textAlign: TextAlign.center,
+        style: AppTextStyles.light16,
+      );
+    }
     return ListView.separated(
-      // reverse: true,
       itemCount: resources.length,
       separatorBuilder: (context, index) => gapH12,
       itemBuilder: (context, index) {
         final resource = resources[index];
-        return Container(
-          padding: Paddings.paddingHorizontal20,
-          decoration: BoxDecoration(
-            color: AppColors.metal,
-            borderRadius: .circular(20),
-          ),
-          child: ListTile(
-            title: Text(resource.title),
-            trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {},
-          ),
-        );
+        return ResourceCard(resource: resource);
       },
+    );
+  }
+}
+
+class ResourceCard extends StatelessWidget {
+  final Resource resource;
+  const ResourceCard({required this.resource, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              resource.title,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.regular14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -164,7 +191,9 @@ class _UploadTabState extends State<UploadTab> {
             padding: Paddings.paddingAll16,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.metal,
+              color: context.watch<ThemeProvider>().darkTheme
+                  ? AppColors.metal
+                  : AppColors.white,
               borderRadius: .circular(20),
             ),
             child: Column(
@@ -181,17 +210,25 @@ class _UploadTabState extends State<UploadTab> {
                   alignment: .bottomRight,
                   child: CustomButton(
                     text: 'Select',
-                    minimumSize: Size(20, 44.ph),
                     backgroundColor: AppColors.sandyBrown,
                     onPressed: () async {
-                      FilePickerResult? result = await FilePicker.platform.pickFiles(
-                        allowMultiple: false,
-                        type: FileType.custom,
-                        allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'md'],
-                      );
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            allowMultiple: false,
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              'pdf',
+                              'doc',
+                              'docx',
+                              'txt',
+                              'md',
+                            ],
+                          );
                       if (result != null) {
-                        if(context.mounted){
-                          context.read<KnowledgeBaseCubit>().uploadFile(File(result.files.single.path!));
+                        if (context.mounted) {
+                          context.read<KnowledgeBaseCubit>().uploadFile(
+                            File(result.files.single.path!),
+                          );
                         }
                       }
                     },
@@ -205,7 +242,9 @@ class _UploadTabState extends State<UploadTab> {
             padding: Paddings.paddingAll16,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.metal,
+              color: context.watch<ThemeProvider>().darkTheme
+                  ? AppColors.metal
+                  : AppColors.white,
               borderRadius: .circular(20),
             ),
             child: Column(
@@ -215,7 +254,11 @@ class _UploadTabState extends State<UploadTab> {
                 gapH12,
                 CustomTextField(
                   titleColor: AppColors.white,
-                  hintText: 'https://blog.flutter.dev/whats-new-in-flutter-3-41-302ec140e632',
+                  backgroundColor: context.watch<ThemeProvider>().darkTheme
+                      ? AppColors.white
+                      : AppColors.platinum,
+                  hintText:
+                      'https://blog.flutter.dev/whats-new-in-flutter-3-41-302ec140e632',
                   validator: (value) => null,
                   controller: _linkController,
                 ),
@@ -224,6 +267,9 @@ class _UploadTabState extends State<UploadTab> {
                 gapH12,
                 CustomTextField(
                   titleColor: AppColors.white,
+                  backgroundColor: context.watch<ThemeProvider>().darkTheme
+                      ? AppColors.white
+                      : AppColors.platinum,
                   hintText: 'Flutter Update 3.41',
                   validator: (value) => null,
                   controller: _titleController,
@@ -233,15 +279,14 @@ class _UploadTabState extends State<UploadTab> {
                   alignment: .bottomRight,
                   child: CustomButton(
                     text: 'Send',
-                    minimumSize: Size(20, 44.ph),
                     backgroundColor: AppColors.sandyBrown,
                     onPressed: () {
                       context.read<KnowledgeBaseCubit>().uploadLink(
-                            link: _linkController.text,
-                            title: _titleController.text.isEmpty
-                                ? null
-                                : _titleController.text,
-                          );
+                        link: _linkController.text,
+                        title: _titleController.text.isEmpty
+                            ? null
+                            : _titleController.text,
+                      );
                     },
                   ),
                 ),

@@ -18,10 +18,7 @@ class KnowledgeBaseCubit extends Cubit<KnowledgeBaseState> {
 
     result.fold(
       (failure) => emit(KnowledgeBaseFailure(message: failure.message)),
-      (resources) {
-        final List<Resource> reversedResources = resources.reversed.toList();
-        emit(KnowledgeBaseLoaded(resources: reversedResources));
-      },
+      (resources) => emit(KnowledgeBaseLoaded(resources: resources)),
     );
   }
 
@@ -29,19 +26,11 @@ class KnowledgeBaseCubit extends Cubit<KnowledgeBaseState> {
     emit(KnowledgeBaseLoading());
     await repository.uploadFile(file);
     getResources();
-    // result.fold(
-    //   (failure) => emit(KnowledgeBaseFailure(message: failure.message)),
-    //   (resources) => emit(KnowledgeBaseLoaded(resources: (state as KnowledgeBaseLoaded).resources)),
-    // );
   }
 
   Future<void> uploadLink({required String link, String? title}) async {
     emit(KnowledgeBaseLoading());
     await repository.uploadLink(link: link, title: title);
     getResources();
-    // result.fold(
-    //   (failure) => emit(KnowledgeBaseFailure(message: failure.message)),
-    //   (resources) => emit(KnowledgeBaseLoaded(resources: currentResources)),
-    // );
   }
 }

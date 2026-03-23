@@ -10,4 +10,5 @@ abstract class EmployeeRemoteDatasource {
     required String favoriteAnimals,
   });
   Future<Employee> getMe();
+  Future<String> getAvatar();
 }

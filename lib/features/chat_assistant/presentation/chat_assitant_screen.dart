@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import '../../../core/providers/theme_provider.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/style/app_dimensions.dart';
 import '../../../core/style/app_text_styles.dart';
@@ -47,12 +48,14 @@ class _EmployeeChatAssistantScreenState
           padding: Paddings.paddingHorizontal20,
           child: Column(
             children: [
-              Divider(height: 1, thickness: 1, color: AppColors.grey),
+              // Divider(height: 1, thickness: 1, color: AppColors.grey),
               BlocBuilder<ChatAssistantCubit, ChatState>(
                 bloc: context.read<ChatAssistantCubit>(),
                 builder: (context, state) {
                   if (state is ChatLoadingState) {
-                    return Expanded(child: Center(child: CircularProgressIndicator()));
+                    return Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   } else if (state.messages.isEmpty) {
                     return Expanded(
                       child: SizedBox(
@@ -115,7 +118,9 @@ class ChatInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.metal,
+        color: context.watch<ThemeProvider>().darkTheme
+            ? AppColors.metal
+            : AppColors.white,
         borderRadius: .circular(20),
       ),
       padding: .only(left: 14, right: 6, top: 4, bottom: 4),
@@ -127,10 +132,18 @@ class ChatInputField extends StatelessWidget {
               controller: chatInputController,
               minLines: 1,
               maxLines: 5,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-              decoration: const InputDecoration(
+              style: AppTextStyles.regular16.copyWith(
+                color: context.watch<ThemeProvider>().darkTheme
+                    ? AppColors.white
+                    : AppColors.gunMetal,
+              ),
+              decoration: InputDecoration(
                 hintText: 'Ask something..',
-                hintStyle: TextStyle(color: Colors.white54),
+                hintStyle: AppTextStyles.regular16.copyWith(
+                  color: context.watch<ThemeProvider>().darkTheme
+                      ? AppColors.white.withValues(alpha: 0.8)
+                      : AppColors.gunMetal.withValues(alpha: 0.5),
+                ),
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.symmetric(vertical: 12),
@@ -142,14 +155,20 @@ class ChatInputField extends StatelessWidget {
             width: 44,
             padding: .only(left: 6, right: 2, top: 4, bottom: 6),
             decoration: BoxDecoration(
-              color: AppColors.grey,
+              color: context.watch<ThemeProvider>().darkTheme
+                  ? AppColors.grey
+                  : AppColors.softLinen,
               shape: BoxShape.circle,
             ),
             child: InkWell(
               onTap: onSend,
               child: Transform.rotate(
                 angle: -math.pi / 4,
-                child: Icon(Icons.send_rounded, color: AppColors.white,)),
+                child: Icon(
+                  Icons.send_rounded,
+                  color: AppColors.white,
+                ),
+              ),
             ),
           ),
         ],
@@ -172,7 +191,9 @@ class ChatBubble extends StatelessWidget {
         padding: isUser ? Paddings.paddingAll12 : null,
         decoration: isUser
             ? BoxDecoration(
-                color: AppColors.grey,
+                color: context.watch<ThemeProvider>().darkTheme
+                    ? AppColors.grey
+                    : AppColors.platinum,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),

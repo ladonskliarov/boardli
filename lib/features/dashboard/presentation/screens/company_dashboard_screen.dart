@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_icons.dart';
+import '../../../company_account/presentation/cubit/company_account_cubit.dart';
 import '../../../company_management/presentation/cubit/company_management_cubit.dart';
+import '../../../knowledge_base/presentation/cubit/knowledge_base_cubit.dart';
 import '../widgets/custom_bottom_bar.dart';
 import '../widgets/custom_bottom_bar_item.dart';
 
@@ -17,11 +20,12 @@ class CompanyDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<CompanyManagementCubit>(), lazy: false),
+        BlocProvider(create: (context) => sl<CompanyAccountCubit>()..loadCompanyAccount(), lazy: false),
+        BlocProvider(create: (_) => sl<CompanyManagementCubit>()..loadOrganizationData(), lazy: false),
+        BlocProvider(create: (_) => sl<KnowledgeBaseCubit>()..getResources(), lazy: false),
       ],
       child: Scaffold(
-        extendBody: true,
-        backgroundColor: AppColors.softLinen,
+        backgroundColor: context.watch<ThemeProvider>().darkTheme ? AppColors.gunMetal : AppColors.softLinen,
         body: navigationShell,
         bottomNavigationBar: CustomBottomBar(
           bottomBarItems: [

@@ -25,6 +25,8 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
     try {
       final response = await dio.post(url, data: requestData);
 
+      log('Login response: ${response.data}');
+
       return (
         employee: Employee.fromJson(response.data['user']),
         token: response.data['accessToken'] as String,
@@ -69,6 +71,9 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
         options: Options(headers: {'Authorization': 'Bearer $inviteKey'}),
       );
 
+      log('Register response: ${response.data}');
+      // await getAvatar();
+
       return (
         employee: Employee.fromJson(response.data['user']),
         token: response.data['accessToken'] as String,
@@ -90,7 +95,25 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
 
   @override
   Future<Employee> getMe() async {
-    final response = await dio.get('/api/v1/auth/me');
-    return Employee.fromJson(response.data);
+    try {
+      final response = await dio.get('/api/v1/auth/me');
+
+      return Employee.fromJson(response.data);
+    } catch (e) {
+      log('Unexpected error: $e');
+      throw ServerFailure('Unexpected error: $e');
+    }
+  }
+
+  @override
+  Future<String> getAvatar() async {
+    try {
+      final response = await dio.post('/api/v1/ai/avatar-url');
+      log('getAvatar response: ${response.data}');
+      return response.data['avatarUrl'] as String;
+    } catch (e) {
+      log('Unexpected error: $e');
+      throw ServerFailure('Unexpected error: $e');
+    }
   }
 }

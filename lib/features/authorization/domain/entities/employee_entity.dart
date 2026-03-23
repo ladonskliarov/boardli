@@ -15,9 +15,10 @@ class BaseEmployeeEntity extends UserEntity {
 }
 
 class EmployeeEntity extends BaseEmployeeEntity {
-  final String gender, hobbies, favoriteAnimals;
+  final String secondName, gender, hobbies, favoriteAnimals, avatarUrl;
 
   EmployeeEntity({
+    required this.secondName,
     required this.gender,
     required this.hobbies,
     required this.favoriteAnimals,
@@ -26,6 +27,7 @@ class EmployeeEntity extends BaseEmployeeEntity {
     required super.id,
     required super.name,
     required super.email,
+    required this.avatarUrl,
   });
 }
 

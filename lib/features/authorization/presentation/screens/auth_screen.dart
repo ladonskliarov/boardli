@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/router.dart';
+import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/util/enums.dart';
@@ -39,17 +40,23 @@ class AuthScreen extends StatelessWidget {
                         children: [
                           CustomButton(
                             text: 'Employee',
+                            hasMinimumSize: true,
                             onPressed: () => context.pushNamed(
                               AppPage.login.name,
-                              queryParameters: {'user-type': UserType.employee.name},
+                              queryParameters: {
+                                'user-type': UserType.employee.name,
+                              },
                             ),
                           ),
                           gapW20,
                           CustomButton(
                             text: 'Company',
+                            hasMinimumSize: true,
                             onPressed: () => context.pushNamed(
                               AppPage.login.name,
-                              queryParameters: {'user-type': UserType.company.name},
+                              queryParameters: {
+                                'user-type': UserType.company.name,
+                              },
                             ),
                           ),
                         ],
@@ -61,6 +68,7 @@ class AuthScreen extends StatelessWidget {
                         children: [
                           CustomButton(
                             text: 'Employee',
+                            hasMinimumSize: true,
                             onPressed: () => context.pushNamed(
                               AppPage.registerEmployee.name,
                             ),
@@ -68,9 +76,9 @@ class AuthScreen extends StatelessWidget {
                           gapW20,
                           CustomButton(
                             text: 'Company',
-                            onPressed: () => context.pushNamed(
-                              AppPage.companyTariff.name,
-                            ),
+                            hasMinimumSize: true,
+                            onPressed: () =>
+                                context.pushNamed(AppPage.companyTariff.name),
                           ),
                         ],
                       ),
@@ -86,7 +94,7 @@ class AuthScreen extends StatelessWidget {
               ],
             ),
           ),
-          HeaderWidget(isShadow: true),
+          HeaderWidget(textColor: AppColors.white, isShadow: true),
         ],
       ),
     );

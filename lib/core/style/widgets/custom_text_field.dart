@@ -7,7 +7,7 @@ import '../app_text_styles.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? title;
-  final Color? titleColor, errorColor;
+  final Color? titleColor, backgroundColor, errorColor;
   final String? hintText;
   final bool obscureText;
   final FormFieldValidator<String> validator;
@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.title,
     this.obscureText = false,
     this.titleColor,
+    this.backgroundColor,
     this.errorColor,
     this.hintText,
     super.key,
@@ -73,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: _isObscured,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.white,
+            fillColor: widget.backgroundColor ?? AppColors.white,
             hintText: widget.hintText,
             errorStyle: TextStyle(
               color: widget.errorColor ?? AppColors.gunMetal,

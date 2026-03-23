@@ -1,4 +1,5 @@
 import 'package:boardli/features/company_management/domain/repositories/company_management_repository.dart';
+import 'package:boardli/features/employee_account/presentation/cubit/employee_account_cubit.dart';
 import 'package:boardli/features/knowledge_base/data/datasource/knowledge_base_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,6 +17,7 @@ import '../../features/chat_assistant/data/datasource/chat_assistant_datasource.
 import '../../features/chat_assistant/data/repository/chat_assistant_repository_impl.dart';
 import '../../features/chat_assistant/domain/repositories/chat_assistant_repository.dart';
 import '../../features/chat_assistant/presentation/cubit/chat_assistant_cubit.dart';
+import '../../features/company_account/presentation/cubit/company_account_cubit.dart';
 import '../../features/company_management/data/datasource/company_management_datasource.dart';
 import '../../features/company_management/data/repositories/company_management_repository_impl.dart';
 import '../../features/company_management/presentation/cubit/company_management_cubit.dart';
@@ -150,6 +152,8 @@ void _registerCubits() {
   sl.registerFactory<KnowledgeBaseCubit>(
     () => KnowledgeBaseCubit(repository: sl()),
   );
+  sl.registerFactory<EmployeeAccountCubit>(() => EmployeeAccountCubit(sl()));
+  sl.registerFactory<CompanyAccountCubit>(() => CompanyAccountCubit(sl()));
 }
 
 Future<void> _registerProviders() async {

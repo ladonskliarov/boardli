@@ -190,9 +190,9 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                     ],
                   ),
                   HeaderWidget(
-                    subtitle: 'Register your company',
+                    subtitle: 'Company registration',
                     additionalText: 'in 2 minutes',
-                    color: AppColors.gunMetal,
+                    color: Theme.of(context).colorScheme.surfaceContainer,
                     headerType: .convexOut,
                   ),
                 ],

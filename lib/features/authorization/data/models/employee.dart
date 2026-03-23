@@ -60,7 +60,7 @@ class Employee extends BaseEmployee {
       ),
       companyId: json['companyId'],
     );
-  }
+  }  
 }
 
 class InvitedEmployee extends BaseEmployee {

@@ -13,7 +13,8 @@ class KnowledgeBaseRepository {
   Future<Either<Failure, List<Resource>>> getResources() async {
     try {
       final resources = await datasource.getResources();
-      return Right(resources);
+      final List<Resource> reversedResources = resources.reversed.toList();
+      return Right(reversedResources);
     } catch (e) {
       return Left(ServerFailure('Failed to fetch resources: $e'));
     }

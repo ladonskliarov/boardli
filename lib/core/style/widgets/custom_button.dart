@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../app_colors.dart';
 import '../app_dimensions.dart';
 import '../app_text_styles.dart';
 import '../../util/extensions.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Size? minimumSize;
+  final bool? hasMinimumSize;
   final Color? textColor, backgroundColor;
   final VoidCallback onPressed;
   final double? elevation;
@@ -14,7 +15,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.textColor,
-    this.minimumSize,
+    this.hasMinimumSize,
     this.backgroundColor,
     this.elevation,
     super.key,
@@ -24,14 +25,15 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: minimumSize ?? Size(Sizes.p160.pw, Sizes.p60.ph),
+        minimumSize: hasMinimumSize == true ? Size(Sizes.p160.pw, Sizes.p60.ph) : null,
         padding: EdgeInsets.symmetric(
           vertical: Sizes.p12.ph,
-          horizontal: Sizes.p12.ph,
+          horizontal: Sizes.p20.pw,
         ),
+        overlayColor: AppColors.white.withValues(alpha: 0.1),
         backgroundColor:
-            backgroundColor ?? Theme.of(context).colorScheme.secondary,
-        side: BorderSide(color: Theme.of(context).colorScheme.onSurface),
+            backgroundColor ?? AppColors.grey,
+        side: BorderSide(color: AppColors.platinum),
         elevation: elevation,
         shape: RoundedRectangleBorder(borderRadius: .circular(20)),
       ),
@@ -39,7 +41,7 @@ class CustomButton extends StatelessWidget {
       child: Text(
         text,
         style: AppTextStyles.medium20.copyWith(
-          color: textColor ?? Theme.of(context).colorScheme.onSurface,
+          color: textColor ?? AppColors.white,
         ),
       ),
     );

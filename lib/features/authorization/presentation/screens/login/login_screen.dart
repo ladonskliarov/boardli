@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             },
             child: Scaffold(
-              backgroundColor: AppColors.gunMetal,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               resizeToAvoidBottomInset: true,
               body: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     alignment: .centerRight,
                                     child: CustomButton(
                                       text: 'Sign in',
+                                      backgroundColor: AppColors.grey,
                                       elevation: 4,
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
@@ -124,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       HeaderWidget(
+                        textColor: AppColors.white,
                         subtitle: 'Welcome back!',
                         headerType: .convexOut,
                         color: AppColors.tiger,

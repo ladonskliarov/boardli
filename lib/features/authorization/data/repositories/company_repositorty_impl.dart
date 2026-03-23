@@ -66,6 +66,7 @@ class CompanyRepositoryImpl implements CompanyRepository {
   Future<Either<Failure, CompanyEntity>> getMe() async {
     try {
       final model = await remoteDataSource.getMe();
+      
       return Right(model.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));

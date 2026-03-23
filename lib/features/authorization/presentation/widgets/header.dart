@@ -11,6 +11,7 @@ class HeaderWidget extends StatelessWidget {
   final String? subtitle, additionalText;
   final HeaderType headerType;
   final Color color;
+  final Color? textColor;
   final TextStyle? subtitleStyle;
   final bool isShadow;
   const HeaderWidget({
@@ -19,6 +20,7 @@ class HeaderWidget extends StatelessWidget {
     this.additionalText,
     this.headerType = HeaderType.convexIn,
     this.color = AppColors.tiger,
+    this.textColor,
     this.isShadow = false,
     super.key,
   });
@@ -44,19 +46,21 @@ class HeaderWidget extends StatelessWidget {
             children: [
               AppBar(
                 centerTitle: true,
+                iconTheme: IconThemeData(color: textColor ?? Theme.of(context).colorScheme.onSurface),
+                foregroundColor: Theme.of(context).colorScheme.onSurface,
                 surfaceTintColor: Colors.transparent,
                 backgroundColor: Colors.transparent,
-                title: Text('Boardli', style: AppTextStyles.title),
+                title: Text('Boardli', style: AppTextStyles.title.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface)),
               ),
               if (subtitle != null)
                 Text(
                   subtitle!.tr(),
-                  style: subtitleStyle ?? AppTextStyles.subtitle,
+                  style: subtitleStyle ?? AppTextStyles.subtitle.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface),
                 ),
               if (additionalText != null)
                 Padding(
                   padding: Paddings.paddingOnlyTop4,
-                  child: Text(additionalText!.tr()),
+                  child: Text(additionalText!.tr(), style: AppTextStyles.light16.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface)),
                 ),
             ],
           ),

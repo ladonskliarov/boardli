@@ -8,6 +8,7 @@ abstract class AppThemes {
   static ThemeData lightTheme = ThemeData(
     fontFamily: fontFamily,
     scaffoldBackgroundColor: AppColors.softLinen,
+    dividerColor: AppColors.grey,
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: AppColors.gunMetal,
@@ -15,6 +16,7 @@ abstract class AppThemes {
       onSurface: AppColors.gunMetal,
       onPrimary: AppColors.gunMetal,
       secondary: AppColors.gunMetal,
+      surfaceContainer: AppColors.softLinen,
       onSecondary: AppColors.white,
       error: AppColors.softLinen,
       onError: AppColors.tiger,
@@ -24,6 +26,7 @@ abstract class AppThemes {
   static ThemeData darkTheme = ThemeData(
     fontFamily: fontFamily,
     scaffoldBackgroundColor: AppColors.gunMetal,
+    dividerColor: AppColors.white,
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
       primary: AppColors.white,
@@ -32,6 +35,7 @@ abstract class AppThemes {
       onPrimary: AppColors.white,
       secondary: AppColors.grey,
       onSecondary: AppColors.white,
+      surfaceContainer: AppColors.gunMetal,
       error: AppColors.gunMetal,
       onError: AppColors.tiger,
     ),

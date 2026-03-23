@@ -21,11 +21,13 @@ class AuthCubit extends Cubit<AuthState> {
   }) : super(AuthUnknown());
 
   void authenticateAsCompany(CompanyEntity company) {
-    emit(AuthCompanyAuthenticated(company));
+    // emit(AuthCompanyAuthenticated(company));
+    emit(AuthCompanyAuthenticated());
   }
 
   void authenticateAsEmployee(EmployeeEntity employee) {
-    emit(AuthEmployeeAuthenticated(employee));
+    // emit(AuthEmployeeAuthenticated(employee));
+    emit(AuthEmployeeAuthenticated());
   }
 
   Future<void> logout() async {
@@ -42,26 +44,28 @@ class AuthCubit extends Cubit<AuthState> {
         final UserType? userType = tokenRepository.getCachedUserType();
 
         if (userType == UserType.company) {
-          final result = await companyRepository.getMe();
+          emit(AuthCompanyAuthenticated());
+          // final result = await companyRepository.getMe();
           
-          result.fold(
-            (failure) {
-              tokenRepository.deleteToken();
-              emit(AuthUnauthenticated());
-            },
-            (companyEntity) => emit(AuthCompanyAuthenticated(companyEntity)),
-          );
+          // result.fold(
+          //   (failure) {
+          //     tokenRepository.deleteToken();
+          //     emit(AuthUnauthenticated());
+          //   },
+          //   (companyEntity) => emit(AuthCompanyAuthenticated(companyEntity)),
+          // );
 
         } else if (userType == UserType.employee) {
-          final result = await employeeRepository.getMe();
+          emit(AuthEmployeeAuthenticated());
+          // final result = await employeeRepository.getMe();
           
-          result.fold(
-            (failure) {
-              tokenRepository.deleteToken();
-              emit(AuthUnauthenticated());
-            },
-            (employeeEntity) => emit(AuthEmployeeAuthenticated(employeeEntity)),
-          );
+          // result.fold(
+          //   (failure) {
+          //     tokenRepository.deleteToken();
+          //     emit(AuthUnauthenticated());
+          //   },
+          //   (employeeEntity) => emit(AuthEmployeeAuthenticated(employeeEntity)),
+          // );
 
         } else {
           tokenRepository.deleteToken();
@@ -75,8 +79,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  CompanyEntity get currentCompany =>
-      (state as AuthCompanyAuthenticated).company;
-  EmployeeEntity get currentEmployee =>
-      (state as AuthEmployeeAuthenticated).employee;
+  // CompanyEntity get currentCompany =>
+  //     (state as AuthCompanyAuthenticated).company;
+  // EmployeeEntity get currentEmployee =>
+  //     (state as AuthEmployeeAuthenticated).employee;
 }

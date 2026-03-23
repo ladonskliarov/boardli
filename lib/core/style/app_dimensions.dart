@@ -12,6 +12,7 @@ class Sizes {
   static const double p10 = 10.0;
   static const double p12 = 12.0;
   static const double p16 = 16.0;
+  static const double p18 = 18.0;
   static const double p20 = 20.0;
   static const double p22 = 22.0;
   static const double p24 = 24.0;
@@ -122,9 +123,7 @@ class Paddings {
   static const EdgeInsets paddingAll12 = EdgeInsets.all(Sizes.p12);
   static const EdgeInsets paddingAll16 = EdgeInsets.all(Sizes.p16);
   static const EdgeInsets paddingOnlyRight16 = EdgeInsets.only(right: Sizes.p16);
-
   static const EdgeInsets paddingOnlyTop4 = EdgeInsets.only(top: Sizes.p4);
-  
   static const EdgeInsets paddingHorizontal4 = EdgeInsets.symmetric(
     horizontal: Sizes.p4,
   );
@@ -140,11 +139,9 @@ class Paddings {
   static const EdgeInsets paddingHorizontal20 = EdgeInsets.symmetric(
     horizontal: Sizes.p20,
   );
-
   static const EdgeInsets paddingVertical12 = EdgeInsets.symmetric(
     vertical: Sizes.p12,
   );
-
   static const EdgeInsets paddingVertical20 = EdgeInsets.symmetric(
     vertical: Sizes.p20,
   );
