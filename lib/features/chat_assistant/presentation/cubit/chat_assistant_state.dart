@@ -7,6 +7,9 @@ class ChatState extends Equatable{
   @override
   List<Object> get props => [messages];
 }
+
+class ChatLoadingState extends ChatState {}
+
 // sealed class ChatAssistantState extends Equatable {
 //   const ChatAssistantState();
 

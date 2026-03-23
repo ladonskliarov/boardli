@@ -18,18 +18,22 @@ class ChatAssistantDatasource {
     return ChatMessage.fromJson(response.data);
   }
 
-  Future<ChatMessage> generateWelcomeMessage() async {
-    const String url = '/api/v1/ai/welcome';
+  // Future<ChatMessage> generateWelcomeMessage() async {
+  //   const String url = '/api/v1/ai/welcome';
 
-    final response = await dio.get(url);
-    return ChatMessage.fromJson(response.data);
-  }
+  //   final response = await dio.get(url);
+  //   return ChatMessage.fromJson(response.data);
+  // }
 
   Future<List<ChatMessage>> getChatHistory() async {
     const String url = '/api/v1/ai/history';
 
     final response = await dio.get(url);
-    final data = response.data;
-    return data.map((item) => ChatMessage.fromJson(item)).toList();
+
+    final List<dynamic> data = response.data as List<dynamic>;
+
+    return data
+        .map((item) => ChatMessage.fromJson(item as Map<String, dynamic>))
+        .toList();
   }
 }

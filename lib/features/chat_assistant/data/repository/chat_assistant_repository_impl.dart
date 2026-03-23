@@ -26,7 +26,8 @@ class ChatAssistantRepositoryImpl implements ChatAssistantRepository {
   Future<Either<Failure, List<ChatMessageEntity>>> getChatHistory() async {
     try {
       final chatHistory = await datasource.getChatHistory();
-      return Right(chatHistory.map((message) => message.toEntity()).toList());
+      final reversedHistory = chatHistory.reversed.toList();
+      return Right(reversedHistory.map((message) => message.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }

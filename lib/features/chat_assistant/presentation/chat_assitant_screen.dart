@@ -1,8 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import '../../../core/di/injection_container.dart';
 import '../../../core/style/app_colors.dart';
 import '../../../core/style/app_dimensions.dart';
 import '../../../core/style/app_text_styles.dart';
@@ -22,107 +23,79 @@ class _EmployeeChatAssistantScreenState
   final TextEditingController _messageController = TextEditingController();
 
   @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<ChatAssistantCubit>(),
-      child: Builder(
-        builder: (context) {
-          return BlocBuilder<ChatAssistantCubit, ChatState>(
-            builder: (context, state) {
-              if (state.messages.isEmpty) {
-                return GestureDetector(
-                  onTap: () {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
-                  },
-                  child: Scaffold(
-                    appBar: AppBar(
-                      centerTitle: false,
-                      surfaceTintColor: Colors.transparent,
-                      title: Text(
-                        'Your assistant',
-                        style: AppTextStyles.regular28,
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        surfaceTintColor: Colors.transparent,
+        title: Text('Your assistant', style: AppTextStyles.regular28),
+      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Padding(
+          padding: Paddings.paddingHorizontal20,
+          child: Column(
+            children: [
+              Divider(height: 1, thickness: 1, color: AppColors.grey),
+              BlocBuilder<ChatAssistantCubit, ChatState>(
+                bloc: context.read<ChatAssistantCubit>(),
+                builder: (context, state) {
+                  if (state is ChatLoadingState) {
+                    return Expanded(child: Center(child: CircularProgressIndicator()));
+                  } else if (state.messages.isEmpty) {
+                    return Expanded(
+                      child: SizedBox(
+                        child: Center(
+                          child: Text('Ask your assistant anything!'),
+                        ),
                       ),
-                    ),
-                    body: Column(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            child: Center(
-                              child: Text('Ask your assistant anything!'),
+                    );
+                  } else if (state.messages.isNotEmpty) {
+                    final bool isReversed = state.messages.length != 1;
+                    return Expanded(
+                      child: CustomScrollView(
+                        reverse: isReversed,
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) =>
+                                  ChatBubble(message: state.messages[index]),
+                              childCount: state.messages.length,
                             ),
                           ),
-                        ),
-                        ChatInputField(
-                          chatInputController: _messageController,
-                          onSend: () {
-                            final message = _messageController.text;
-                            if (message.isNotEmpty) {
-                              context.read<ChatAssistantCubit>().sendMessage(
-                                message,
-                              );
-                              _messageController.clear();
-                            }
-                          },
-                        ),
-                        gapH12,
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return GestureDetector(
-                onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const SizedBox();
                   }
                 },
-                child: Scaffold(
-                  appBar: AppBar(
-                    centerTitle: false,
-                    surfaceTintColor: Colors.transparent,
-                    title: Text(
-                      'Your assistant',
-                      style: AppTextStyles.regular28,
-                    ),
-                  ),
-                  body: Padding(
-                    padding: Paddings.paddingHorizontal20,
-                    child: Column(
-                      children: [
-                        Divider(height: 1, thickness: 1, color: AppColors.grey),
-                        Expanded(
-                          child: ListView.builder(
-                            reverse: true,
-                            itemCount: state.messages.length,
-                            itemBuilder: (context, index) =>
-                                ChatBubble(message: state.messages[index]),
-                          ),
-                        ),
-                        ChatInputField(
-                          chatInputController: _messageController,
-                          onSend: () {
-                            final message = _messageController.text;
-                            if (message.isNotEmpty) {
-                              context.read<ChatAssistantCubit>().sendMessage(
-                                message,
-                              );
-                              _messageController.clear();
-                            }
-                          },
-                        ),
-                        gapH12,
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
+              ),
+              ChatInputField(
+                chatInputController: _messageController,
+                onSend: () {
+                  final message = _messageController.text;
+                  if (message.isNotEmpty) {
+                    context.read<ChatAssistantCubit>().sendMessage(message);
+                    _messageController.clear();
+                  }
+                },
+              ),
+              gapH12,
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -145,10 +118,9 @@ class ChatInputField extends StatelessWidget {
         color: AppColors.metal,
         borderRadius: .circular(20),
       ),
-      margin: Paddings.paddingHorizontal20,
-      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      padding: .only(left: 14, right: 6, top: 4, bottom: 4),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Expanded(
             child: TextField(
@@ -157,7 +129,7 @@ class ChatInputField extends StatelessWidget {
               maxLines: 5,
               style: const TextStyle(color: Colors.white, fontSize: 16),
               decoration: const InputDecoration(
-                hintText: 'Type something..',
+                hintText: 'Ask something..',
                 hintStyle: TextStyle(color: Colors.white54),
                 border: InputBorder.none,
                 isDense: true,
@@ -166,19 +138,18 @@ class ChatInputField extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 2),
-            child: IconButton(
-              icon: const Icon(
-                Icons.send_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
-              onPressed: () {
-                if (chatInputController.text.trim().isNotEmpty) {
-                  onSend();
-                  chatInputController.clear();
-                }
-              },
+            height: 44,
+            width: 44,
+            padding: .only(left: 6, right: 2, top: 4, bottom: 6),
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              onTap: onSend,
+              child: Transform.rotate(
+                angle: -math.pi / 4,
+                child: Icon(Icons.send_rounded, color: AppColors.white,)),
             ),
           ),
         ],

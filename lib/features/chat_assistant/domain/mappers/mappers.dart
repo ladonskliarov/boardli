@@ -4,8 +4,9 @@ extension ChatMessageMapper on ChatMessage {
   ChatMessageEntity toEntity() {
     return ChatMessageEntity(
       id: DateTime.now().toString(),
-      text: answer,
-      sender: MessageSender.bot,
+      text: content,
+      sender: sender,
+      sources: sources,
     );
   }
 }

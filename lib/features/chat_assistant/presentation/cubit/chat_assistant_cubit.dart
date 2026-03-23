@@ -12,13 +12,13 @@ class ChatAssistantCubit extends Cubit<ChatState> {
   ChatAssistantCubit({required this.repository}) : super(const ChatState());
 
   Future<void> loadChatHistory() async {
-    //TODO
-    // final result = await repository.getChatHistory();
-
-    // result.fold(
-    //   (failure) => emit(ChatState(messages: [])),
-    //   (messages) => emit(ChatState(messages: messages)),
-    // );
+    emit(ChatLoadingState());
+    final result = await repository.getChatHistory();
+    
+    result.fold(
+      (failure) => emit(ChatState(messages: [])),
+      (messages) => emit(ChatState(messages: messages)),
+    );
   }
 
   Future<void> sendMessage(String text) async {
@@ -52,7 +52,7 @@ class ChatAssistantCubit extends Cubit<ChatState> {
     );
   }
 
-  void _updateBotMessage(String id, String newText, bool isLoading, List<String> sources) {
+  void _updateBotMessage(String id, String newText, bool isLoading, List<Source> sources) {
     final updatedMessages = state.messages.map((message) {
       if (message.id == id) {
         return message.copyWith(text: newText, isLoading: isLoading, sources: sources);

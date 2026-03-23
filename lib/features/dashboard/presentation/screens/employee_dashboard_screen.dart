@@ -18,8 +18,8 @@ class EmployeeDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<ChatAssistantCubit>()..loadChatHistory()),
-        BlocProvider(create: (_) => sl<KnowledgeBaseCubit>()..getResources()),
+        BlocProvider(create: (_) => sl<ChatAssistantCubit>()..loadChatHistory(), lazy: false),
+        BlocProvider(create: (_) => sl<KnowledgeBaseCubit>()..getResources(), lazy: false),
       ],
       child: Scaffold(
         extendBody: navigationShell.currentIndex != 1,

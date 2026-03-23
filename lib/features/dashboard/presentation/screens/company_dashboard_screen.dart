@@ -17,7 +17,7 @@ class CompanyDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<CompanyManagementCubit>()),
+        BlocProvider(create: (_) => sl<CompanyManagementCubit>(), lazy: false),
       ],
       child: Scaffold(
         extendBody: true,
