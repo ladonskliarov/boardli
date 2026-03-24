@@ -45,22 +45,26 @@ class EmployeeAccountScreen extends StatelessWidget {
                           children: [
                             AvatarWidget(avatarUrl: state.employee.avatarUrl),
                             gapW20,
-                            Column(
-                              crossAxisAlignment: .start,
-                              children: [
-                                Text(
-                                  'account_screen.boardler'.tr(),
-                                  style: AppTextStyles.regular28,
-                                ),
-                                Text(
-                                  state.employee.name,
-                                  style: AppTextStyles.light22,
-                                ),
-                                Text(
-                                  state.employee.secondName,
-                                  style: AppTextStyles.light22,
-                                ),
-                              ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                children: [
+                                  Text(
+                                    'account_screen.boardler'.tr(),
+                                    style: AppTextStyles.regular28,
+                                  ),
+                                  Text(
+                                    state.employee.name,
+                                    style: AppTextStyles.light22,
+                                    overflow: .ellipsis,
+                                  ),
+                                  Text(
+                                    state.employee.secondName,
+                                    style: AppTextStyles.light22,
+                                    overflow: .ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

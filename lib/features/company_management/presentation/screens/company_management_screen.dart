@@ -40,7 +40,7 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          'company_management.title'.tr(),
+          'company_management.title'.tr(context: context),
           style: AppTextStyles.regular28,
         ),
       ),
@@ -81,11 +81,11 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
                           : AppColors.white,
                       tabs: [
                         Tab(
-                          child: Text('company_management.tabs.employees'.tr()),
+                          child: Text('company_management.tabs.employees'.tr(context: context)),
                         ),
                         Tab(
                           child: Text(
-                            'company_management.tabs.departments'.tr(),
+                            'company_management.tabs.departments'.tr(context: context),
                           ),
                         ),
                       ],

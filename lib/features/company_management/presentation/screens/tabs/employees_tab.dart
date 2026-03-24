@@ -17,6 +17,7 @@ class EmployeesTab extends StatelessWidget {
   final List<BaseEmployeeEntity>? employees;
   final List<String>? departments;
   final String? inviteKey;
+  
   const EmployeesTab({
     required this.departments,
     required this.employees,
@@ -31,7 +32,10 @@ class EmployeesTab extends StatelessWidget {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('company_management.employees_tab.copy_success'.tr(), style: AppTextStyles.regular16),
+        content: Text(
+          'company_management.employees_tab.copy_success'.tr(context: context), 
+          style: AppTextStyles.regular16,
+        ),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -47,12 +51,12 @@ class EmployeesTab extends StatelessWidget {
             borderRadius: .circular(20),
           ),
           content: Text(
-            'company_management.employees_tab.delete_key_dialog'.tr(),
+            'company_management.employees_tab.delete_key_dialog'.tr(context: dialogContext),
             style: AppTextStyles.regular18,
           ),
           actions: [
             CustomButton(
-              text: 'company_management.employees_tab.delete_confirm'.tr(),
+              text: 'company_management.employees_tab.delete_confirm'.tr(context: dialogContext),
               onPressed: () {
                 companyManagementCubit.deleteInviteKey();
                 Navigator.of(dialogContext).pop();
@@ -90,11 +94,14 @@ class EmployeesTab extends StatelessWidget {
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              'company_management.employees_tab.total'.tr(args: [(employees?.length ?? 0).toString()]),
+              'company_management.employees_tab.total'.tr(
+                context: context, 
+                args: [(employees?.length ?? 0).toString()]
+              ),
               style: AppTextStyles.regular22,
             ),
             CustomButton(
-              text: 'company_management.employees_tab.add_new'.tr(),
+              text: 'company_management.employees_tab.add_new'.tr(context: context),
               onPressed: () {
                 if (canAddEmployee(departments?.length)) {
                   _onAddEmployeePressed(context, departments!);
@@ -102,7 +109,7 @@ class EmployeesTab extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'company_management.employees_tab.no_departments_error'.tr(),
+                        'company_management.employees_tab.no_departments_error'.tr(context: context),
                       ),
                     ),
                   );
@@ -135,24 +142,25 @@ class EmployeesTab extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              'company_management.employees_tab.copy_label'.tr(args: [inviteKey!]),
+                              'company_management.employees_tab.copy_label'.tr(
+                                context: context, 
+                                args: [inviteKey!]
+                              ),
                               maxLines: 4,
                               style: AppTextStyles.regular16.copyWith(
                                 color: AppColors.gunMetal,
                               ),
-                              overflow: .ellipsis,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Row(
                             children: [
                               IconButton(
-                                onPressed: () =>
-                                    _copyInviteKey(context, inviteKey!),
+                                onPressed: () => _copyInviteKey(context, inviteKey!),
                                 icon: Icon(Icons.copy, color: AppColors.gunMetal),
                               ),
                               IconButton(
-                                onPressed: () =>
-                                    _showDeleteConfirmationDialog(context),
+                                onPressed: () => _showDeleteConfirmationDialog(context),
                                 icon: Icon(Icons.close, color: AppColors.tiger),
                               ),
                             ],

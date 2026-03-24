@@ -42,25 +42,35 @@ class CompanyAccountScreen extends StatelessWidget {
                           mainAxisAlignment: .spaceBetween,
                           crossAxisAlignment: .center,
                           children: [
-                            Column(
-                              crossAxisAlignment: .start,
-                              children: [
-                                Text(
-                                  'company_account.title'.tr(),
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineMedium,
-                                ),
-                                gapH4,
-                                Text(
-                                  state.companyAccount.name,
-                                  style: AppTextStyles.light26,
-                                ),
-                              ],
+                            Flexible(
+                              flex: 60,
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                children: [
+                                  Text(
+                                    'company_account.title'.tr(),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.headlineMedium,
+                                    overflow: .ellipsis,
+                                  ),
+                                  gapH4,
+                                  FittedBox(
+                                    child: Text(
+                                      state.companyAccount.name,
+                                      style: AppTextStyles.light26,
+                                      overflow: .ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            CustomButton(
-                              text: 'company_account.logout'.tr(),
-                              onPressed: () => sl<AuthCubit>().logout(),
+                            Flexible(
+                              flex: 40,
+                              child: CustomButton(
+                                text: 'company_account.logout'.tr(),
+                                onPressed: () => sl<AuthCubit>().logout(),
+                              ),
                             ),
                           ],
                         ),
@@ -94,10 +104,12 @@ class CompanyAccountScreen extends StatelessWidget {
                                   overflow: .ellipsis,
                                 ),
                                 gapW8,
-                                Text(
-                                  state.companyAccount.email,
-                                  style: AppTextStyles.light24,
-                                  overflow: .ellipsis,
+                                Expanded(
+                                  child: Text(
+                                    state.companyAccount.email,
+                                    style: AppTextStyles.light24,
+                                    overflow: .ellipsis,
+                                  ),
                                 ),
                               ],
                             ),
@@ -123,7 +135,7 @@ class CompanyAccountScreen extends StatelessWidget {
                         ),
                         gapH250,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: .spaceBetween,
                           children: [
                             Text(
                               'company_account.dark_mode'.tr(),
