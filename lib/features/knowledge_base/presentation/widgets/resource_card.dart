@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/injection_container.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/style/widgets/custom_button.dart';
+import '../../../auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../data/models/resource.dart';
 import '../cubit/knowledge_base_cubit.dart';
 
@@ -54,6 +56,7 @@ class ResourceCard extends StatelessWidget {
               style: AppTextStyles.regular14,
             ),
           ),
+          if(sl<AuthCubit>().state is AuthCompanyAuthenticated)
           IconButton(
             onPressed: () {
               _showDeleteConfirmationDialog(context, resource.id);

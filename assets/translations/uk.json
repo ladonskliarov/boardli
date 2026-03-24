@@ -164,5 +164,18 @@
             "name": "Назва департаменту",
             "complete": "Готово"
         }
+    },
+    "enums": {
+        "industry": {
+            "technology": "Технології",
+            "finance": "Фінанси",
+            "other": "Інше"
+        },
+        "gender": {
+            "male": "Чоловіча",
+            "female": "Жіноча",
+            "other": "Інша",
+            "preferNotToSay": "Не бажаю вказувати"
+        }
     }
 }

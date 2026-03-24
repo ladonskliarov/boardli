@@ -164,5 +164,18 @@
             "name": "Department name",
             "complete": "Complete"
         }
+    },
+    "enums": {
+    "industry": {
+      "technology": "Technology",
+      "finance": "Finance",
+      "other": "Other"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "preferNotToSay": "Prefer not to say"
     }
+  }
 }

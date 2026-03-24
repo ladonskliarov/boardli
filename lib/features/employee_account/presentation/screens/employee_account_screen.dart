@@ -30,7 +30,9 @@ class EmployeeAccountScreen extends StatelessWidget {
               } else if (state is EmployeeAccountLoaded) {
                 return RefreshIndicator(
                   onRefresh: () async {
-                    context.read<EmployeeAccountCubit>().refreshEmployeeAccount();
+                    context
+                        .read<EmployeeAccountCubit>()
+                        .refreshEmployeeAccount();
                   },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -72,16 +74,28 @@ class EmployeeAccountScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: .start,
                           children: [
-                            Column(
-                              crossAxisAlignment: .start,
+                            Row(
                               children: [
-                                Text(
-                                  'account_screen.department'.tr(),
-                                  style: AppTextStyles.regular24,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Text(
+                                        'account_screen.department'.tr(),
+                                        style: AppTextStyles.regular24,
+                                      ),
+                                      Text(
+                                        state.employee.department,
+                                        style: AppTextStyles.light24,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  state.employee.department,
-                                  style: AppTextStyles.light24,
+                                CustomButton(
+                                  backgroundColor: AppColors.grey,
+                                  textColor: AppColors.white,
+                                  text: 'account_screen.logout'.tr(),
+                                  onPressed: () => sl<AuthCubit>().logout(),
                                 ),
                               ],
                             ),
@@ -89,7 +103,7 @@ class EmployeeAccountScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  'account_screen.role'.tr(), 
+                                  'account_screen.role'.tr(),
                                   style: AppTextStyles.regular24,
                                 ),
                                 gapW8,
@@ -102,19 +116,12 @@ class EmployeeAccountScreen extends StatelessWidget {
                             gapH10,
                           ],
                         ),
-                        gapH120,
-                        CustomButton(
-                          backgroundColor: AppColors.grey,
-                          textColor: AppColors.white,
-                          text: 'account_screen.logout'.tr(),
-                          onPressed: () => sl<AuthCubit>().logout(),
-                        ),
-                        gapH12,
+                        gapH200,
                         Row(
                           mainAxisAlignment: .spaceBetween,
                           children: [
                             Text(
-                              'account_screen.dark_mode'.tr(), 
+                              'account_screen.dark_mode'.tr(),
                               style: AppTextStyles.light24,
                             ),
                             Switch(
@@ -143,29 +150,33 @@ class EmployeeAccountScreen extends StatelessWidget {
                           mainAxisAlignment: .spaceBetween,
                           children: [
                             Text(
-                              'account_screen.language_toggle'.tr(), 
+                              'account_screen.language_toggle'.tr(),
                               style: AppTextStyles.light24,
                             ),
-                             Switch(
-                            activeTrackColor: AppColors.sandyBrown,
-                            inactiveTrackColor: AppColors.grey,
-                            activeThumbColor: AppColors.white,
-                            inactiveThumbColor: AppColors.white,
-                            thumbIcon: const WidgetStatePropertyAll(
-                              Icon(
-                                Icons.circle,
-                                color: Colors.transparent,
-                                size: 0,
+                            Switch(
+                              activeTrackColor: AppColors.sandyBrown,
+                              inactiveTrackColor: AppColors.grey,
+                              activeThumbColor: AppColors.white,
+                              inactiveThumbColor: AppColors.white,
+                              thumbIcon: const WidgetStatePropertyAll(
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.transparent,
+                                  size: 0,
+                                ),
                               ),
+                              trackOutlineColor: WidgetStateProperty.all(
+                                Colors.transparent,
+                              ),
+                              value: context
+                                  .watch<LocaleProvider>()
+                                  .isUkrainian,
+                              onChanged: (value) {
+                                context.read<LocaleProvider>().switchLocale(
+                                  context,
+                                );
+                              },
                             ),
-                            trackOutlineColor: WidgetStateProperty.all(
-                              Colors.transparent,
-                            ),
-                            value: context.watch<LocaleProvider>().isUkrainian,
-                            onChanged: (value) {
-                              context.read<LocaleProvider>().switchLocale(context);
-                            },
-                          ),
                           ],
                         ),
                         gapH24,

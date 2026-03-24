@@ -8,12 +8,15 @@ import '../models/resource.dart';
 class KnowledgeBaseDatasource {
   final Dio dio;
   const KnowledgeBaseDatasource({required this.dio});
-
+  
+  // 69c2aa65b2f91fb548f2b93e
   Future<void> deleteResource(String resourceId) async {
     final String url = '/api/v1/resources/$resourceId';
 
+    final Map<String, dynamic> requestData = {"id": resourceId};
+
     try {
-      final response = await dio.delete(url);
+      final response = await dio.delete(url, data: requestData);
 
       log('Delete resource status code: ${response.statusCode}');
       log('Response data: ${response.data}');
@@ -31,6 +34,7 @@ class KnowledgeBaseDatasource {
       throw Exception('Unexpected error occurred: $e');
     }
   }
+
   Future<List<Resource>> getResources() async {
     const String url = '/api/v1/resources';
 
@@ -49,7 +53,10 @@ class KnowledgeBaseDatasource {
   Future<void> uploadLink({required String link, String? title}) async {
     const String url = '/api/v1/resources/url';
 
-    final Map<String, dynamic> requestData = {"url": link, "title": title ?? link};
+    final Map<String, dynamic> requestData = {
+      "url": link,
+      "title": title ?? link,
+    };
 
     try {
       final response = await dio.post(url, data: requestData);

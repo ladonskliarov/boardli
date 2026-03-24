@@ -25,14 +25,6 @@ class CompanyAccountScreen extends StatelessWidget {
           return Center(child: Text(state.message));
         } else if (state is CompanyAccountLoaded) {
           return Scaffold(
-            appBar: AppBar(
-              centerTitle: false,
-              surfaceTintColor: Colors.transparent,
-              title: Text(
-                'company_account.title'.tr(),
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
             body: SafeArea(
               child: Padding(
                 padding: Paddings.paddingHorizontal16,
@@ -46,9 +38,31 @@ class CompanyAccountScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        Text(
-                          state.companyAccount.name,
-                          style: AppTextStyles.light26,
+                        Row(
+                          mainAxisAlignment: .spaceBetween,
+                          crossAxisAlignment: .center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                Text(
+                                  'company_account.title'.tr(),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium,
+                                ),
+                                gapH4,
+                                Text(
+                                  state.companyAccount.name,
+                                  style: AppTextStyles.light26,
+                                ),
+                              ],
+                            ),
+                            CustomButton(
+                              text: 'company_account.logout'.tr(),
+                              onPressed: () => sl<AuthCubit>().logout(),
+                            ),
+                          ],
                         ),
                         gapH12,
                         Divider(),
@@ -107,12 +121,7 @@ class CompanyAccountScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        gapH190,
-                        CustomButton(
-                          text: 'company_account.logout'.tr(),
-                          onPressed: () => sl<AuthCubit>().logout(),
-                        ),
-                        gapH12,
+                        gapH250,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

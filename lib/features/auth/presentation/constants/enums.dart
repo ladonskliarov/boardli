@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 abstract interface class EnumValue {
   String get value;
   String get key;
@@ -17,16 +19,19 @@ enum CompanySize implements EnumValue {
 }
 
 enum IndustryType implements EnumValue {
-  technology('Technology'),
-  finance('Finance'),
-  other('Other');
+  technology('enums.industry.technology'),
+  finance('enums.industry.finance'),
+  other('enums.industry.other');
+
+  final String _translationKey;
 
   @override
-  final String value;
+  String get value => _translationKey.tr();
 
   @override
   String get key => name;
-  const IndustryType(this.value);
+
+  const IndustryType(this._translationKey);
 }
 
 enum EmployeeRole implements EnumValue {
@@ -47,15 +52,18 @@ enum EmployeeRole implements EnumValue {
 }
 
 enum Gender implements EnumValue {
-  male('Male'),
-  female('Female'),
-  other('Other'),
-  preferNotToSay('Prefer not to say');
+  male('enums.gender.male'),
+  female('enums.gender.female'),
+  other('enums.gender.other'),
+  preferNotToSay('enums.gender.preferNotToSay');
+
+  final String _translationKey;
 
   @override
-  final String value;
+  String get value => _translationKey.tr();
 
   @override
   String get key => name;
-  const Gender(this.value);
+
+  const Gender(this._translationKey);
 }

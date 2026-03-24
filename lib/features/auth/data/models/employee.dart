@@ -21,8 +21,7 @@ class BaseEmployee extends Equatable {
   factory BaseEmployee.fromJson(Map<String, dynamic> json) {
     if (json['gender'] != null) {
       return Employee.fromJson(json);
-    } 
-    else {
+    } else {
       return InvitedEmployee.fromJson(json);
     }
   }
@@ -58,18 +57,19 @@ class Employee extends BaseEmployee {
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
       id: json['_id'] ?? json['id'],
-      gender: json['gender'],
-      hobbies: json['hobbies'],
-      favoriteAnimals: json['favoriteAnimal'],
-      name: json['name'],
-      email: json['email'],
-      department: json['department'],
+      gender: json['gender'] ?? '',
+      hobbies: json['hobbies'] ?? '',
+      favoriteAnimals: json['favoriteAnimal'] ?? '',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      department: json['department'] ?? '',
       role: EmployeeRole.values.firstWhere(
-        (e) => e.toString() == 'EmployeeRole.${json['role']}',
+        (e) => e.name.toLowerCase() == json['role']?.toString().toLowerCase(),
+        orElse: () => EmployeeRole.trainee,
       ),
-      companyId: json['companyId'],
+      companyId: json['companyId'] ?? '',
     );
-  }  
+  }
 }
 
 class InvitedEmployee extends BaseEmployee {
@@ -85,13 +85,14 @@ class InvitedEmployee extends BaseEmployee {
   factory InvitedEmployee.fromJson(Map<String, dynamic> json) {
     return InvitedEmployee(
       id: json['_id'] ?? json['id'],
-      name: json['name'],
-      email: json['email'],
-      department: json['department'],
-      role: EmployeeRole.values.firstWhere(
-        (e) => e.toString() == 'EmployeeRole.${json['role']}',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      department: json['department'] ?? '',
+     role: EmployeeRole.values.firstWhere(
+        (e) => e.name.toLowerCase() == json['role']?.toString().toLowerCase(),
+        orElse: () => EmployeeRole.trainee,
       ),
-      companyId: json['companyId'],
+      companyId: json['companyId'] ?? '',
     );
   }
 }

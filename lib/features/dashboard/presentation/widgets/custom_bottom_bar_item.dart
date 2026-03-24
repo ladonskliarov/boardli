@@ -21,6 +21,7 @@ class CustomBottomBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      splashColor: Colors.transparent,
       child: AnimatedContainer(
         height: 70,
         width: 70,
