@@ -101,6 +101,7 @@ class EmployeesTab extends StatelessWidget {
               style: AppTextStyles.regular22,
             ),
             CustomButton(
+              backgroundColor: AppColors.sandyBrown,
               text: 'company_management.employees_tab.add_new'.tr(context: context),
               onPressed: () {
                 if (canAddEmployee(departments?.length)) {

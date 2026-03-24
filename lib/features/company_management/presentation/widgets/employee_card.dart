@@ -84,7 +84,7 @@ class EmployeeCard extends StatelessWidget {
             onPressed: () {
               _showDeleteConfirmationDialog(context, employee.id);
             },
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.close),
           ),
         ],
       ),

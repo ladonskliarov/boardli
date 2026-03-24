@@ -61,7 +61,7 @@ class ResourceCard extends StatelessWidget {
             onPressed: () {
               _showDeleteConfirmationDialog(context, resource.id);
             },
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.delete_outline_rounded),
           ),
         ],
       ),

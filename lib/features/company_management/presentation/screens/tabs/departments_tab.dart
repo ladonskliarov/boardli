@@ -39,6 +39,7 @@ class DepartmentsTab extends StatelessWidget {
               style: AppTextStyles.regular22,
             ),
             CustomButton(
+              backgroundColor: AppColors.sandyBrown,
               text: 'company_management.departments_tab.add_new'.tr(),
               onPressed: () {
                 _onAddDepartmentPressed(context);
