@@ -13,7 +13,7 @@ class EmployeeCard extends StatelessWidget {
 
   String getDescription() {
     return switch (employee) {
-      EmployeeEntity e => e.role.value,
+      EmployeeEntity e => '${e.department}, ${e.role.value}',
       InvitedEmployeeEntity _ =>
         'company_management.employees_tab.status_invited'.tr(),
       _ => 'company_management.employees_tab.status_unknown'.tr(),
