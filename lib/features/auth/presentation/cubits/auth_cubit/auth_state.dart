@@ -13,12 +13,6 @@ sealed class AuthAuthenticated extends AuthState {
   const AuthAuthenticated();
 }
 
-final class AuthCompanyAuthenticated extends AuthAuthenticated {
-  // final CompanyEntity company;
-  // const AuthCompanyAuthenticated(this.company);
-}
+final class AuthCompanyAuthenticated extends AuthAuthenticated {}
 
-final class AuthEmployeeAuthenticated extends AuthAuthenticated {
-  // final EmployeeEntity employee;
-  // const AuthEmployeeAuthenticated(this.employee);
-}
+final class AuthEmployeeAuthenticated extends AuthAuthenticated {}
