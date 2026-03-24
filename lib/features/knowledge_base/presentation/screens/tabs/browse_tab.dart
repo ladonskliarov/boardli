@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/style/app_colors.dart';
-import '../../../../../core/style/app_dimensions.dart';
 import '../../../../../core/style/app_text_styles.dart';
+import '../../../../../core/util/extensions.dart';
 import '../../../data/models/resource.dart';
 import '../../cubit/knowledge_base_cubit.dart';
 import '../../widgets/resource_card.dart';
@@ -39,7 +39,7 @@ class BrowseTab extends StatelessWidget {
           : ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: resources.length,
-              separatorBuilder: (context, index) => gapH12,
+              separatorBuilder: (context, index) => Divider(height: 12.ph),
               itemBuilder: (context, index) {
                 final resource = resources[index];
                 return ResourceCard(resource: resource);

@@ -7,6 +7,7 @@ import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
 import '../../../../../core/style/app_text_styles.dart';
 import '../../../../../core/style/widgets/custom_button.dart';
+import '../../../../../core/util/extensions.dart';
 import '../../../../auth/domain/entities/employee_entity.dart';
 import '../../components/add_employee_form.dart';
 import '../../cubit/company_management_cubit.dart';
@@ -169,9 +170,7 @@ class EmployeesTab extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return EmployeeCard(employee: employees![index]);
                     },
-                    separatorBuilder: (context, index) {
-                      return gapH12;
-                    },
+                    separatorBuilder: (context, index) => Divider(height: 12.ph),
                   ),
               ],
             ),
