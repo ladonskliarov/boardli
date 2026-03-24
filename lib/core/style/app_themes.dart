@@ -17,7 +17,7 @@ abstract class AppThemes {
       onPrimary: AppColors.gunMetal,
       secondary: AppColors.gunMetal,
       surfaceContainer: AppColors.softLinen,
-      onSecondary: AppColors.white,
+      onSecondary: AppColors.gunMetal,
       error: AppColors.softLinen,
       onError: AppColors.tiger,
     ),

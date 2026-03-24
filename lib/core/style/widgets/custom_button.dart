@@ -26,8 +26,8 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: hasMinimumSize == true ? Size(Sizes.p160.pw, Sizes.p60.ph) : null,
-        padding: EdgeInsets.symmetric(
-          vertical: Sizes.p12.ph,
+        padding: .symmetric(
+          vertical: Sizes.p16.ph,
           horizontal: Sizes.p20.pw,
         ),
         overlayColor: AppColors.white.withValues(alpha: 0.1),

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../authorization/data/models/employee.dart';
+import '../../../auth/data/models/employee.dart';
 
 class CompanyManagementDatasource {
   final Dio dio;

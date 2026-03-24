@@ -3,16 +3,17 @@ import 'package:boardli/features/employee_account/presentation/cubit/employee_ac
 import 'package:boardli/features/knowledge_base/data/datasource/knowledge_base_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../features/authorization/data/datasource/remote/employee_remote_datasource.dart';
-import '../../features/authorization/data/datasource/remote/employee_remote_datasource_impl.dart';
-import '../../features/authorization/data/repositories/employee_repository_impl.dart';
-import '../../features/authorization/domain/repositories/employee_repository.dart';
-import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
-import '../../features/authorization/presentation/cubits/company_register_cubit/company_register_cubit.dart';
-import '../../features/authorization/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
+import '../../features/auth/data/datasource/remote/employee_remote_datasource.dart';
+import '../../features/auth/data/datasource/remote/employee_remote_datasource_impl.dart';
+import '../../features/auth/data/repositories/employee_repository_impl.dart';
+import '../../features/auth/domain/repositories/employee_repository.dart';
+import '../../features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
+import '../../features/auth/presentation/cubits/company_register_cubit/company_register_cubit.dart';
+import '../../features/auth/presentation/cubits/employee_register_cubit/employee_register_cubit.dart';
 import '../../features/chat_assistant/data/datasource/chat_assistant_datasource.dart';
 import '../../features/chat_assistant/data/repository/chat_assistant_repository_impl.dart';
 import '../../features/chat_assistant/domain/repositories/chat_assistant_repository.dart';
@@ -24,14 +25,15 @@ import '../../features/company_management/presentation/cubit/company_management_
 import '../../features/knowledge_base/domain/repositories/knowledge_base_repository.dart';
 import '../../features/knowledge_base/presentation/cubit/knowledge_base_cubit.dart';
 import '../interceptors/token_interceptor.dart';
+import '../providers/locale_provider.dart';
 import '../storage/implementations/token_repository_impl.dart';
 import '../storage/interfaces/token_repository.dart';
-import '../../features/authorization/data/datasource/remote/company_remote_datasource.dart';
-import '../../features/authorization/data/datasource/remote/company_remote_datasource_impl.dart';
-import '../../features/authorization/data/repositories/company_repositorty_impl.dart';
-import '../../features/authorization/domain/repositories/company_repository.dart';
-import '../../features/authorization/presentation/cubits/login_cubit/company_login_cubit.dart';
-import '../../features/authorization/presentation/cubits/login_cubit/employee_login_cubit.dart';
+import '../../features/auth/data/datasource/remote/company_remote_datasource.dart';
+import '../../features/auth/data/datasource/remote/company_remote_datasource_impl.dart';
+import '../../features/auth/data/repositories/company_repositorty_impl.dart';
+import '../../features/auth/domain/repositories/company_repository.dart';
+import '../../features/auth/presentation/cubits/login_cubit/company_login_cubit.dart';
+import '../../features/auth/presentation/cubits/login_cubit/employee_login_cubit.dart';
 import '../providers/theme_provider.dart';
 import '../storage/implementations/shared_prefs_storage.dart';
 import '../storage/interfaces/local_storage_service.dart';
@@ -158,8 +160,14 @@ void _registerCubits() {
 
 Future<void> _registerProviders() async {
   final LocalStorageService localStorageService = sl();
-  final darkTheme = await localStorageService.getDarkTheme();
+  final isDarkTheme = await localStorageService.getDarkTheme();
   sl.registerLazySingleton<ThemeProvider>(
-    () => ThemeProvider(darkTheme: darkTheme),
+    () => ThemeProvider(isDarkTheme: isDarkTheme),
+  );
+
+  final localeCode = await localStorageService.getLocale();
+  final initialLocale = Locale(localeCode);
+  sl.registerLazySingleton<LocaleProvider>(
+    () => LocaleProvider(currentLocale: initialLocale),
   );
 }

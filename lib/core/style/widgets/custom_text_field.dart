@@ -60,7 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           Text(
             widget.title!,
             style: AppTextStyles.light20.copyWith(
-              color: widget.titleColor ?? AppColors.black.withValues(alpha: 0.9),
+              color: widget.titleColor ?? AppColors.gunMetal,
             ),
           ),
           gapH12,

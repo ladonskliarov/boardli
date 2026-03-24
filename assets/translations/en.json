@@ -1,3 +1,161 @@
 {
-    "hello" : "Hello Empat!"
+    "validators": {
+        "email": {
+            "empty": "Please enter your email",
+            "invalid": "Please enter a valid email address"
+        },
+        "password": {
+            "empty": "Password is required",
+            "invalid_register": "One uppercase, lowercase and number",
+            "invalid_login": "Please enter a valid password"
+        },
+        "confirm_password": {
+            "empty": "Please confirm your password",
+            "mismatch": "Passwords do not match"
+        },
+        "company_name": {
+            "empty": "Company name is required",
+            "invalid": "Enter at least 2 characters"
+        },
+        "full_name": {
+            "empty": "Full name is required",
+            "invalid": "At least two words (min 2 characters each)"
+        },
+        "hobby": {
+            "empty": "Please enter your hobbies",
+            "invalid": "Please separate values with commas (e.g. Reading, Gaming)"
+        },
+        "animal": {
+            "empty": "Please enter your favorite animals",
+            "invalid": "Please separate values with commas (e.g. Dog, Cat)"
+        },
+        "invite_key": {
+            "empty": "Please enter your invite key",
+            "invalid": "Enter a valid key"
+        },
+        "department_name": {
+            "empty": "Please enter department name",
+            "invalid": "Use only letters, numbers and spaces"
+        }
+    },
+    "auth_screen": {
+        "title": "Onboarding. AI-driven. \nPocket-sized.",
+        "sign_in_as": "Sign in as",
+        "sign_up_as": "Sign up as",
+        "employee": "Employee",
+        "company": "Company"
+    },
+    "login_screen": {
+        "welcome_back": "Welcome back!",
+        "email_label": "Email",
+        "password_label": "Password",
+        "sign_in_button": "Sign in"
+    },
+    "register_screen": {
+        "subtitle": "Welcome aboard!",
+        "invite_key": "Invite key",
+        "create_password": "Create password",
+        "confirm_password": "Confirm password",
+        "password_hint": "Min. 8 characters",
+        "gender": "Your gender",
+        "hobbies": "Your hobbie(s)",
+        "hobbies_hint": "CrossFit, Reading",
+        "animals": "Favorite animal(s)",
+        "animals_hint": "Capybara, Cat",
+        "sign_up_button": "Sign up"
+    },
+    "company_register": {
+        "subtitle": "Company registration",
+        "additional_text": "in 2 minutes",
+        "company_name": "Company name",
+        "industry": "Industry",
+        "company_size": "Company size",
+        "full_name": "Your full name",
+        "full_name_hint": "Roman Shuhevich",
+        "email": "Work email",
+        "email_hint": "shuh@emapt.tech",
+        "password": "Password",
+        "password_hint": "Min. 8 characters",
+        "confirm_password": "Confirm password",
+        "sign_up_button": "Sign up"
+    },
+    "knowledge_base": {
+        "title": "Knowledge Base",
+        "tabs": {
+            "browse": "Browse",
+            "upload": "Upload"
+        },
+        "browse": {
+            "empty": "No resources uploaded yet.\nStart sharing knowledge with your team ⚡️"
+        },
+        "upload": {
+            "promo_text": "Empower your company with a shared knowledge base",
+            "file_section": {
+                "title": "File",
+                "supports": "Supports: PDF, DOC, DOCX, TXT, md",
+                "select_button": "Select"
+            },
+            "link_section": {
+                "title": "Link",
+                "optional_title": "Title (optional)",
+                "send_button": "Send"
+            }
+        }
+    },
+    "chat_assistant": {
+        "app_bar_title": "Your assistant",
+        "empty_state": "Ask your assistant anything!",
+        "input_hint": "Ask something..",
+        "send_button_tooltip": "Send"
+    },
+    "account_screen": {
+        "boardler": "Boardler:",
+        "company": "Company:",
+        "department": "Department:",
+        "role": "Role:",
+        "logout": "Logout",
+        "dark_mode": "Dark mode",
+        "language_toggle": "Eng / Ua"
+    },
+    "company_account": {
+        "title": "Company:",
+        "organization_size": "Organization size:",
+        "email": "Email:",
+        "manager": "Manager:",
+        "logout": "Logout",
+        "dark_mode": "Dark mode",
+        "language_toggle": "Eng / Ua"
+    },
+    "company_management": {
+        "title": "Manage Company",
+        "tabs": {
+            "employees": "Employees",
+            "departments": "Departments"
+        },
+        "employees_tab": {
+            "total": "Total: {}",
+            "add_new": "Add new",
+            "copy_success": "Invite key copied",
+            "copy_label": "Copy invite key: {}",
+            "no_departments_error": "Please create a department before adding employees.",
+            "delete_dialog": "The invite key is shown only once. Are you sure you have saved it and are ready to delete it?",
+            "delete_confirm": "Yes, delete"
+        },
+        "departments_tab": {
+            "total": "Total: {}",
+            "add_new": "Add new"
+        },
+        "add_employee": {
+            "title": "Add Employee",
+            "full_name": "Full name",
+            "email": "Email",
+            "department": "Department",
+            "role": "Role",
+            "complete": "Complete"
+        },
+        "add_department": {
+            "name": "Department name",
+            "complete": "Complete"
+        }
+    }
 }

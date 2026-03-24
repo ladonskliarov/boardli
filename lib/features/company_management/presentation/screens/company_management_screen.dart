@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +9,11 @@ import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/util/validator.dart';
-import '../../../authorization/domain/entities/employee_entity.dart';
-import '../../../authorization/presentation/constants/enums.dart';
+import '../../../auth/domain/entities/employee_entity.dart';
 import '../../../../core/style/widgets/custom_button.dart';
 import '../../../../core/style/widgets/custom_dropdown_button.dart';
 import '../../../../core/style/widgets/custom_text_field.dart';
+import '../../../auth/presentation/constants/enums.dart';
 import '../cubit/company_management_cubit.dart';
 
 class CompanyManagementScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
-          title: Text('Manage Company', style: AppTextStyles.regular28),
+          title: Text('company_management.title'.tr(), style: AppTextStyles.regular28),
         ),
         body: Builder(
           builder: (context) {
@@ -67,7 +68,9 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
                         Container(
                           padding: Paddings.paddingHorizontal20,
                           decoration: BoxDecoration(
-                            color: AppColors.metal,
+                            color: context.watch<ThemeProvider>().isDarkTheme
+                          ? AppColors.metal
+                          : AppColors.white,
                             borderRadius: .circular(40),
                           ),
                           height: 44,
@@ -76,17 +79,17 @@ class _CompanyManagementScreenState extends State<CompanyManagementScreen>
                             indicatorSize: TabBarIndicatorSize.tab,
                             controller: _tabController,
                             unselectedLabelColor:
-                                context.watch<ThemeProvider>().darkTheme
+                                context.watch<ThemeProvider>().isDarkTheme
                                 ? AppColors.white.withValues(alpha: 0.6)
                                 : AppColors.grey,
                             labelColor: AppColors.sandyBrown,
                             dividerColor:
-                                context.watch<ThemeProvider>().darkTheme
+                                context.watch<ThemeProvider>().isDarkTheme
                                 ? AppColors.metal
                                 : AppColors.white,
                             tabs: [
-                              Tab(child: Text('Employees')),
-                              Tab(child: Text('Departments')),
+                              Tab(child: Text('company_management.tabs.employees'.tr())),
+                              Tab(child: Text('company_management.tabs.departments'.tr())),
                             ],
                           ),
                         ),
@@ -136,9 +139,9 @@ class EmployeesTab extends StatelessWidget {
     if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Invite key copied', style: AppTextStyles.regular16),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text('company_management.employees_tab.copy_success'.tr(), style: AppTextStyles.regular16),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -150,15 +153,15 @@ class EmployeesTab extends StatelessWidget {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: .circular(20),
           ),
           content: Text(
-            'The invite key is shown only once. Are you sure you have saved it and are ready to delete it?',
+            'company_management.employees_tab.delete_dialog'.tr(),
             style: AppTextStyles.regular18,
           ),
           actions: [
             CustomButton(
-              text: 'Yes, delete',
+              text: 'company_management.employees_tab.delete_confirm'.tr(),
               onPressed: () {
                 companyManagementCubit.deleteInviteKey();
                 Navigator.of(dialogContext).pop();
@@ -196,11 +199,11 @@ class EmployeesTab extends StatelessWidget {
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              'Total: ${employees?.length ?? 0}',
+              'company_management.employees_tab.total'.tr(args: [(employees?.length ?? 0).toString()]),
               style: AppTextStyles.regular22,
             ),
             CustomButton(
-              text: 'Add new',
+              text: 'company_management.employees_tab.add_new'.tr(),
               onPressed: () {
                 if (canAddEmployee(departments?.length)) {
                   _onAddEmployeePressed(context, departments!);
@@ -208,7 +211,7 @@ class EmployeesTab extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Please create a department before adding employees.',
+                        'company_management.employees_tab.no_departments_error'.tr(),
                       ),
                     ),
                   );
@@ -235,7 +238,7 @@ class EmployeesTab extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            'Copy invite key: $inviteKey',
+                            'company_management.employees_tab.copy_label'.tr(args: [inviteKey!]),
                             maxLines: 4,
                             style: AppTextStyles.regular16.copyWith(
                               color: AppColors.gunMetal,
@@ -304,11 +307,11 @@ class DepartmentsTab extends StatelessWidget {
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              'Total: ${departments?.length ?? 0}',
+              'company_management.departments_tab.total'.tr(args: [(departments?.length ?? 0).toString()]),
               style: AppTextStyles.regular22,
             ),
             CustomButton(
-              text: 'Add new',
+              text: 'company_management.departments_tab.add_new'.tr(),
               onPressed: () {
                 _onAddDepartmentPressed(context);
               },
@@ -369,7 +372,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Employee'),
+      title: Text('company_management.add_employee.title'.tr()),
       content: Form(
         key: _formKey,
         child: SizedBox(
@@ -378,15 +381,15 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             mainAxisSize: .min,
             children: [
               CustomTextField(
-                title: 'Full name',
-                titleColor: AppColors.white,
+                title: 'company_management.add_employee.full_name'.tr(),
+                titleColor: Theme.of(context).colorScheme.onSecondary,
                 controller: _nameController,
                 validator: Validator.validateFullName,
               ),
               gapH10,
               CustomTextField(
-                title: 'Email',
-                titleColor: AppColors.white,
+                title: 'company_management.add_employee.email'.tr(),
+                titleColor: Theme.of(context).colorScheme.onSecondary,
                 controller: _emailController,
                 validator: (value) {
                   return null;
@@ -394,15 +397,15 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               ),
               gapH10,
               CustomDropdownButton(
-                title: 'Department',
-                titleColor: AppColors.white,
+                title: 'company_management.add_employee.department'.tr(),
+                titleColor: Theme.of(context).colorScheme.onSecondary,
                 valueNotifier: _department,
                 items: widget.departments,
               ),
               gapH10,
               CustomDropdownButton(
-                title: 'Role',
-                titleColor: AppColors.white,
+                title: 'company_management.add_employee.role'.tr(),
+                titleColor: Theme.of(context).colorScheme.onSecondary,
                 valueNotifier: _role,
                 items: EmployeeRole.values,
               ),
@@ -412,7 +415,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
       ),
       actions: [
         CustomButton(
-          text: 'Complete',
+          text: 'company_management.add_employee.complete'.tr(),
           onPressed: () {
             context.read<CompanyManagementCubit>().createEmployeeInvite(
               name: _nameController.text,
@@ -451,11 +454,10 @@ class _AddDepartmentFormState extends State<AddDepartmentForm> {
       content: Form(
         key: _formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             CustomTextField(
-              title: 'Department name',
-              titleColor: AppColors.white,
+              title: 'company_management.add_department.name'.tr(),
               validator: Validator.validateDepartmentName,
               controller: _departmentController,
             ),
@@ -464,7 +466,7 @@ class _AddDepartmentFormState extends State<AddDepartmentForm> {
       ),
       actions: [
         CustomButton(
-          text: 'Complete',
+          text: 'company_management.add_department.complete'.tr(),
           onPressed: () {
             context.read<CompanyManagementCubit>().createDepartment(
               department: _departmentController.text,
@@ -505,10 +507,6 @@ class EmployeeCard extends StatelessWidget {
               style: AppTextStyles.regular16,
             ),
           ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: Icon(Icons.delete, size: 16),
-          // ),
         ],
       ),
     );
@@ -534,10 +532,6 @@ class DepartmentCard extends StatelessWidget {
               style: AppTextStyles.regular20,
             ),
           ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: Icon(Icons.delete, size: 16),
-          // ),
         ],
       ),
     );

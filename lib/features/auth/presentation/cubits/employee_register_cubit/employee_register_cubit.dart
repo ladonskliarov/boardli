@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../auth_cubit/auth_cubit.dart';
-import '/features/authorization/domain/entities/employee_entity.dart';
+import '../../../domain/entities/employee_entity.dart';
 import '../../../domain/repositories/employee_repository.dart';
 
 part 'employee_register_state.dart';

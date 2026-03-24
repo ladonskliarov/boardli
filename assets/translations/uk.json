@@ -1,3 +1,161 @@
 {
-    "hello" : "Вітаю, Емпат!"
+    "validators": {
+        "email": {
+            "empty": "Будь ласка, введіть вашу електронну пошту",
+            "invalid": "Будь ласка, введіть дійсну адресу електронної пошти"
+        },
+        "password": {
+            "empty": "Пароль є обов'язковим",
+            "invalid_register": "Мінімум одна велика, мала літера та цифра",
+            "invalid_login": "Будь ласка, введіть дійсний пароль"
+        },
+        "confirm_password": {
+            "empty": "Будь ласка, підтвердіть ваш пароль",
+            "mismatch": "Паролі не збігаються"
+        },
+        "company_name": {
+            "empty": "Назва компанії є обов'язковою",
+            "invalid": "Введіть принаймні 2 символи"
+        },
+        "full_name": {
+            "empty": "Повне ім'я є обов'язковим",
+            "invalid": "Мінімум два слова (від 2 символів кожне)"
+        },
+        "hobby": {
+            "empty": "Будь ласка, введіть ваші хобі",
+            "invalid": "Використовуйте кому для розділення (наприклад: Читання, Ігри)"
+        },
+        "animal": {
+            "empty": "Будь ласка, введіть ваших улюблених тварин",
+            "invalid": "Використовуйте кому для розділення (наприклад: Собака, Кіт)"
+        },
+        "invite_key": {
+            "empty": "Будь ласка, введіть ваш ключ запрошення",
+            "invalid": "Введіть дійсний ключ"
+        },
+        "department_name": {
+            "empty": "Будь ласка, введіть назву відділу",
+            "invalid": "Використовуйте лише літери, цифри та пробіли"
+        }
+    },
+    "auth_screen": {
+        "title": "ШІ-Онбординг.\nУ вашій кишені.",
+        "sign_in_as": "Увійти як",
+        "sign_up_as": "Зареєструватися як",
+        "employee": "Співробітник",
+        "company": "Компанія"
+    },
+    "login_screen": {
+        "welcome_back": "З поверненням!",
+        "email_label": "Електронна пошта",
+        "password_label": "Пароль",
+        "sign_in_button": "Увійти"
+    },
+    "register_screen": {
+        "subtitle": "Вітаємо на борту!",
+        "invite_key": "Ключ запрошення",
+        "create_password": "Створити пароль",
+        "confirm_password": "Підтвердити пароль",
+        "password_hint": "Мін. 8 символів",
+        "gender": "Ваша стать",
+        "hobbies": "Ваші хобі",
+        "hobbies_hint": "Кросфіт, Читання",
+        "animals": "Улюблені тварини",
+        "animals_hint": "Капібара, Кіт",
+        "sign_up_button": "Зареєструватися"
+    },
+    "company_register": {
+        "subtitle": "Реєстрація компанії",
+        "additional_text": "за 2 хвилини",
+        "company_name": "Назва компанії",
+        "industry": "Галузь",
+        "company_size": "Розмір компанії",
+        "full_name": "Ваше повне ім'я",
+        "full_name_hint": "Роман Шухевич",
+        "email": "Робоча пошта",
+        "email_hint": "shuh@emapt.tech",
+        "password": "Пароль",
+        "password_hint": "Мін. 8 символів",
+        "confirm_password": "Підтвердити пароль",
+        "sign_up_button": "Зареєструватися"
+    },
+    "knowledge_base": {
+        "title": "База знань",
+        "tabs": {
+            "browse": "Перегляд",
+            "upload": "Завантажити"
+        },
+        "browse": {
+            "empty": "Ресурсів ще не завантажено.\nПочніть ділитися знаннями з командою ⚡️"
+        },
+        "upload": {
+            "promo_text": "Підсильте свою компанію спільною базою знань",
+            "file_section": {
+                "title": "Файл",
+                "supports": "Підтримуються: PDF, DOC, DOCX, TXT, md",
+                "select_button": "Обрати"
+            },
+            "link_section": {
+                "title": "Посилання",
+                "optional_title": "Заголовок (опціонально)",
+                "send_button": "Надіслати"
+            }
+        }
+    },
+    "chat_assistant": {
+        "app_bar_title": "Ваш асистент",
+        "empty_state": "Запитуйте свого асистента про будь-що!",
+        "input_hint": "Запитайте щось..",
+        "send_button_tooltip": "Надіслати"
+    },
+    "account_screen": {
+        "boardler": "Бордлер:",
+        "company": "Компанія:",
+        "department": "Департамент:",
+        "role": "Роль:",
+        "logout": "Вийти",
+        "dark_mode": "Темна тема",
+        "language_toggle": "Англ / Укр"
+    },
+    "company_account": {
+        "title": "Компанія:",
+        "organization_size": "Розмір організації:",
+        "email": "Пошта:",
+        "manager": "Менеджер:",
+        "logout": "Вийти",
+        "dark_mode": "Темна тема",
+        "language_toggle": "Англ / Укр"
+    },
+    "company_management": {
+        "title": "Керування компанією",
+        "tabs": {
+            "employees": "Співробітники",
+            "departments": "Департаменти"
+        },
+        "employees_tab": {
+            "total": "Всього: {}",
+            "add_new": "Додати",
+            "copy_success": "Ключ копійовано",
+            "copy_label": "Копіювати ключ: {}",
+            "no_departments_error": "Будь ласка, створіть департамент перед додаванням співробітників.",
+            "delete_dialog": "Ключ запрошення показується лише один раз. Ви впевнені, що зберегли його і готові видалити?",
+            "delete_confirm": "Так, видалити"
+        },
+        "departments_tab": {
+            "total": "Всього: {}",
+            "add_new": "Додати"
+        },
+        "add_employee": {
+            "title": "Додати співробітника",
+            "full_name": "Повне ім'я",
+            "email": "Електронна пошта",
+            "department": "Департаменти",
+            "role": "Роль",
+            "complete": "Готово"
+        },
+        "add_department": {
+            "name": "Назва департаменту",
+            "complete": "Готово"
+        }
+    }
 }

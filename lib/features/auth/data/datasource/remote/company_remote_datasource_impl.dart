@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 
 import '../../../../../core/error/failures.dart';
-import '/features/authorization/data/models/company.dart';
+import '../../models/company.dart';
 import 'company_remote_datasource.dart';
 
 class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {

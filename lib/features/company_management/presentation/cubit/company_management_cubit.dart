@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../authorization/domain/entities/employee_entity.dart';
+import '../../../auth/domain/entities/employee_entity.dart';
 import '../../domain/repositories/company_management_repository.dart';
 
 part 'company_management_state.dart';

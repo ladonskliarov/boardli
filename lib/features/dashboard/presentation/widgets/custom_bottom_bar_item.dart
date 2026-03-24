@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_dimensions.dart';
 
@@ -31,7 +33,11 @@ class CustomBottomBarItem extends StatelessWidget {
         child: SvgPicture.asset(
           iconPath,
           colorFilter: ColorFilter.mode(
-            isSelected ? AppColors.white : AppColors.grey,
+            isSelected
+                ? AppColors.white
+                : (context.watch<ThemeProvider>().isDarkTheme
+                      ? AppColors.white
+                      : AppColors.grey),
             BlendMode.srcIn,
           ),
         ),

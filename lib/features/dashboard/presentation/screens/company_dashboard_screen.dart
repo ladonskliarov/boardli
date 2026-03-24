@@ -25,7 +25,7 @@ class CompanyDashboardScreen extends StatelessWidget {
         BlocProvider(create: (_) => sl<KnowledgeBaseCubit>()..getResources(), lazy: false),
       ],
       child: Scaffold(
-        backgroundColor: context.watch<ThemeProvider>().darkTheme ? AppColors.gunMetal : AppColors.softLinen,
+        backgroundColor: context.watch<ThemeProvider>().isDarkTheme ? AppColors.gunMetal : AppColors.softLinen,
         body: navigationShell,
         bottomNavigationBar: CustomBottomBar(
           bottomBarItems: [

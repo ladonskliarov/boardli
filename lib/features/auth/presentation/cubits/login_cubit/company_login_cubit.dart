@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '/features/authorization/domain/entities/company_entity.dart';
+import '../../../domain/entities/company_entity.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../domain/repositories/company_repository.dart';
 import 'base_login_cubit.dart';

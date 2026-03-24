@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'core/di/injection_container.dart';
+import 'core/providers/locale_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/router/router.dart';
 import 'core/style/app_themes.dart';
-import 'features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
+import 'features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,13 @@ void main() async {
     EasyLocalization(
       supportedLocales: [Locale('uk'), Locale('en')],
       path: 'assets/translations',
+      startLocale: sl<LocaleProvider>().currentLocale,
       fallbackLocale: Locale('en'),
-      child: ChangeNotifierProvider(
-        create: (_) => sl<ThemeProvider>(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => sl<ThemeProvider>()),
+          ChangeNotifierProvider(create: (_) => sl<LocaleProvider>()),
+        ],
         child: MainApp(),
       ),
     ),
@@ -31,7 +36,7 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   ThemeData _getTheme(BuildContext context) {
-    return context.watch<ThemeProvider>().darkTheme
+    return context.watch<ThemeProvider>().isDarkTheme
         ? AppThemes.darkTheme
         : AppThemes.lightTheme;
   }

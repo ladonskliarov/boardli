@@ -6,7 +6,7 @@ import '../app_dimensions.dart';
 import '../app_icons.dart';
 import '../app_text_styles.dart';
 import '../app_themes.dart';
-import '../../../features/authorization/presentation/constants/enums.dart';
+import '../../../features/auth/presentation/constants/enums.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
   final String title;
@@ -36,7 +36,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
         Text(
           title,
           style: AppTextStyles.light20.copyWith(
-            color: titleColor ?? AppColors.black.withValues(alpha: 0.9),
+            color: titleColor ?? AppColors.gunMetal,
           ),
         ),
         gapH10,

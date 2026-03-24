@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _getLoginCubit(),
@@ -49,16 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 showLoadingDialog(context);
               } else if (state is BaseLoginFailure) {
                 context.pop();
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message)),
+                );
               }
             },
             child: Scaffold(
               backgroundColor: Theme.of(context).colorScheme.surface,
               resizeToAvoidBottomInset: true,
               body: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 child: SizedBox(
                   height: MediaQuery.sizeOf(context).height,
                   child: Stack(
@@ -84,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: .start,
                                 children: [
                                   CustomTextField(
-                                    title: 'Email',
+                                    title: 'login_screen.email_label'.tr(),
                                     titleColor: AppColors.white,
                                     errorColor: AppColors.white,
                                     validator: Validator.validateEmail,
@@ -92,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   gapH10,
                                   CustomTextField(
-                                    title: 'Password',
+                                    title: 'login_screen.password_label'.tr(),
                                     obscureText: true,
                                     titleColor: AppColors.white,
                                     errorColor: AppColors.white,
@@ -101,16 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   gapH20,
                                   Align(
-                                    alignment: .centerRight,
+                                    alignment: Alignment.centerRight,
                                     child: CustomButton(
-                                      text: 'Sign in',
+                                      text: 'login_screen.sign_in_button'.tr(),
                                       backgroundColor: AppColors.grey,
                                       elevation: 4,
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<BaseLoginCubit>(
-                                            context,
-                                          ).login(
+                                          BlocProvider.of<BaseLoginCubit>(context).login(
                                             email: _emailController.text,
                                             password: _passwordController.text,
                                           );
@@ -126,8 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       HeaderWidget(
                         textColor: AppColors.white,
-                        subtitle: 'Welcome back!',
-                        headerType: .convexOut,
+                        subtitle: 'login_screen.welcome_back'.tr(),
+                        headerType: HeaderType.convexOut,
                         color: AppColors.tiger,
                       ),
                     ],

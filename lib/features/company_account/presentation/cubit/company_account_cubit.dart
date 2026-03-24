@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../authorization/domain/entities/company_entity.dart';
-import '../../../authorization/domain/repositories/company_repository.dart';
+import '../../../auth/domain/entities/company_entity.dart';
+import '../../../auth/domain/repositories/company_repository.dart';
 
 part 'company_account_state.dart';
 

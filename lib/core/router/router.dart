@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/authorization/presentation/cubits/auth_cubit/auth_cubit.dart';
+import '../../features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../../features/chat_assistant/presentation/chat_assitant_screen.dart';
 import '../../features/company_account/presentation/screens/company_account_screen.dart';
 import '../../features/company_management/presentation/screens/company_management_screen.dart';
 import '../../features/dashboard/presentation/screens/employee_dashboard_screen.dart';
-import '../../features/authorization/presentation/screens/auth_screen.dart';
-import '../../features/authorization/presentation/screens/company_registration/company_register_screen.dart';
-import '../../features/authorization/presentation/screens/company_registration/company_tariffs_screen.dart';
-import '../../features/authorization/presentation/screens/employee_registration/employee_register_screen.dart';
-import '../../features/authorization/presentation/screens/login/login_screen.dart';
+import '../../features/auth/presentation/screens/auth_screen.dart';
+import '../../features/auth/presentation/screens/company_registration/company_register_screen.dart';
+// import '../../features/auth/presentation/screens/company_registration/company_tariffs_screen.dart';
+import '../../features/auth/presentation/screens/employee_registration/employee_register_screen.dart';
+import '../../features/auth/presentation/screens/login/login_screen.dart';
 import '../../features/dashboard/presentation/screens/company_dashboard_screen.dart';
 import '../../features/employee_account/presentation/screens/employee_account_screen.dart';
 import '../../features/knowledge_base/presentation/screens/knowledge_base_screen.dart';
@@ -99,21 +99,28 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: AppPage.companyTariff.path,
-            name: AppPage.companyTariff.name,
+            path: AppPage.registerCompany.path,
+            name: AppPage.registerCompany.name,
             builder: (context, state) {
-              return CompanyTariffsScreen();
+              return CompanyRegisterScreen();
             },
-            routes: [
-              GoRoute(
-                path: AppPage.registerCompany.path,
-                name: AppPage.registerCompany.name,
-                builder: (context, state) {
-                  return CompanyRegisterScreen();
-                },
-              ),
-            ],
           ),
+          // GoRoute(
+          //   path: AppPage.companyTariff.path,
+          //   name: AppPage.companyTariff.name,
+          //   builder: (context, state) {
+          //     return CompanyTariffsScreen();
+          //   },
+          //   routes: [
+          //     GoRoute(
+          //       path: AppPage.registerCompany.path,
+          //       name: AppPage.registerCompany.name,
+          //       builder: (context, state) {
+          //         return CompanyRegisterScreen();
+          //       },
+          //     ),
+          //   ],
+          // ),
         ],
       ),
       StatefulShellRoute.indexedStack(

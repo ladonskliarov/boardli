@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../authorization/domain/entities/employee_entity.dart';
+import '../../../auth/domain/entities/employee_entity.dart';
 
 abstract class CompanyManagementRepository {
   Future<Either<Failure, List<BaseEmployeeEntity>?>> getEmployees();

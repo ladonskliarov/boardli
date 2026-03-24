@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '/features/authorization/presentation/widgets/loading_dialog.dart';
+import '../../widgets/loading_dialog.dart';
 import '../../../../../core/di/injection_container.dart';
 import '../../cubits/company_register_cubit/company_register_cubit.dart';
 import '../../../../../core/style/app_colors.dart';
@@ -77,12 +78,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 children: [
                   Column(
                     children: [
-                      Expanded(
-                        child: Container(color: AppColors.tiger),
-                      ),
-                      Expanded(
-                        child: Container(color: AppColors.platinum),
-                      ),
+                      Expanded(child: Container(color: AppColors.tiger)),
+                      Expanded(child: Container(color: AppColors.platinum)),
                     ],
                   ),
                   Column(
@@ -90,8 +87,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                       gapH214,
                       Expanded(
                         child: Container(
-                          padding: .symmetric(horizontal: 21),
-                          decoration: BoxDecoration(
+                          padding: Paddings.paddingHorizontal20,
+                          decoration: const BoxDecoration(
                             color: AppColors.platinum,
                             borderRadius: .only(
                               topLeft: .circular(30),
@@ -107,40 +104,43 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                 children: [
                                   gapH32,
                                   CustomTextField(
-                                    title: 'Company name',
+                                    title: 'company_register.company_name'.tr(),
                                     validator: Validator.validateCompanyName,
                                     controller: _companyNameController,
                                   ),
                                   gapH20,
                                   CustomDropdownButton(
-                                    title: 'Industry',
+                                    title: 'company_register.industry'.tr(),
                                     valueNotifier: _industry,
                                     items: IndustryType.values,
                                   ),
                                   gapH20,
                                   CustomDropdownButton(
-                                    title: 'Company size',
+                                    title: 'company_register.company_size'.tr(),
                                     valueNotifier: _companySize,
                                     items: CompanySize.values,
                                   ),
                                   gapH20,
                                   CustomTextField(
-                                    title: 'Your full name',
-                                    hintText: 'Roman Shuhevich',
+                                    title: 'company_register.full_name'.tr(),
+                                    hintText: 'company_register.full_name_hint'
+                                        .tr(),
                                     validator: Validator.validateFullName,
                                     controller: _fullNameController,
                                   ),
                                   gapH20,
                                   CustomTextField(
-                                    title: 'Work email',
-                                    hintText: 'shuh@emapt.tech',
+                                    title: 'company_register.email'.tr(),
+                                    hintText: 'company_register.email_hint'
+                                        .tr(),
                                     validator: Validator.validateEmail,
                                     controller: _emailController,
                                   ),
                                   gapH20,
                                   CustomTextField(
-                                    title: 'Password',
-                                    hintText: 'Min. 8 charactercs',
+                                    title: 'company_register.password'.tr(),
+                                    hintText: 'company_register.password_hint'
+                                        .tr(),
                                     obscureText: true,
                                     validator:
                                         Validator.validateRegisterPassword,
@@ -148,7 +148,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                   ),
                                   gapH20,
                                   CustomTextField(
-                                    title: 'Confirm password',
+                                    title: 'company_register.confirm_password'
+                                        .tr(),
                                     obscureText: true,
                                     validator: (value) =>
                                         Validator.validateConfirmPassword(
@@ -159,9 +160,10 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                                   ),
                                   gapH20,
                                   Align(
-                                    alignment: .centerRight,
+                                    alignment: Alignment.centerRight,
                                     child: CustomButton(
-                                      text: 'Sign up',
+                                      text: 'company_register.sign_up_button'
+                                          .tr(),
                                       elevation: 4,
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
@@ -190,10 +192,10 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                     ],
                   ),
                   HeaderWidget(
-                    subtitle: 'Company registration',
-                    additionalText: 'in 2 minutes',
+                    subtitle: 'company_register.subtitle'.tr(),
+                    additionalText: 'company_register.additional_text'.tr(),
                     color: Theme.of(context).colorScheme.surfaceContainer,
-                    headerType: .convexOut,
+                    headerType: HeaderType.convexOut,
                   ),
                 ],
               ),

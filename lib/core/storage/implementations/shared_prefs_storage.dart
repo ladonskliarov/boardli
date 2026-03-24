@@ -15,4 +15,16 @@ class SharedPrefsStorage implements LocalStorageService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(StorageKeys.darkThemeKey, value);
   }
+
+@override
+  Future<String> getLocale() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(StorageKeys.localeKey) ?? 'en';
+  }
+
+  @override
+  Future<void> setLocale(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(StorageKeys.localeKey, value);
+  }
 }

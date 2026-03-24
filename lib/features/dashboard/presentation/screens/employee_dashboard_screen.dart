@@ -26,7 +26,7 @@ class EmployeeDashboardScreen extends StatelessWidget {
       ],
       child: Scaffold(
         extendBody: navigationShell.currentIndex != 1,
-        backgroundColor: context.watch<ThemeProvider>().darkTheme ? AppColors.gunMetal : AppColors.softLinen,
+        backgroundColor: context.watch<ThemeProvider>().isDarkTheme ? AppColors.gunMetal : AppColors.softLinen,
         body: navigationShell,
         bottomNavigationBar: CustomBottomBar(
           bottomBarItems: [

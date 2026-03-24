@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/storage/interfaces/token_repository.dart';
 import '../../../../core/util/enums.dart';
-import '/features/authorization/domain/entities/company_entity.dart';
-import '/features/authorization/domain/mappers/mappers.dart';
+import '../../domain/entities/company_entity.dart';
+import '../../domain/mappers/mappers.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/repositories/company_repository.dart';
 import '../datasource/remote/company_remote_datasource.dart';

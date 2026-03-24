@@ -12,11 +12,9 @@ class HeaderWidget extends StatelessWidget {
   final HeaderType headerType;
   final Color color;
   final Color? textColor;
-  final TextStyle? subtitleStyle;
   final bool isShadow;
   const HeaderWidget({
     this.subtitle,
-    this.subtitleStyle,
     this.additionalText,
     this.headerType = HeaderType.convexIn,
     this.color = AppColors.tiger,
@@ -55,7 +53,7 @@ class HeaderWidget extends StatelessWidget {
               if (subtitle != null)
                 Text(
                   subtitle!.tr(),
-                  style: subtitleStyle ?? AppTextStyles.subtitle.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface),
+                  style: AppTextStyles.subtitle.copyWith(color: textColor ?? Theme.of(context).colorScheme.onSurface),
                 ),
               if (additionalText != null)
                 Padding(

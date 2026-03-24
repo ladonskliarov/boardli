@@ -1,29 +1,43 @@
+import 'package:easy_localization/easy_localization.dart';
+
 abstract class Validator {
   static String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) return 'Email is required';
-    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegExp.hasMatch(value)) return 'Enter a valid email';
+    if (value == null || value.trim().isEmpty) {
+      return 'validators.email.empty'.tr();
+    }
+
+    final emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+
+    if (!emailRegExp.hasMatch(value.trim())) {
+      return 'validators.email.invalid'.tr();
+    }
     return null;
   }
 
   static String? validateRegisterPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
+    if (value == null || value.isEmpty) {
+      return 'validators.password.empty'.tr();
+    }
 
     final passwordRegExp = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$');
 
     if (!passwordRegExp.hasMatch(value)) {
-      return 'One uppercase, lowercase and number';
+      return 'validators.password.invalid_register'.tr();
     }
     return null;
   }
 
   static String? validateLoginPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
+    if (value == null || value.isEmpty) {
+      return 'validators.password.empty'.tr();
+    }
 
     final passwordRegExp = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$');
 
     if (!passwordRegExp.hasMatch(value)) {
-      return 'Please enter a valid password';
+      return 'validators.password.invalid_login'.tr();
     }
     return null;
   }
@@ -32,69 +46,93 @@ abstract class Validator {
     String? value,
     String originalPassword,
   ) {
-    if (value == null || value.isEmpty) return 'Please confirm your password';
-    if (value != originalPassword) return 'Passwords do not match';
+    if (value == null || value.isEmpty) {
+      return 'validators.confirm_password.empty'.tr();
+    }
+    if (value != originalPassword) {
+      return 'validators.confirm_password.mismatch'.tr();
+    }
     return null;
   }
 
   static String? validateCompanyName(String? value) {
-    if (value == null || value.isEmpty) return 'Company name is required';
+    if (value == null || value.isEmpty) {
+      return 'validators.company_name.empty'.tr();
+    }
     final companyRegExp = RegExp(r'\p{L}{2,}', unicode: true);
-    if (!companyRegExp.hasMatch(value)) return 'Enter at least 2 characters';
+    if (!companyRegExp.hasMatch(value)) {
+      return 'validators.company_name.invalid'.tr();
+    }
     return null;
   }
 
   static String? validateFullName(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Full name is required';
+    if (value == null || value.trim().isEmpty) {
+      return 'validators.full_name.empty'.tr();
+    }
 
     final nameRegExp = RegExp(r'^\p{L}{2,}\s\p{L}{2,}$', unicode: true);
 
     if (!nameRegExp.hasMatch(value.trim())) {
-      return 'At least two words (min 2 characters each)';
+      return 'validators.full_name.invalid'.tr();
     }
     return null;
   }
 
   static String? validateHobby(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your hobbie';
+    if (value == null || value.trim().isEmpty) {
+      return 'validators.hobby.empty'.tr();
+    }
 
-    // final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
+    final hobbyRegExp = RegExp(
+      r'^[\p{L}\p{N}\s]+(?:,[\p{L}\p{N}\s]+)*$', 
+      unicode: true,
+    );
 
-    // if (!hobbyRegExp.hasMatch(value)) {
-    //   return 'Use only spaces or commas as separators';
-    // }
+    if (!hobbyRegExp.hasMatch(value.trim())) {
+      return 'validators.hobby.invalid'.tr();
+    }
     return null;
   }
 
   static String? validateAnimal(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your favorite animal';
+    if (value == null || value.trim().isEmpty) {
+      return 'validators.animal.empty'.tr();
     }
 
-    // final hobbyRegExp = RegExp(r'^[\p{L}\p{N}\s,]+$');
+    final animalRegExp = RegExp(
+      r'^[\p{L}\p{N}\s]+(?:,[\p{L}\p{N}\s]+)*$', 
+      unicode: true,
+    );
 
-    // if (!hobbyRegExp.hasMatch(value)) {
-    //   return 'Use only spaces or commas as separators';
-    // }
+    if (!animalRegExp.hasMatch(value.trim())) {
+      return 'validators.animal.invalid'.tr();
+    }
     return null;
   }
 
   static String? validateInviteKey(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your invite key';
+    if (value == null || value.isEmpty) {
+      return 'validators.invite_key.empty'.tr();
+    }
 
-    final hobbyRegExp = RegExp(r'^[a-fA-F0-9]{64}$');
+    final inviteRegExp = RegExp(r'^[a-fA-F0-9]{64}$');
 
-    if (!hobbyRegExp.hasMatch(value)) {
-      return 'Enter a valid key';
+    if (!inviteRegExp.hasMatch(value)) {
+      return 'validators.invite_key.invalid'.tr();
     }
     return null;
   }
 
   static String? validateDepartmentName(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter department name';
-    final departmentRegExp = RegExp(r'^[\p{L}\p{N}\s]+$');
+    if (value == null || value.isEmpty) {
+      return 'validators.department_name.empty'.tr();
+    }
+    
+    final departmentRegExp = RegExp(r'^[\p{L}\p{N}\s]+$', unicode: true);
+    
     if (!departmentRegExp.hasMatch(value)) {
-      return 'Use only letters, numbers and spaces';
+      return 'validators.department_name.invalid'.tr();
     }
     return null;
   }

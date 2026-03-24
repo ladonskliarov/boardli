@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../../authorization/domain/entities/employee_entity.dart';
-import '../../../authorization/domain/mappers/mappers.dart';
+import '../../../auth/domain/entities/employee_entity.dart';
+import '../../../auth/domain/mappers/mappers.dart';
 import '../../domain/repositories/company_management_repository.dart';
 import '../datasource/company_management_datasource.dart';
 
@@ -13,9 +13,11 @@ class CompanyManagementRepositoryImpl implements CompanyManagementRepository {
   @override
   Future<Either<Failure, List<BaseEmployeeEntity>?>> getEmployees() async {
     try {
-      final response = await companyManagementDatasource.getEmployees();
+      final employees = await companyManagementDatasource.getEmployees();
+      final reversedEmployees = employees?.reversed.toList();
+      final employessEntities = reversedEmployees?.map((employee) => employee.toEntity()).toList();
 
-      return Right(response?.map((employee) => employee.toEntity()).toList());
+      return Right(employessEntities);
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
@@ -24,9 +26,9 @@ class CompanyManagementRepositoryImpl implements CompanyManagementRepository {
   @override
   Future<Either<Failure, List<String>?>> getDepartments() async {
     try {
-      final response = await companyManagementDatasource.getDepartments();
-
-      return Right(response);
+      final departments = await companyManagementDatasource.getDepartments();
+      final reversedDepartments = departments?.reversed.toList();
+      return Right(reversedDepartments);
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
@@ -35,9 +37,10 @@ class CompanyManagementRepositoryImpl implements CompanyManagementRepository {
     @override
   Future<Either<Failure, List<String>>> createDepartment({required String department}) async {
     try {
-      final response = await companyManagementDatasource.createDepartment(department: department);
+      final updatedDepartments = await companyManagementDatasource.createDepartment(department: department);
+      final reversedDepartments = updatedDepartments.reversed.toList();
 
-      return Right(response);
+      return Right(reversedDepartments);
     } catch (e) {
       return Left(ServerFailure('Internal server error'));
     }
