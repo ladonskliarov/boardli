@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../domain/entities/chat_message_entity.dart';
 import '../../domain/mappers/mappers.dart';
 import '../../domain/repositories/chat_assistant_repository.dart';
 import '../datasource/chat_assistant_datasource.dart';
-import '../models/chat_message.dart';
 
 class ChatAssistantRepositoryImpl implements ChatAssistantRepository {
   final ChatAssistantDatasource datasource;

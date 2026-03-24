@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +11,7 @@ import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/style/widgets/custom_button.dart';
 import '../../../auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import '../cubit/employee_account_cubit.dart';
+import '../widgets/avatar.dart';
 
 class EmployeeAccountScreen extends StatelessWidget {
   const EmployeeAccountScreen({super.key});
@@ -72,20 +72,6 @@ class EmployeeAccountScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: .start,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'account_screen.company'.tr(),
-                                  style: AppTextStyles.regular24,
-                                ),
-                                gapW8,
-                                Text(
-                                  'Empat [Mock]',
-                                  style: AppTextStyles.light24,
-                                ),
-                              ],
-                            ),
-                            gapH4,
                             Column(
                               crossAxisAlignment: .start,
                               children: [
@@ -191,51 +177,6 @@ class EmployeeAccountScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class AvatarWidget extends StatelessWidget {
-  final String? avatarUrl;
-  const AvatarWidget({required this.avatarUrl, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    if (avatarUrl != null && avatarUrl!.isNotEmpty) {
-      return Container(
-        width: 144,
-        height: 144,
-        padding: .all(6),
-        decoration: BoxDecoration(
-          color: AppColors.softLinen,
-          shape: BoxShape.circle,
-        ),
-        child: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: avatarUrl!,
-            fit: .cover,
-            placeholder: (context, url) => Container(
-              color: AppColors.white,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.sandyBrown,
-                ),
-              ),
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: AppColors.grey,
-              child: const Center(
-                child: Icon(Icons.person, color: AppColors.white),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-    return CircleAvatar(
-      radius: 72,
-      backgroundColor: AppColors.grey,
-      child: Icon(Icons.person, color: AppColors.white),
     );
   }
 }

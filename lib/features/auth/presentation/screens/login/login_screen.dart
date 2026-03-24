@@ -38,104 +38,123 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _getLoginCubit(),
-      child: Builder(
-        builder: (context) {
-          return BlocListener<BaseLoginCubit, BaseLoginState>(
-            listener: (context, state) {
-              if (state is BaseLoginLoading) {
-                showLoadingDialog(context);
-              } else if (state is BaseLoginFailure) {
-                context.pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
-              }
-            },
-            child: Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              resizeToAvoidBottomInset: true,
-              body: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Container(
-                          constraints: BoxConstraints(
-                            minHeight: 280.ph,
-                            maxHeight: double.infinity,
+      child: BlocListener<BaseLoginCubit, BaseLoginState>(
+        listener: (context, state) {
+          if (state is BaseLoginLoading) {
+            showLoadingDialog(context);
+          } else if (state is BaseLoginFailure) {
+            context.pop();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        child: LoginScreenView(
+          formKey: _formKey,
+          emailController: _emailController,
+          passwordController: _passwordController,
+        ),
+      ),
+    );
+  }
+}
+
+class LoginScreenView extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  const LoginScreenView({
+    required this.formKey,
+    required this.emailController,
+    required this.passwordController,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          child: Stack(
+            children: [
+              Center(
+                child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: 280.ph,
+                    maxHeight: double.infinity,
+                  ),
+                  margin: Paddings.paddingHorizontal20,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey,
+                    borderRadius: .circular(30.0),
+                  ),
+                  child: Padding(
+                    padding: Paddings.paddingAll16,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize: .min,
+                        mainAxisAlignment: .spaceBetween,
+                        crossAxisAlignment: .start,
+                        children: [
+                          CustomTextField(
+                            title: 'login_screen.email_label'.tr(),
+                            titleColor: AppColors.white,
+                            errorColor: AppColors.white,
+                            validator: Validator.validateEmail,
+                            controller: emailController,
                           ),
-                          margin: Paddings.paddingHorizontal20,
-                          decoration: BoxDecoration(
-                            color: AppColors.grey,
-                            borderRadius: .circular(30.0),
+                          gapH10,
+                          CustomTextField(
+                            title: 'login_screen.password_label'.tr(),
+                            obscureText: true,
+                            titleColor: AppColors.white,
+                            errorColor: AppColors.white,
+                            validator: Validator.validateRegisterPassword,
+                            controller: passwordController,
                           ),
-                          child: Padding(
-                            padding: Paddings.paddingAll16,
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisSize: .min,
-                                mainAxisAlignment: .spaceBetween,
-                                crossAxisAlignment: .start,
-                                children: [
-                                  CustomTextField(
-                                    title: 'login_screen.email_label'.tr(),
-                                    titleColor: AppColors.white,
-                                    errorColor: AppColors.white,
-                                    validator: Validator.validateEmail,
-                                    controller: _emailController,
-                                  ),
-                                  gapH10,
-                                  CustomTextField(
-                                    title: 'login_screen.password_label'.tr(),
-                                    obscureText: true,
-                                    titleColor: AppColors.white,
-                                    errorColor: AppColors.white,
-                                    validator: Validator.validateRegisterPassword,
-                                    controller: _passwordController,
-                                  ),
-                                  gapH20,
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: CustomButton(
-                                      text: 'login_screen.sign_in_button'.tr(),
-                                      backgroundColor: AppColors.grey,
-                                      elevation: 4,
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<BaseLoginCubit>(context).login(
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          gapH20,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: CustomButton(
+                              text: 'login_screen.sign_in_button'.tr(),
+                              backgroundColor: AppColors.grey,
+                              elevation: 4,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  BlocProvider.of<BaseLoginCubit>(
+                                    context,
+                                  ).login(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                                }
+                              },
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      HeaderWidget(
-                        textColor: AppColors.white,
-                        subtitle: 'login_screen.welcome_back'.tr(),
-                        headerType: HeaderType.convexOut,
-                        color: AppColors.tiger,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+              HeaderWidget(
+                textColor: AppColors.white,
+                subtitle: 'login_screen.welcome_back'.tr(),
+                headerType: HeaderType.convexOut,
+                color: AppColors.tiger,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -27,7 +27,10 @@ class CompanyRepositoryImpl implements CompanyRepository {
         password: password,
       );
 
-      await tokenRepository.saveToken(token: response.token, userType: UserType.company);
+      await tokenRepository.saveToken(
+        token: response.token,
+        userType: UserType.company,
+      );
 
       return Right(response.company.toEntity());
     } catch (e) {
@@ -54,7 +57,10 @@ class CompanyRepositoryImpl implements CompanyRepository {
         password: password,
       );
 
-      await tokenRepository.saveToken(token: response.token, userType: UserType.company);
+      await tokenRepository.saveToken(
+        token: response.token,
+        userType: UserType.company,
+      );
 
       return Right(response.company.toEntity());
     } catch (e) {
@@ -66,7 +72,7 @@ class CompanyRepositoryImpl implements CompanyRepository {
   Future<Either<Failure, CompanyEntity>> getMe() async {
     try {
       final model = await remoteDataSource.getMe();
-      
+
       return Right(model.toEntity());
     } catch (e) {
       return Left(ServerFailure('Internal server error'));

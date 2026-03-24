@@ -69,139 +69,165 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
             showLoadingDialog(context);
           }
         },
-        child: Builder(
-          builder: (context) {
-            return Scaffold(
-              backgroundColor: AppColors.platinum,
-              resizeToAvoidBottomInset: true,
-              body: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Expanded(child: Container(color: AppColors.tiger)),
-                      Expanded(child: Container(color: AppColors.platinum)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      gapH214,
-                      Expanded(
-                        child: Container(
-                          padding: Paddings.paddingHorizontal20,
-                          decoration: const BoxDecoration(
-                            color: AppColors.platinum,
-                            borderRadius: .only(
-                              topLeft: .circular(30),
-                              topRight: .circular(30),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisAlignment: .spaceBetween,
-                                crossAxisAlignment: .start,
-                                children: [
-                                  gapH32,
-                                  CustomTextField(
-                                    title: 'company_register.company_name'.tr(),
-                                    validator: Validator.validateCompanyName,
-                                    controller: _companyNameController,
-                                  ),
-                                  gapH20,
-                                  CustomDropdownButton(
-                                    title: 'company_register.industry'.tr(),
-                                    valueNotifier: _industry,
-                                    items: IndustryType.values,
-                                  ),
-                                  gapH20,
-                                  CustomDropdownButton(
-                                    title: 'company_register.company_size'.tr(),
-                                    valueNotifier: _companySize,
-                                    items: CompanySize.values,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'company_register.full_name'.tr(),
-                                    hintText: 'company_register.full_name_hint'
-                                        .tr(),
-                                    validator: Validator.validateFullName,
-                                    controller: _fullNameController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'company_register.email'.tr(),
-                                    hintText: 'company_register.email_hint'
-                                        .tr(),
-                                    validator: Validator.validateEmail,
-                                    controller: _emailController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'company_register.password'.tr(),
-                                    hintText: 'company_register.password_hint'
-                                        .tr(),
-                                    obscureText: true,
-                                    validator:
-                                        Validator.validateRegisterPassword,
-                                    controller: _passwordController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'company_register.confirm_password'
-                                        .tr(),
-                                    obscureText: true,
-                                    validator: (value) =>
-                                        Validator.validateConfirmPassword(
-                                          value,
-                                          _passwordController.text,
-                                        ),
-                                    controller: _confirmPasswordController,
-                                  ),
-                                  gapH20,
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: CustomButton(
-                                      text: 'company_register.sign_up_button'
-                                          .tr(),
-                                      elevation: 4,
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<CompanyRegisterCubit>(
-                                            context,
-                                          ).register(
-                                            name: _companyNameController.text,
-                                            industry: _industry.value.key,
-                                            size: _companySize.value.value,
-                                            contactName:
-                                                _fullNameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  gapH32,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  HeaderWidget(
-                    subtitle: 'company_register.subtitle'.tr(),
-                    additionalText: 'company_register.additional_text'.tr(),
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    headerType: HeaderType.convexOut,
-                  ),
-                ],
-              ),
-            );
-          },
+        child: CompanyRegisterView(
+          formKey: _formKey,
+          companyNameController: _companyNameController,
+          fullNameController: _fullNameController,
+          emailController: _emailController,
+          passwordController: _passwordController,
+          confirmPasswordController: _confirmPasswordController,
+          companySize: _companySize,
+          industry: _industry,
         ),
+      ),
+    );
+  }
+}
+
+class CompanyRegisterView extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController companyNameController;
+  final TextEditingController fullNameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final ValueNotifier<EnumValue> companySize;
+  final ValueNotifier<EnumValue> industry;
+
+  const CompanyRegisterView({
+    required this.formKey,
+    required this.companyNameController,
+    required this.fullNameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+    required this.companySize,
+    required this.industry,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.platinum,
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(child: Container(color: AppColors.tiger)),
+              Expanded(child: Container(color: AppColors.platinum)),
+            ],
+          ),
+          Column(
+            children: [
+              gapH214,
+              Expanded(
+                child: Container(
+                  padding: Paddings.paddingHorizontal20,
+                  decoration: const BoxDecoration(
+                    color: AppColors.platinum,
+                    borderRadius: .only(
+                      topLeft: .circular(30),
+                      topRight: .circular(30),
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: .spaceBetween,
+                        crossAxisAlignment: .start,
+                        children: [
+                          gapH32,
+                          CustomTextField(
+                            title: 'company_register.company_name'.tr(),
+                            validator: Validator.validateCompanyName,
+                            controller: companyNameController,
+                          ),
+                          gapH20,
+                          CustomDropdownButton(
+                            title: 'company_register.industry'.tr(),
+                            valueNotifier: industry,
+                            items: IndustryType.values,
+                          ),
+                          gapH20,
+                          CustomDropdownButton(
+                            title: 'company_register.company_size'.tr(),
+                            valueNotifier: companySize,
+                            items: CompanySize.values,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'company_register.full_name'.tr(),
+                            hintText: 'company_register.full_name_hint'.tr(),
+                            validator: Validator.validateFullName,
+                            controller: fullNameController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'company_register.email'.tr(),
+                            hintText: 'company_register.email_hint'.tr(),
+                            validator: Validator.validateEmail,
+                            controller: emailController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'company_register.password'.tr(),
+                            hintText: 'company_register.password_hint'.tr(),
+                            obscureText: true,
+                            validator: Validator.validateRegisterPassword,
+                            controller: passwordController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'company_register.confirm_password'.tr(),
+                            obscureText: true,
+                            validator: (value) =>
+                                Validator.validateConfirmPassword(
+                                  value,
+                                  passwordController.text,
+                                ),
+                            controller: confirmPasswordController,
+                          ),
+                          gapH20,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: CustomButton(
+                              text: 'company_register.sign_up_button'.tr(),
+                              elevation: 4,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  BlocProvider.of<CompanyRegisterCubit>(
+                                    context,
+                                  ).register(
+                                    name: companyNameController.text,
+                                    industry: industry.value.key,
+                                    size: companySize.value.value,
+                                    contactName: fullNameController.text,
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          gapH32,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          HeaderWidget(
+            subtitle: 'company_register.subtitle'.tr(),
+            additionalText: 'company_register.additional_text'.tr(),
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            headerType: HeaderType.convexOut,
+          ),
+        ],
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/chat_message.dart';
+import '../../data/models/source.dart';
+import '../../domain/entities/chat_message_entity.dart';
 import '../../domain/repositories/chat_assistant_repository.dart';
 
 part 'chat_assistant_state.dart';

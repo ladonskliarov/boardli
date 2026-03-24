@@ -94,7 +94,27 @@ class CompanyRemoteDatasourceImpl extends CompanyRemoteDatasource {
 
   @override
   Future<Company> getMe() async {
-    final response = await dio.get('/api/v1/auth/me');
-    return Company.fromJson(response.data);
+    const String url = '/api/v1/auth/me';
+
+    try {
+      final response = await dio.get(url);
+
+      log('GetMe status code: ${response.statusCode}');
+      log('Response data: ${response.data}');
+
+      return Company.fromJson(response.data);
+    } on DioException catch (e) {
+      log('GetMe error: ${e.response?.statusCode}');
+      log('Server message: ${e.response?.data}');
+
+      final String errorMessage =
+          e.response?.data?['message'] ??
+          'Failed to load profile. Code: ${e.response?.statusCode}';
+
+      throw ServerFailure(errorMessage);
+    } catch (e) {
+      log('Critical GetMe error: $e');
+      throw ServerFailure('Unexpected error occurred: $e');
+    }
   }
 }

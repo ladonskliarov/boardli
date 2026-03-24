@@ -27,9 +27,11 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   final ValueNotifier<Gender> _gender = ValueNotifier<Gender>(Gender.other);
   final TextEditingController _inviteKeyController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _hobbiesController = TextEditingController();
-  final TextEditingController _favoriteAnimalsController = TextEditingController();
+  final TextEditingController _favoriteAnimalsController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -38,6 +40,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
     _confirmPasswordController.dispose();
     _hobbiesController.dispose();
     _favoriteAnimalsController.dispose();
+    _gender.dispose();
     super.dispose();
   }
 
@@ -49,127 +52,162 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
         listener: (context, state) {
           if (state is EmployeeRegisterFailure) {
             context.pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is EmployeeRegisterLoading) {
             showLoadingDialog(context);
           }
         },
-        child: Builder(
-          builder: (context) {
-            return Scaffold(
-              backgroundColor: AppColors.platinum,
-              resizeToAvoidBottomInset: true,
-              body: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Expanded(child: Container(color: AppColors.tiger)),
-                      Expanded(child: Container(color: AppColors.platinum)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      gapH214,
-                      Expanded(
-                        child: Container(
-                          padding: Paddings.paddingHorizontal20,
-                          decoration: const BoxDecoration(
-                            color: AppColors.platinum,
-                            borderRadius: .only(
-                              topLeft: .circular(30),
-                              topRight: .circular(30),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisAlignment: .spaceBetween,
-                                crossAxisAlignment: .start,
-                                children: [
-                                  gapH32,
-                                  CustomTextField(
-                                    title: 'register_screen.invite_key'.tr(),
-                                    validator: Validator.validateInviteKey,
-                                    controller: _inviteKeyController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'register_screen.create_password'.tr(),
-                                    hintText: 'register_screen.password_hint'.tr(),
-                                    obscureText: true,
-                                    validator: Validator.validateRegisterPassword,
-                                    controller: _passwordController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'register_screen.confirm_password'.tr(),
-                                    obscureText: true,
-                                    validator: (value) =>
-                                        Validator.validateConfirmPassword(
-                                            value, _passwordController.text),
-                                    controller: _confirmPasswordController,
-                                  ),
-                                  gapH20,
-                                  CustomDropdownButton(
-                                    title: 'register_screen.gender'.tr(),
-                                    valueNotifier: _gender,
-                                    items: Gender.values,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'register_screen.hobbies'.tr(),
-                                    hintText: 'register_screen.hobbies_hint'.tr(),
-                                    validator: Validator.validateHobby,
-                                    controller: _hobbiesController,
-                                  ),
-                                  gapH20,
-                                  CustomTextField(
-                                    title: 'register_screen.animals'.tr(),
-                                    hintText: 'register_screen.animals_hint'.tr(),
-                                    validator: Validator.validateAnimal,
-                                    controller: _favoriteAnimalsController,
-                                  ),
-                                  gapH20,
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: CustomButton(
-                                      text: 'register_screen.sign_up_button'.tr(),
-                                      elevation: 4,
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          BlocProvider.of<EmployeeRegisterCubit>(context).register(
-                                            inviteKey: _inviteKeyController.text,
-                                            password: _passwordController.text,
-                                            gender: _gender.value.key,
-                                            hobbies: _hobbiesController.text,
-                                            favoriteAnimals: _favoriteAnimalsController.text,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  gapH32,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  HeaderWidget(
-                    subtitle: 'register_screen.subtitle'.tr(),
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    headerType: HeaderType.convexOut,
-                  ),
-                ],
-              ),
-            );
-          },
+        child: EmployeeRegisterScreenView(
+          formKey: _formKey,
+          inviteKeyController: _inviteKeyController,
+          passwordController: _passwordController,
+          confirmPasswordController: _confirmPasswordController,
+          gender: _gender,
+          hobbiesController: _hobbiesController,
+          favoriteAnimalsController: _favoriteAnimalsController,
         ),
+      ),
+    );
+  }
+}
+
+class EmployeeRegisterScreenView extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController inviteKeyController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final ValueNotifier<Gender> gender;
+  final TextEditingController hobbiesController;
+  final TextEditingController favoriteAnimalsController;
+
+  const EmployeeRegisterScreenView({
+    required this.formKey,
+    required this.inviteKeyController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+    required this.gender,
+    required this.hobbiesController,
+    required this.favoriteAnimalsController,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.platinum,
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(child: Container(color: AppColors.tiger)),
+              Expanded(child: Container(color: AppColors.platinum)),
+            ],
+          ),
+          Column(
+            children: [
+              gapH214,
+              Expanded(
+                child: Container(
+                  padding: Paddings.paddingHorizontal20,
+                  decoration: const BoxDecoration(
+                    color: AppColors.platinum,
+                    borderRadius: .only(
+                      topLeft: .circular(30),
+                      topRight: .circular(30),
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: .spaceBetween,
+                        crossAxisAlignment: .start,
+                        children: [
+                          gapH32,
+                          CustomTextField(
+                            title: 'register_screen.invite_key'.tr(),
+                            validator: Validator.validateInviteKey,
+                            controller: inviteKeyController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'register_screen.create_password'.tr(),
+                            hintText: 'register_screen.password_hint'.tr(),
+                            obscureText: true,
+                            validator: Validator.validateRegisterPassword,
+                            controller: passwordController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'register_screen.confirm_password'.tr(),
+                            obscureText: true,
+                            validator: (value) =>
+                                Validator.validateConfirmPassword(
+                                  value,
+                                  passwordController.text,
+                                ),
+                            controller: confirmPasswordController,
+                          ),
+                          gapH20,
+                          CustomDropdownButton(
+                            title: 'register_screen.gender'.tr(),
+                            valueNotifier: gender,
+                            items: Gender.values,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'register_screen.hobbies'.tr(),
+                            hintText: 'register_screen.hobbies_hint'.tr(),
+                            validator: Validator.validateHobby,
+                            controller: hobbiesController,
+                          ),
+                          gapH20,
+                          CustomTextField(
+                            title: 'register_screen.animals'.tr(),
+                            hintText: 'register_screen.animals_hint'.tr(),
+                            validator: Validator.validateAnimal,
+                            controller: favoriteAnimalsController,
+                          ),
+                          gapH20,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: CustomButton(
+                              text: 'register_screen.sign_up_button'.tr(),
+                              elevation: 4,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  BlocProvider.of<EmployeeRegisterCubit>(
+                                    context,
+                                  ).register(
+                                    inviteKey: inviteKeyController.text,
+                                    password: passwordController.text,
+                                    gender: gender.value.key,
+                                    hobbies: hobbiesController.text,
+                                    favoriteAnimals:
+                                        favoriteAnimalsController.text,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          gapH32,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          HeaderWidget(
+            subtitle: 'register_screen.subtitle'.tr(),
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            headerType: HeaderType.convexOut,
+          ),
+        ],
       ),
     );
   }

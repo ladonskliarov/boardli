@@ -8,7 +8,6 @@ import '../../features/company_management/presentation/screens/company_managemen
 import '../../features/dashboard/presentation/screens/employee_dashboard_screen.dart';
 import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/auth/presentation/screens/company_registration/company_register_screen.dart';
-// import '../../features/auth/presentation/screens/company_registration/company_tariffs_screen.dart';
 import '../../features/auth/presentation/screens/employee_registration/employee_register_screen.dart';
 import '../../features/auth/presentation/screens/login/login_screen.dart';
 import '../../features/dashboard/presentation/screens/company_dashboard_screen.dart';
@@ -105,22 +104,6 @@ class AppRouter {
               return CompanyRegisterScreen();
             },
           ),
-          // GoRoute(
-          //   path: AppPage.companyTariff.path,
-          //   name: AppPage.companyTariff.name,
-          //   builder: (context, state) {
-          //     return CompanyTariffsScreen();
-          //   },
-          //   routes: [
-          //     GoRoute(
-          //       path: AppPage.registerCompany.path,
-          //       name: AppPage.registerCompany.name,
-          //       builder: (context, state) {
-          //         return CompanyRegisterScreen();
-          //       },
-          //     ),
-          //   ],
-          // ),
         ],
       ),
       StatefulShellRoute.indexedStack(
