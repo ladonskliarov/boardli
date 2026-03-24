@@ -17,7 +17,7 @@ extension CompanyMapper on Company {
 }
 
 extension BaseEmployeeMapper on BaseEmployee {
-  BaseEmployeeEntity toEntity() {
+  BaseEmployeeEntity toBaseEntity() {
     return BaseEmployeeEntity(
       id: id,
       name: name,
@@ -29,7 +29,7 @@ extension BaseEmployeeMapper on BaseEmployee {
 }
 
 extension EmployeeMapper on Employee {
-  EmployeeEntity toEntity(String avatarUrl) {
+  EmployeeEntity toEmployeeEntity(String avatarUrl) {
     getName() {
       final parts = name.split(' ');
       return parts.length > 1 ? parts[0] : name;
@@ -55,7 +55,7 @@ extension EmployeeMapper on Employee {
 }
 
 extension InvitedEmployeeMapper on InvitedEmployee {
-  InvitedEmployeeEntity toEntity() {
+  InvitedEmployeeEntity toInvitedEntity() {
     return InvitedEmployeeEntity(
       id: id,
       name: name,

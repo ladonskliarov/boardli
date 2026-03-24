@@ -12,35 +12,35 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (avatarUrl != null && avatarUrl!.isNotEmpty) {
-      return Container(
-        width: 144,
-        height: 144,
-        padding: .all(6),
-        decoration: BoxDecoration(
-          color: context.watch<ThemeProvider>().isDarkTheme
-              ? AppColors.white
-              : AppColors.grey,
-          shape: BoxShape.circle,
-        ),
-        child: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: avatarUrl!,
-            fit: .cover,
-            placeholder: (context, url) => Container(
-              color: AppColors.white,
-              child: const Center(
-                child: CircularProgressIndicator(color: AppColors.sandyBrown),
+        return Container(
+          width: 144,
+          height: 144,
+          padding: .all(6),
+          decoration: BoxDecoration(
+            color: context.watch<ThemeProvider>().isDarkTheme
+                ? AppColors.white
+                : AppColors.grey,
+            shape: BoxShape.circle,
+          ),
+          child: ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: avatarUrl!,
+              fit: .cover,
+              placeholder: (context, url) => Container(
+                color: AppColors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(color: AppColors.sandyBrown),
+                ),
               ),
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: AppColors.grey,
-              child: const Center(
-                child: Icon(Icons.person, color: AppColors.white),
+              errorWidget: (context, url, error) => Container(
+                color: AppColors.grey,
+                child: const Center(
+                  child: Icon(Icons.person, color: AppColors.white),
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
     }
     return CircleAvatar(
       radius: 72,

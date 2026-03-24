@@ -64,4 +64,13 @@ class ChatAssistantCubit extends Cubit<ChatState> {
 
     emit(ChatState(messages: updatedMessages));
   }
+
+  Future<void> refreshChat() async {
+    final result = await repository.getChatHistory();
+    
+    result.fold(
+      (failure) => emit(ChatState(messages: [])),
+      (messages) => emit(ChatState(messages: messages)),
+    );
+  }
 }

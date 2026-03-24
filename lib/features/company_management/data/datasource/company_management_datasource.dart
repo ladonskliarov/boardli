@@ -33,11 +33,11 @@ class CompanyManagementDatasource {
 
       final String errorMessage =
           e.response?.data?['message'] ??
-          'Login failed. Code: ${e.response?.statusCode}';
+          'Get employees failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
     } catch (e) {
-      log('Critical login error: $e');
+      log('Critical get employees error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
   }
@@ -61,11 +61,11 @@ class CompanyManagementDatasource {
 
       final String errorMessage =
           e.response?.data?['message'] ??
-          'Login failed. Code: ${e.response?.statusCode}';
+          'Get departments failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
     } catch (e) {
-      log('Critical login error: $e');
+      log('Critical get departments error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
   }
@@ -95,16 +95,16 @@ class CompanyManagementDatasource {
 
       return uri.queryParameters['token']!;
     } on DioException catch (e) {
-      log('Login error: ${e.response?.statusCode}');
+      log('Invite employee error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
 
       final String errorMessage =
           e.response?.data?['message'] ??
-          'Login failed. Code: ${e.response?.statusCode}';
+          'Invite employee failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
     } catch (e) {
-      log('Critical login error: $e');
+      log('Critical invite employee error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
   }
@@ -126,16 +126,39 @@ class CompanyManagementDatasource {
       return data.map<String>((json) => json as String).toList();
 
     } on DioException catch (e) {
-      log('Login error: ${e.response?.statusCode}');
+      log('Create department error: ${e.response?.statusCode}');
       log('Server message: ${e.response?.data}');
 
       final String errorMessage =
           e.response?.data?['message'] ??
-          'Login failed. Code: ${e.response?.statusCode}';
+          'Create department failed. Code: ${e.response?.statusCode}';
 
       throw ServerFailure(errorMessage);
     } catch (e) {
-      log('Critical login error: $e');
+      log('Critical create department error: $e');
+      throw ServerFailure('Unexpected error occurred: $e');
+    }
+  }
+
+  Future<void> deleteEmployee(String employeeId) async {
+    final String url = '/api/v1/employees/$employeeId';
+
+    try {
+      final response = await dio.delete(url);
+
+      log('Delete employee status code: ${response.statusCode}');
+      log('Response data: ${response.data}');
+    } on DioException catch (e) {
+      log('Delete employee error: ${e.response?.statusCode}');
+      log('Server message: ${e.response?.data}');
+
+      final String errorMessage =
+          e.response?.data?['message'] ??
+          'Failed to delete employee. Code: ${e.response?.statusCode}';
+
+      throw ServerFailure(errorMessage);
+    } catch (e) {
+      log('Critical delete employee error: $e');
       throw ServerFailure('Unexpected error occurred: $e');
     }
   }

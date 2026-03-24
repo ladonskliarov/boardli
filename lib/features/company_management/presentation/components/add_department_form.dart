@@ -34,6 +34,7 @@ class _AddDepartmentFormState extends State<AddDepartmentForm> {
           children: [
             CustomTextField(
               title: 'company_management.add_department.name'.tr(),
+              titleColor: Theme.of(context).colorScheme.onSecondary,
               validator: Validator.validateDepartmentName,
               controller: _departmentController,
             ),

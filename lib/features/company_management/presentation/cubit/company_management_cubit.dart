@@ -75,4 +75,38 @@ class CompanyManagementCubit extends Cubit<CompanyManagementState> {
       ),
     );
   }
+
+  Future<void> refreshData() async {
+    final employeesResult = await companyManagementRepository.getEmployees();
+    final departmentsResult = await companyManagementRepository
+        .getDepartments();
+
+    employeesResult.fold(
+      (failure) => emit(CompanyManagementFailure(message: failure.message)),
+      (employees) {
+        departmentsResult.fold(
+          (failure) => emit(CompanyManagementFailure(message: failure.message)),
+          (departments) => emit(
+            CompanyManagementLoaded(
+              employees: employees,
+              departments: departments,
+              inviteKey: null,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> deleteEmployee({required String employeeId}) async {
+    emit(CompanyManagementLoading());
+    final result = await companyManagementRepository.deleteEmployee(
+      employeeId: employeeId,
+    );
+
+    result.fold(
+      (failure) => emit(CompanyManagementFailure(message: failure.message)),
+      (success) => refreshData(),
+    );
+  }
 }

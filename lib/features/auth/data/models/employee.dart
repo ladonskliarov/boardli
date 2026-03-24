@@ -17,6 +17,15 @@ class BaseEmployee extends Equatable {
 
   @override
   List<Object?> get props => [name, email, department, role];
+
+  factory BaseEmployee.fromJson(Map<String, dynamic> json) {
+    if (json['gender'] != null) {
+      return Employee.fromJson(json);
+    } 
+    else {
+      return InvitedEmployee.fromJson(json);
+    }
+  }
 }
 
 class Employee extends BaseEmployee {

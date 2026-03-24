@@ -40,4 +40,13 @@ class KnowledgeBaseRepository {
       return Left(ServerFailure('Failed to upload file: $e'));
     }
   }
+
+  Future<Either<Failure, void>> deleteResource(String resourceId) async {
+    try {
+      await datasource.deleteResource(resourceId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure('Failed to delete resource: $e'));
+    }
+  }
 }

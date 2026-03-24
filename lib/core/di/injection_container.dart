@@ -46,7 +46,7 @@ Future<void> initDI() async {
   _registerDio();
   _registerLocalStorages();
   _registerCubits();
-  _registerDAO();
+  _registerDatasources();
   _registerRepositories();
   await _registerProviders();
   await EasyLocalization.ensureInitialized();
@@ -78,7 +78,7 @@ void _registerLocalStorages() {
   sl.registerLazySingleton<LocalStorageService>(() => SharedPrefsStorage());
 }
 
-void _registerDAO() {
+void _registerDatasources() {
   sl.registerLazySingleton<KnowledgeBaseDatasource>(
     () => KnowledgeBaseDatasource(dio: sl()),
   );

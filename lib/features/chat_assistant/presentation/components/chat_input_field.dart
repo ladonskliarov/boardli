@@ -28,7 +28,7 @@ class ChatInputField extends StatelessWidget {
         color: isDark ? AppColors.metal : AppColors.white,
         borderRadius: .circular(20),
       ),
-      padding: const .only(left: 14, right: 6, top: 4, bottom: 4),
+      padding: const .only(left: 14, right: 6, top: 4, bottom: 1),
       child: Row(
         crossAxisAlignment: .start,
         children: [

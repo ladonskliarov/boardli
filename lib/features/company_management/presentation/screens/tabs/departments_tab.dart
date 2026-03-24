@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
 import '../../../../../core/style/app_text_styles.dart';
 import '../../../../../core/style/widgets/custom_button.dart';
@@ -46,19 +47,26 @@ class DepartmentsTab extends StatelessWidget {
           ],
         ),
         Expanded(
-          child: CustomScrollView(
-            slivers: [
-              if (departments != null && departments!.isNotEmpty)
-                SliverList.separated(
-                  itemCount: departments!.length,
-                  itemBuilder: (context, index) {
-                    return DepartmentCard(department: departments![index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return gapH10;
-                  },
-                ),
-            ],
+          child: RefreshIndicator(
+            color: AppColors.sandyBrown,
+            onRefresh: () async {
+              await context.read<CompanyManagementCubit>().refreshData();
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                if (departments != null && departments!.isNotEmpty)
+                  SliverList.separated(
+                    itemCount: departments!.length,
+                    itemBuilder: (context, index) {
+                      return DepartmentCard(department: departments![index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return gapH10;
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ],

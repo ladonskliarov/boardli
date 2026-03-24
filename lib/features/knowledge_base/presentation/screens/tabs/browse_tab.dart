@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_dimensions.dart';
 import '../../../../../core/style/app_text_styles.dart';
 import '../../../data/models/resource.dart';
+import '../../cubit/knowledge_base_cubit.dart';
 import '../../widgets/resource_card.dart';
 
 class BrowseTab extends StatelessWidget {
@@ -12,20 +15,36 @@ class BrowseTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (resources.isEmpty) {
-      return Text(
-        'knowledge_base.browse.empty'.tr(),
-        textAlign: TextAlign.center,
-        style: AppTextStyles.light16,
-      );
-    }
-    return ListView.separated(
-      itemCount: resources.length,
-      separatorBuilder: (context, index) => gapH12,
-      itemBuilder: (context, index) {
-        final resource = resources[index];
-        return ResourceCard(resource: resource);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<KnowledgeBaseCubit>().refreshResources();
       },
+      color: AppColors.sandyBrown,
+      child: resources.isEmpty
+          ? ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.5,
+                  child: Center(
+                    child: Text(
+                      'knowledge_base.browse.empty'.tr(),
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.light16,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: resources.length,
+              separatorBuilder: (context, index) => gapH12,
+              itemBuilder: (context, index) {
+                final resource = resources[index];
+                return ResourceCard(resource: resource);
+              },
+            ),
     );
   }
 }

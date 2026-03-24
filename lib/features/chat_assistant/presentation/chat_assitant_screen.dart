@@ -7,6 +7,7 @@ import '../../../core/style/app_text_styles.dart';
 import 'components/chat_input_field.dart';
 import 'cubit/chat_assistant_cubit.dart';
 import 'widgets/chat_bubble.dart';
+import 'widgets/custom_refresh_button.dart';
 
 class EmployeeChatAssistantScreen extends StatefulWidget {
   const EmployeeChatAssistantScreen({super.key});
@@ -30,7 +31,18 @@ class _EmployeeChatAssistantScreenState extends State<EmployeeChatAssistantScree
       appBar: AppBar(
         centerTitle: false,
         surfaceTintColor: Colors.transparent,
-        title: Text('chat_assistant.app_bar_title'.tr(), style: AppTextStyles.regular28),
+        title: Row(
+          children: [
+            Text('chat_assistant.app_bar_title'.tr(), style: AppTextStyles.regular28),
+            const Spacer(),
+            CustomRefreshButton(
+              onRefresh: () async {
+                await context.read<ChatAssistantCubit>().refreshChat();
+              },
+            ),
+            gapW4,
+          ],
+        ),
       ),
       body: GestureDetector(
         onTap: () {

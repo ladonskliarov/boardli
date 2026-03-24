@@ -72,7 +72,6 @@ class EmployeeRemoteDatasourceImpl implements EmployeeRemoteDatasource {
       );
 
       log('Register response: ${response.data}');
-      // await getAvatar();
 
       return (
         employee: Employee.fromJson(response.data['user']),

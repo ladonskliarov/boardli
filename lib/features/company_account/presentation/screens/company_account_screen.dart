@@ -37,10 +37,12 @@ class CompanyAccountScreen extends StatelessWidget {
               child: Padding(
                 padding: Paddings.paddingHorizontal16,
                 child: RefreshIndicator(
+                  color: AppColors.sandyBrown,
                   onRefresh: () async {
-                    context.read<CompanyAccountCubit>().loadCompanyAccount();
+                    context.read<CompanyAccountCubit>().refreshCompanyAccount();
                   },
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
@@ -50,7 +52,7 @@ class CompanyAccountScreen extends StatelessWidget {
                         ),
                         gapH12,
                         Divider(),
-                        gapH26,
+                        gapH12,
                         Column(
                           crossAxisAlignment: .start,
                           children: [
@@ -105,6 +107,7 @@ class CompanyAccountScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        gapH190,
                         CustomButton(
                           text: 'company_account.logout'.tr(),
                           onPressed: () => sl<AuthCubit>().logout(),

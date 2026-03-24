@@ -9,6 +9,28 @@ class KnowledgeBaseDatasource {
   final Dio dio;
   const KnowledgeBaseDatasource({required this.dio});
 
+  Future<void> deleteResource(String resourceId) async {
+    final String url = '/api/v1/resources/$resourceId';
+
+    try {
+      final response = await dio.delete(url);
+
+      log('Delete resource status code: ${response.statusCode}');
+      log('Response data: ${response.data}');
+    } on DioException catch (e) {
+      log('Delete resource error: ${e.response?.statusCode}');
+      log('Server message: ${e.response?.data}');
+
+      final String errorMessage =
+          e.response?.data?['message'] ??
+          'Failed to delete resource. Code: ${e.response?.statusCode}';
+
+      throw Exception(errorMessage);
+    } catch (e) {
+      log('Critical delete resource error: $e');
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
   Future<List<Resource>> getResources() async {
     const String url = '/api/v1/resources';
 
@@ -27,7 +49,7 @@ class KnowledgeBaseDatasource {
   Future<void> uploadLink({required String link, String? title}) async {
     const String url = '/api/v1/resources/url';
 
-    final Map<String, dynamic> requestData = {"url": link, "title": ?title};
+    final Map<String, dynamic> requestData = {"url": link, "title": title ?? link};
 
     try {
       final response = await dio.post(url, data: requestData);

@@ -33,4 +33,18 @@ class KnowledgeBaseCubit extends Cubit<KnowledgeBaseState> {
     await repository.uploadLink(link: link, title: title);
     getResources();
   }
+
+  Future<void> refreshResources() async {
+    final result = await repository.getResources();
+    result.fold(
+      (failure) => emit(KnowledgeBaseFailure(message: failure.message)),
+      (resources) => emit(KnowledgeBaseLoaded(resources: resources)),
+    );
+  }
+
+  Future<void> deleteResource(String resourceId) async {
+    emit(KnowledgeBaseLoading());
+    await repository.deleteResource(resourceId);
+    getResources();
+  }
 }

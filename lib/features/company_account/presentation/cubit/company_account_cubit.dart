@@ -18,4 +18,12 @@ class CompanyAccountCubit extends Cubit<CompanyAccountState> {
       (company) => emit(CompanyAccountLoaded(company)),
     );
   }
+
+  Future<void> refreshCompanyAccount() async {
+    final result = await companyRepository.getMe();
+    result.fold(
+      (failure) => emit(CompanyAccountFailure(failure.message)),
+      (company) => emit(CompanyAccountLoaded(company)),
+    );
+  }
 }

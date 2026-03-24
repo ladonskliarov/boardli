@@ -36,11 +36,6 @@ class _UploadTabState extends State<UploadTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'knowledge_base.upload.promo_text'.tr(),
-          style: AppTextStyles.light16,
-        ),
-        gapH20,
         Container(
           padding: Paddings.paddingAll16,
           width: double.infinity,

@@ -30,7 +30,7 @@ class EmployeeAccountScreen extends StatelessWidget {
               } else if (state is EmployeeAccountLoaded) {
                 return RefreshIndicator(
                   onRefresh: () async {
-                    context.read<EmployeeAccountCubit>().loadEmployeeAccount();
+                    context.read<EmployeeAccountCubit>().refreshEmployeeAccount();
                   },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -102,7 +102,10 @@ class EmployeeAccountScreen extends StatelessWidget {
                             gapH10,
                           ],
                         ),
+                        gapH120,
                         CustomButton(
+                          backgroundColor: AppColors.grey,
+                          textColor: AppColors.white,
                           text: 'account_screen.logout'.tr(),
                           onPressed: () => sl<AuthCubit>().logout(),
                         ),

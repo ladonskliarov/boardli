@@ -46,7 +46,7 @@ class EmployeesTab extends StatelessWidget {
             borderRadius: .circular(20),
           ),
           content: Text(
-            'company_management.employees_tab.delete_dialog'.tr(),
+            'company_management.employees_tab.delete_key_dialog'.tr(),
             style: AppTextStyles.regular18,
           ),
           actions: [
@@ -111,60 +111,70 @@ class EmployeesTab extends StatelessWidget {
           ],
         ),
         Expanded(
-          child: CustomScrollView(
-            slivers: [
-              if (inviteKey != null)
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: Paddings.paddingVertical20,
-                    padding: Paddings.paddingAll12,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: .circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: .spaceBetween,
-                      mainAxisSize: .min,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'company_management.employees_tab.copy_label'.tr(args: [inviteKey!]),
-                            maxLines: 4,
-                            style: AppTextStyles.regular16.copyWith(
-                              color: AppColors.gunMetal,
+          child: RefreshIndicator(
+            color: AppColors.sandyBrown,
+            onRefresh: () async {
+              await context.read<CompanyManagementCubit>().refreshData();
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                if (inviteKey != null)
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: Paddings.paddingVertical20,
+                      padding: Paddings.paddingAll12,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: .circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: .spaceBetween,
+                        mainAxisSize: .min,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'company_management.employees_tab.copy_label'.tr(args: [inviteKey!]),
+                              maxLines: 4,
+                              style: AppTextStyles.regular16.copyWith(
+                                color: AppColors.gunMetal,
+                              ),
+                              overflow: .ellipsis,
                             ),
-                            overflow: .ellipsis,
                           ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () =>
-                                  _copyInviteKey(context, inviteKey!),
-                              icon: Icon(Icons.copy, color: AppColors.gunMetal),
-                            ),
-                            IconButton(
-                              onPressed: () =>
-                                  _showDeleteConfirmationDialog(context),
-                              icon: Icon(Icons.close, color: AppColors.tiger),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () =>
+                                    _copyInviteKey(context, inviteKey!),
+                                icon: Icon(Icons.copy, color: AppColors.gunMetal),
+                              ),
+                              IconButton(
+                                onPressed: () =>
+                                    _showDeleteConfirmationDialog(context),
+                                icon: Icon(Icons.close, color: AppColors.tiger),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                SliverToBoxAdapter(
+                  child: gapH10,
                 ),
-              if (employees != null && employees!.isNotEmpty)
-                SliverList.separated(
-                  itemCount: employees!.length,
-                  itemBuilder: (context, index) {
-                    return EmployeeCard(employee: employees![index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return gapH10;
-                  },
-                ),
-            ],
+                if (employees != null && employees!.isNotEmpty)
+                  SliverList.separated(
+                    itemCount: employees!.length,
+                    itemBuilder: (context, index) {
+                      return EmployeeCard(employee: employees![index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return gapH12;
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ],

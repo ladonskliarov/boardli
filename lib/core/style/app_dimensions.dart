@@ -32,6 +32,7 @@ class Sizes {
   static const double p120 = 120.0;
   static const double p154 = 154.0;
   static const double p160 = 160.0;
+  static const double p190 = 190.0;
   static const double p200 = 200.0;
   static const double p206 = 206.0;
   static const double p214 = 214.0;
@@ -114,6 +115,7 @@ const gapH64 = SizedBox(height: Sizes.p64);
 const gapH92 = SizedBox(height: Sizes.p92);
 const gapH120 = SizedBox(height: Sizes.p120);
 const gapH160 = SizedBox(height: Sizes.p160);
+const gapH190 = SizedBox(height: Sizes.p190);
 const gapH200 = SizedBox(height: Sizes.p200);
 const gapH206 = SizedBox(height: Sizes.p206);
 const gapH214 = SizedBox(height: Sizes.p214);

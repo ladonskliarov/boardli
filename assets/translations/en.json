@@ -100,6 +100,10 @@
                 "optional_title": "Title (optional)",
                 "send_button": "Send"
             }
+        },
+        "resources_tab": {
+            "delete_resource_dialog": "Are you sure you want to delete this resource?",
+            "delete_confirm": "Delete"
         }
     },
     "chat_assistant": {
@@ -138,8 +142,11 @@
             "copy_success": "Invite key copied",
             "copy_label": "Copy invite key: {}",
             "no_departments_error": "Please create a department before adding employees.",
-            "delete_dialog": "The invite key is shown only once. Are you sure you have saved it and are ready to delete it?",
-            "delete_confirm": "Yes, delete"
+            "delete_key_dialog": "The invite key is shown only once. Are you sure you have saved it and are ready to delete it?",
+            "status_invited": "Invited",
+            "status_unknown": "Unknown status",
+            "delete_employee_dialog": "Are you sure you want to delete this employee?",
+            "delete_confirm": "Delete"
         },
         "departments_tab": {
             "total": "Total: {}",

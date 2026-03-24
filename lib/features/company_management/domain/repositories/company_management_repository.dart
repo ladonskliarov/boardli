@@ -8,4 +8,5 @@ abstract class CompanyManagementRepository {
   Future<Either<Failure, List<String>?>> getDepartments();
   Future<Either<Failure, String>> createEmployeeInvite({required String name, required String email, required String department, required String role});
   Future<Either<Failure, List<String>>> createDepartment({required String department});
+  Future<Either<Failure, void>> deleteEmployee({required String employeeId});
 }
